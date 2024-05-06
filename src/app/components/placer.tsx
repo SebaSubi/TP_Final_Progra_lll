@@ -36,7 +36,7 @@ const Placer = () => {
       </button>
       {showCursorMarker && (
         <div
-          className="absolute w-10 h-10 bg-green-500 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none rotate-45"
+          className="absolute w-10 h-10 bg-green-500 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none rotate-[38deg] -skew-x-[15deg]"
           //   onClick={handleClick}
           style={{ left: cursorPosition.x, top: cursorPosition.y }}
         ></div>
@@ -45,7 +45,8 @@ const Placer = () => {
       {structures.map((structure, index) => (
         <div
           key={index}
-          className="absolute w-10 h-10 bg-red-500 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none rotate-45"
+          className="absolute w-10 h-10 bg-red-500 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none rotate-[37deg] -skew-x-[15deg]"
+          //   className="absolute w-10 h-10 bg-red-500 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none rotate-[40deg] -skew-x-[6deg]"
           style={{ left: structure.x, top: structure.y }}
         ></div>
       ))}
