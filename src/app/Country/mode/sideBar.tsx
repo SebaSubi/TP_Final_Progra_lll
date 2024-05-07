@@ -1,8 +1,11 @@
 import Image from "next/image";
+import { useState } from "react";
 
 
 
-export default function SideBar({ visibility }: { visibility: boolean }) {
+export default function SideBar() {
+  const [sideBar, setSideBar] = useState<boolean>(true)
+
   const SideBarIcon = ({ icon, text }: { icon: React.ReactNode; text: string }) => (
     <div className='sidebar-icon group'>
       {icon}
@@ -32,9 +35,10 @@ export default function SideBar({ visibility }: { visibility: boolean }) {
           key='Wood_Collector'
   
           src='/Elexir_Collector.png'
-          width={60}
+          width={80}
           height={70}
           alt='png of Elexir Collector'
+
         />
       ),
       text: 'Wood Collector'
@@ -42,11 +46,18 @@ export default function SideBar({ visibility }: { visibility: boolean }) {
   ];
   
   return (
-    <div className="fixed top-0 left-0 h-screen w-25 m-0 flex flex-col bg-gray-200 shadow-md">
+    <main>
+      <div className={`fixed top-0 left-[-100px] h-screen w-[100px] m-0 flex flex-col bg-gray-200 shadow-md transition-all duration-300 ${sideBar ? 'translate-x-0' : 'translate-x-full'}`}>
        {arrayIcons.map(({ icon, text }, index) => (
         <SideBarIcon icon={icon} text={text} key={index} />
       ))}
      </div>
+     <div>
+      <button className={` fixed top-0 left-[5px] transition-all duration-300 ${sideBar ? 'translate-x-0' : 'translate-x-[100px]'}`} onClick={() => {setSideBar(!sideBar)}}>Side Bar</button>
+     </div>
+    </main>
+    
+     
   );
   
 }
