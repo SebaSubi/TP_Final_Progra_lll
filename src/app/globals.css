@@ -43,8 +43,9 @@ body {
     text-white bg-gray-900 text-xs font-bold
     transition-all duration-100 scale-0 origin-left;
   }
-  .button-div {
-    @apply ; 
+
+  .min-lev-req {
+    @apply relative flex items-center justify-center h-12 w-24 mt-5 mb-2 mx-auto;
   }
 }
 

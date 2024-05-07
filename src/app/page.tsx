@@ -1,6 +1,6 @@
 import Image from "next/image";
-import GoldMine from "./components/GoldMine";
-import SideNav from "./Country/mode/constructionBar";
+// import GoldMine from "./components/GoldMine";
+import SideNav from "./construccion/mode/constructionBar";
 
 export default function Home() {
   return (
