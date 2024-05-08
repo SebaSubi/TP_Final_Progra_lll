@@ -47,5 +47,10 @@ body {
   .min-lev-req {
     @apply relative flex items-center justify-center h-12 w-24 mt-5 mb-2 mx-auto;
   }
+
+  .show-detail {
+    @apply absolute w-auto p-2 m-2 min-w-max  rounded-md shadow-md
+    text-white bg-gray-900 text-xs font-bold
+  }
 }
 

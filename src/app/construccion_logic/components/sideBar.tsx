@@ -21,7 +21,8 @@ const collectorArray: Collectors[] = [
     workers: 1,
     level: 1,
     unlock_level: 2,
-    maxWorkers: 1
+    maxWorkers: 1,
+    position:{x:0, y:0}
   },
   {
     id: 2,
@@ -38,7 +39,8 @@ const collectorArray: Collectors[] = [
     workers: 1,
     level: 1,
     unlock_level: 1,
-    maxWorkers: 1
+    maxWorkers: 1,
+    position:{x:0, y:0}
   }
 
 ]
