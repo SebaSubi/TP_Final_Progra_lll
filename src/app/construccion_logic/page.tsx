@@ -8,6 +8,7 @@ import {
   glod_mine_Array,
   lumber_camp_Array,
   stone_mine_Array,
+  barracs_Array,
 } from "./utils/StructuresData";
 import SideBar from "./components/sideBar";
 import { User } from "../objects/user";
@@ -171,6 +172,28 @@ function addstructure(
       });
       break;
     case 3:
+      barracs_Array.push({
+        //i need seba to check this
+        id: barracs_Array.length, //ESTO HAY QUE CORREGIRLO A FUTURO
+        position: { x: position.x, y: position.y },
+        name: "Barracs",
+        img: (
+          <Image
+            key="Barracs"
+            src="/Barracs.png"
+            width={60}
+            height={70}
+            alt="png of Barracs"
+          />
+        ),
+        cost: 100,
+        prod_per_hour: 1,
+        workers: 1,
+        level: 1,
+        unlock_level: 1,
+        maxWorkers: 10,
+        maxCap: 15,
+      });
       // stone_mine_Array.push({
       //   id: stone_mine_Array.length,
       //   position: { x: position.x, y: position.y },

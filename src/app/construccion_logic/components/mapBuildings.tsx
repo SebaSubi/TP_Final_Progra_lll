@@ -3,6 +3,7 @@ import {
   glod_mine_Array,
   lumber_camp_Array,
   stone_mine_Array,
+  barracs_Array,
 } from "../utils/StructuresData";
 import Image from "next/image";
 import BuildingDetails from "./building";
@@ -77,6 +78,7 @@ export default function MapBuildings() {
             height={50}
             alt="png of Wood Collector"
           />
+          {/* {structure.img} */}
           <BuildingDetails
             collector={BuldingInformation}
             state={visibleBuildingDetails}
@@ -94,6 +96,25 @@ export default function MapBuildings() {
             top: Math.floor(structure.position.y / 30) * 30,
           }}
         ></div>
+      ))}
+      {barracs_Array.map((structure, index) => (
+        <div
+          key={index + "_barrac"}
+          className="absolute justify-center items-center"
+          //   className="absolute w-10 h-10 bg-red-500 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none rotate-[40deg] -skew-x-[6deg]"
+          style={{
+            left: Math.floor(structure.position.x / 30) * 30,
+            top: Math.floor(structure.position.y / 30) * 30,
+          }}
+        >
+          <Image
+            key="Barrac"
+            src="/Barracs.png"
+            width={40}
+            height={50}
+            alt="png of Barrac"
+          />
+        </div>
       ))}
     </div>
   );
