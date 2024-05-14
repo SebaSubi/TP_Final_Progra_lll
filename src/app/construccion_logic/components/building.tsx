@@ -6,6 +6,7 @@ import { updateData } from '@/app/logic/production'
 export default function BuildingDetails(
   { collector, state, buildingId }: { collector: Collectors, state: boolean, buildingId: number}
 ) {
+  console.log(collector.updateTime)
   // collector.updateTime = new Date()
   // const collectorData = updateData(collector)
   collector = updateData(collector)
@@ -20,10 +21,9 @@ export default function BuildingDetails(
     return(
       <div className="show-detail">
         {collector.name}<br />
-        Production per hour: {collector.prod_per_hour}<br />
-        Cost: {collector.cost}<br />
+        Production per minute: {collector.prod_per_hour}<br />
         Workers: {collector.workers} <br />
-        capacity: {collector.capacity}
+        capacity: {collector.capacity} / {collector.maxCapacity}
       </div>
 
     )

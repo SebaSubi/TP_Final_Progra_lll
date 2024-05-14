@@ -7,8 +7,8 @@ export function updateData(collector: Collectors) {
   const currentTime: Date = new Date()
   console.log("This is the current time: " + currentTime + "the collector time is: " + collector.updateTime)
 
-  const timeDifference: number = currentTime.getMinutes() - collector.updateTime!.getMinutes()
-  console.log("The time difference is: " + timeDifference)
+  const timeDifference: number = currentTime.getMinutes() - collector.updateTime.getMinutes()
+  // console.log("The time difference is: " + timeDifference)
   // const timeDifference = 5
   // console.log(timeDifference)
   // return timeDifference
