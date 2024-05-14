@@ -51,8 +51,16 @@ export default function Placer(props: {
   //   );
   // }
 
-  const structure_images = ["Gold_Mine1.png", "Elexir_Collector.png"];
-  const strucure_img: number = props.structure ? props.structure : 0;
+  const structure_images = {
+    1: "Gold_Mine1.png",
+    2: "Elexir_Collector.png",
+    3: "Barracs.png",
+  };
+
+  const img_prop: string = props.structure
+    ? //@ts-ignore  // i dont know why this is not working
+      structure_images[props.structure]
+    : structure_images[1];
 
   return (
     //hay que mover los arrays a otro componente porque se regenra siempre que movemos el mouse.
@@ -68,7 +76,7 @@ export default function Placer(props: {
           <div className="flex flex-col">
             <Image
               className="realtive justify-center items-center z-20"
-              src={`/${structure_images[strucure_img]}`}
+              src={`/${img_prop}`}
               width={40}
               height={50}
               alt="structure to place"
