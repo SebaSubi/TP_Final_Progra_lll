@@ -8,8 +8,9 @@ export default interface Collectors {
   level: 1;
   unlock_level: number;
   maxWorkers: number;
-  maxCap?: number;
+  capacity?: number;
   position: { x: number; y: number };
+  updateTime?: Date;
 }
 
 

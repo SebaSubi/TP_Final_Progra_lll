@@ -12,6 +12,7 @@ import {
 import SideBar from "./components/sideBar";
 import { User } from "../objects/user";
 import Collectors from "../collectors/objects/collector";
+import MapBuildings from "./components/mapBuildings";
 
 export default function Home() {
   const [placerApear, setPlacerApear] = useState(false);
@@ -62,6 +63,7 @@ export default function Home() {
       </button> */}
       <SideBar user={user} setStructure={setStructure} />
       <Placer appearence={placerApear} structure={structure} />
+      <MapBuildings />
       <Image
         src="/Map_Classic_Scenery.jpg"
         alt="clash_map"
