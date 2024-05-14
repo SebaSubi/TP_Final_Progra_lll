@@ -5,7 +5,7 @@ import Collectors from '@/app/collectors/objects/collector'
 
 
 
-const collectorArray: Collectors[] = [
+const iconsArray: any[] = [
   {
     id: 1,
     name: 'Gold Collector',
@@ -41,6 +41,25 @@ const collectorArray: Collectors[] = [
     unlock_level: 1,
     maxWorkers: 1,
     position:{x:0, y:0}
+  },
+  {
+    id: 3,
+    name: 'Barracs',
+    img: <Image 
+    key='Barracs'
+    src='/Barracs.png'
+    width={60}
+    height={70}
+    alt='png of Barracs'
+    />,
+    cost: 100,
+    prod_per_hour: 1,
+    workers: 1,
+    level: 1,
+    unlock_level: 1,
+    maxWorkers: 10,
+    maxCap: 15,
+    position: { x: 0, y: 0 }
   }
 
 ]
@@ -84,42 +103,42 @@ export default function SideBar(
     
 
   
-  const arrayIcons = [
-    {
-      icon: (
-        <Image 
-          key='GoldMine'
+  // const arrayIcons = [
+  //   {
+  //     icon: (
+  //       <Image 
+  //         key='GoldMine'
   
-          src='/Gold_Mine1.png'
-          width={60}
-          height={70}
-          alt='png of Gold Mine'
-        />
-      ),
-      text: 'Gold Mine',
-      min_level: 2
-    },
-    {
-      icon: (
-        <Image 
-          key='Wood_Collector'
+  //         src='/Gold_Mine1.png'
+  //         width={60}
+  //         height={70}
+  //         alt='png of Gold Mine'
+  //       />
+  //     ),
+  //     text: 'Gold Mine',
+  //     min_level: 2
+  //   },
+  //   {
+  //     icon: (
+  //       <Image 
+  //         key='Wood_Collector'
   
-          src='/Elexir_Collector.png'
-          width={80}
-          height={70}
-          alt='png of Elexir Collector'
+  //         src='/Elexir_Collector.png'
+  //         width={80}
+  //         height={70}
+  //         alt='png of Elexir Collector'
 
-        />
-      ),
-      text: 'Wood Collector',
-      min_level: 1
-    }
-  ];
+  //       />
+  //     ),
+  //     text: 'Wood Collector',
+  //     min_level: 1
+  //   }
+  // ];
   
   return (
     <main>
       <div className={`fixed top-0 left-[-100px] h-screen w-[100px] m-0 flex flex-col bg-gray-800 shadow-md  transition-all duration-300 ${sideBar ? 'translate-x-0' : 'translate-x-full'}`}>
-        {collectorArray.map((collector, index) => (
+        {iconsArray.map((collector, index) => (
           <SideBarIcon collector={collector} user={user} key={index} />
         ))}
       </div>

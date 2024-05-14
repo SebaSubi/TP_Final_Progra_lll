@@ -3,13 +3,13 @@ import Collectors from '@/app/collectors/objects/collector'
 
 
 export default function BuildingDetails(
-  { collector, state }: { collector: Collectors, state: boolean }
+  { collector, state, buildingId }: { collector: Collectors, state: boolean, buildingId: number }
 ) {
 
 
 
 
-  if(state) {
+  if(state && buildingId === collector.id) {
     return(
       <div className="show-detail">
         {collector.name}<br />

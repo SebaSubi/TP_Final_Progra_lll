@@ -86,7 +86,7 @@ export default function Placer(props: {
       setBuldingInformation(building);
       setvisibleBuildingDetails(!visibleBuildingDetails);
       // console.log(building)
-      console.log(visibleBuildingDetails)
+      // console.log(visibleBuildingDetails)
     }
     
   }
@@ -159,7 +159,7 @@ export default function Placer(props: {
             height={50}
             alt="png of Wood Collector"
           />
-            <BuildingDetails collector={BuldingInformation} state={visibleBuildingDetails}/>
+            <BuildingDetails collector={BuldingInformation} state={visibleBuildingDetails} buildingId={structure.id}/>
         </div>
       ))}
       {stone_mine_Array.map((structure, index) => (
