@@ -1,9 +1,11 @@
-type Structure = {
+import Collectors from "@/app/collectors/objects/collector";
+
+export type Structure = {
   id: number;
   position: { x: number; y: number };
 };
 
-export const glod_mine_Array: Structure[] = [
+export const glod_mine_Array: Collectors[] = [
   // {
   //   id: 0,
   //   position: { x: 751, y: 310 },
@@ -17,5 +19,5 @@ export const glod_mine_Array: Structure[] = [
   //   position: { x: 775, y: 508 },
   // },
 ];
-export const lumber_camp_Array: Structure[] = [];
-export const stone_mine_Array: Structure[] = [];
+export const lumber_camp_Array: Collectors[] = [];
+export const stone_mine_Array: Collectors[] = [];

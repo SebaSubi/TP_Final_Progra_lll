@@ -1,4 +1,4 @@
-export default interface Collectors {
+export default interface Barracs {
   id: number;
   name: string;
   img: React.ReactNode;
