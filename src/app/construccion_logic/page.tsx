@@ -12,12 +12,12 @@ import {
 import SideBar from "./components/sideBar";
 import { User } from "../objects/user";
 import Collectors from "../collectors/objects/collector";
+import MapBuildings from "./components/mapBuildings";
 
 export default function Home() {
   const [placerApear, setPlacerApear] = useState(false);
   const [structure, setStructure] = useState<null | number>(null);
   const cursorPosition = useRef({ x: 0, y: 0 });
-  
 
   // console.log(glod_mine_Array);
   useEffect(() => {
@@ -62,6 +62,7 @@ export default function Home() {
       </button> */}
       <SideBar user={user} setStructure={setStructure} />
       <Placer appearence={placerApear} structure={structure} />
+      <MapBuildings />
       <Image
         src="/Map_Classic_Scenery.jpg"
         alt="clash_map"
@@ -86,7 +87,7 @@ export default function Home() {
   );
 }
 
-function checkTerrain(
+function checkTerrain( //this function will chech if the terrain is suitable for the structure and taht it is not occupied by another structure
   position: { x: number; y: number },
   structure: number | null
 ): boolean {
@@ -112,8 +113,7 @@ const collectorArray: Collectors[] = [
     level: 1,
     unlock_level: 2,
     maxWorkers: 1,
-    position:{x:0, y:0},
-
+    position: { x: 0, y: 0 },
   },
   {
     id: 2,
@@ -133,8 +133,7 @@ const collectorArray: Collectors[] = [
     level: 1,
     unlock_level: 1,
     maxWorkers: 1,
-    position:{x:0, y:0},
-
+    position: { x: 0, y: 0 },
   },
 ];
 
@@ -153,20 +152,22 @@ function addstructure(
       lumber_camp_Array.push({
         id: lumber_camp_Array.length, //ESTO HAY QUE CORREGIRLO A FUTURO
         position: { x: position.x, y: position.y },
-        name: 'Wood Collector',
-        img: <Image 
-        key='WoodCollecor'
-        src='/Elexir_Collector.png'
-        width={60}
-        height={70}
-        alt='png of Wood Collector'
-        />,
+        name: "Wood Collector",
+        img: (
+          <Image
+            key="WoodCollecor"
+            src="/Elexir_Collector.png"
+            width={60}
+            height={70}
+            alt="png of Wood Collector"
+          />
+        ),
         cost: 100,
         prod_per_hour: 1,
         workers: 1,
         level: 1,
         unlock_level: 1,
-        maxWorkers: 1
+        maxWorkers: 1,
       });
       break;
     case 3:
