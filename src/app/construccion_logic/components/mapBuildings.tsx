@@ -28,7 +28,8 @@ const defaultBuilding: Collectors = {
   maxWorkers: 1,
   position: { x: 0, y: 0 },
   updateTime: new Date(),
-  capacity: 1000
+  capacity: 1000,
+  boost: false
 };
 
 export default function MapBuildings() {
@@ -83,6 +84,7 @@ export default function MapBuildings() {
             collector={BuldingInformation}
             state={visibleBuildingDetails}
             buildingId={structure.id}
+            // date={new Date()}
           />
         </div>
       ))}

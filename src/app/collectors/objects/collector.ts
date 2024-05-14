@@ -11,6 +11,7 @@ export default interface Collectors {
   capacity?: number;
   position: { x: number; y: number };
   updateTime?: Date;
+  boost: boolean;
 }
 
 

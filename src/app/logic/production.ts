@@ -5,17 +5,25 @@ import { cookies } from "next/headers";
 
 export function updateData(collector: Collectors) {
   const currentTime: Date = new Date()
-  // console.log("This is the current time: " + currentTime + "")
+  console.log("This is the current time: " + currentTime + "the collector time is: " + collector.updateTime)
 
-  // const timeDifference: number = currentTime.getMinutes() - collector.updateTime!.getMinutes()
-  const timeDifference = 5
+  const timeDifference: number = currentTime.getMinutes() - collector.updateTime!.getMinutes()
+  console.log("The time difference is: " + timeDifference)
+  // const timeDifference = 5
   // console.log(timeDifference)
   // return timeDifference
 
-  const productionPerHour: number = collector.workers + collector.level;
+  let productionPerHour: number = collector.workers * collector.level * 10;
+  if(collector.boost) {
+    productionPerHour *= 1.3
+  }
+
   collector.prod_per_hour = productionPerHour
 
   collector.capacity! = productionPerHour * timeDifference
+
+  // collector.updateTime = currentTime
+
 
   return collector
 
