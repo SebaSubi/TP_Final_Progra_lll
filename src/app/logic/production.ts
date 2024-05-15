@@ -8,7 +8,7 @@ export function updateData(collector: Collectors) {
   console.log("This is the current time: " + currentTime + "the collector time is: " + collector.updateTime)
 
   const timeDifference: number = currentTime.getMinutes() - collector.updateTime.getMinutes()
-  // console.log("The time difference is: " + timeDifference)
+  console.log("The time difference is: " + timeDifference)
   // const timeDifference = 5
   // console.log(timeDifference)
   // return timeDifference
@@ -18,15 +18,20 @@ export function updateData(collector: Collectors) {
     productionPerHour *= 1.3
   }
 
-  collector.prod_per_hour = productionPerHour
+  
+  if(productionPerHour * timeDifference >= collector.maxCapacity) {
+    collector.updateTime = currentTime
+    collector.capacity = collector.maxCapacity
+    return collector
+  } else {
+    collector.prod_per_hour = productionPerHour
+    collector.capacity! = productionPerHour * timeDifference
+    // collector.updateTime = currentTime
+    return collector
 
-  collector.capacity! = productionPerHour * timeDifference
+  }
 
-  // collector.updateTime = currentTime
-
-
-  return collector
-
+  
 }
 
 // resourceLogic.tsx

@@ -8,6 +8,9 @@ import {
 import Image from "next/image";
 import BuildingDetails from "./building";
 import Collectors from "@/app/collectors/objects/collector";
+import BarracsMenu from "./barracsMenu";
+import Barracs from "@/app/collectors/objects/barracs";
+import Collector from "@/app/collectors/components/resourceLogic";
 
 const defaultBuilding: Collectors = {
   id: 2,
@@ -33,15 +36,44 @@ const defaultBuilding: Collectors = {
   updateTime: new Date()
 };
 
+const defaultBarracs: Barracs = {
+  id: 1,
+  name: 'Barracs',
+  cost: 5,
+  producing: '',
+  img: (
+    <Image
+      key="BattasImg"
+      src="/Barracs.png"
+      width={60}
+      height={70}
+      alt="png of the Barracs"
+    />
+  ),
+  prod_per_hour: 1,
+  workers: 1,
+  level: 1,
+  unlock_level: 1,
+  maxWorkers: 10,
+  maxCap: 20,
+  position: {x: 0, y: 0}
+
+
+
+}
+
 export default function MapBuildings() {
   const [visibleBuildingDetails, setvisibleBuildingDetails] = useState(false);
+  const [visibleBarracsDetails, setvisibleBarracsDetails] = useState(false)
+  const [barracsInfo, setBarracsInformation] = useState(defaultBarracs)
   const [BuldingInformation, setBuldingInformation] = useState(defaultBuilding);
+  // const [barracsMenu, setBarracsMenu] = useState(false)
 
-  function buildingData(index: number) {
+  function collectorData(index: number) {
+
     const building = lumber_camp_Array.find(
       (collector) => collector.id === index
-    );
-
+    )
     if (building) {
       setBuldingInformation(building);
       setvisibleBuildingDetails(!visibleBuildingDetails);
@@ -49,6 +81,21 @@ export default function MapBuildings() {
       // console.log(visibleBuildingDetails)
     }
   }
+
+  
+  function barracsMenu(index: number) {
+
+    const barracs = barracs_Array.find(
+      (barracs) => barracs.id === index
+    )
+    if (barracs) {
+      setBarracsInformation(barracs);
+      setvisibleBarracsDetails(!visibleBarracsDetails);
+    }
+  }
+
+
+  
   return (
     <div>
       {glod_mine_Array.map((collector, index) => (
@@ -72,8 +119,9 @@ export default function MapBuildings() {
             left: Math.floor(structure.position.x / 30) * 30,
             top: Math.floor(structure.position.y / 30) * 30,
           }}
-          onClick={() => buildingData(index)}
+          
         >
+          <i onClick={() => collectorData(index)} >
           <Image
             key="WoodCollecor"
             src="/Elexir_Collector.png"
@@ -81,6 +129,8 @@ export default function MapBuildings() {
             height={50}
             alt="png of Wood Collector"
           />
+          </i>
+          
           {/* {structure.img} */}
           <BuildingDetails
             collector={BuldingInformation}
@@ -109,6 +159,8 @@ export default function MapBuildings() {
             left: Math.floor(structure.position.x / 30) * 30,
             top: Math.floor(structure.position.y / 30) * 30,
           }}
+          onClick={() => barracsMenu(index)}
+
         >
           <Image
             key="Barrac"
@@ -116,6 +168,11 @@ export default function MapBuildings() {
             width={45}
             height={55}
             alt="png of Barrac"
+          />
+          <BarracsMenu 
+            barracs={barracsInfo} 
+            state={visibleBarracsDetails} 
+            barracsId={structure.id} 
           />
         </div>
       ))}

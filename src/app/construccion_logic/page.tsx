@@ -14,6 +14,7 @@ import SideBar from "./components/sideBar";
 import { User } from "../objects/user";
 import Collectors from "../collectors/objects/collector";
 import MapBuildings from "./components/mapBuildings";
+import TrainingMenu from "./components/trainingMenu";
 
 export default function Home() {
   const [placerApear, setPlacerApear] = useState(false);
@@ -61,7 +62,10 @@ export default function Home() {
       >
         Toggle Cursor Marker
       </button> */}
+      <TrainingMenu user={user} />
       <SideBar user={user} setStructure={setStructure} />
+      {/*Here training Menu */}
+
       <Placer appearence={placerApear} structure={structure} />
       <MapBuildings />
       <Image
@@ -115,6 +119,9 @@ const collectorArray: Collectors[] = [
     unlock_level: 2,
     maxWorkers: 1,
     position: { x: 0, y: 0 },
+    boost: false,
+    maxCapacity: 200,
+    updateTime: new Date()
   },
   {
     id: 2,
@@ -135,6 +142,9 @@ const collectorArray: Collectors[] = [
     unlock_level: 1,
     maxWorkers: 1,
     position: { x: 0, y: 0 },
+    boost: false,
+    maxCapacity: 200,
+    updateTime: new Date()
   },
 ];
 
@@ -169,30 +179,34 @@ function addstructure(
         level: 1,
         unlock_level: 1,
         maxWorkers: 1,
+        boost: false,
+        maxCapacity: 200,
+        updateTime: new Date()
       });
       break;
     case 3:
       barracs_Array.push({
         //i need seba to check this
         id: barracs_Array.length, //ESTO HAY QUE CORREGIRLO A FUTURO
-        position: { x: position.x, y: position.y },
-        name: "Barracs",
+        name: 'Barracs',
+        cost: 5,
+        producing: '',
         img: (
           <Image
-            key="Barracs"
+            key="BattasImg"
             src="/Barracs.png"
             width={60}
             height={70}
-            alt="png of Barracs"
+            alt="png of the Barracs"
           />
         ),
-        cost: 100,
         prod_per_hour: 1,
         workers: 1,
         level: 1,
         unlock_level: 1,
         maxWorkers: 10,
-        maxCap: 15,
+        maxCap: 20,
+        position: {x: 0, y: 0}
       });
       // stone_mine_Array.push({
       //   id: stone_mine_Array.length,

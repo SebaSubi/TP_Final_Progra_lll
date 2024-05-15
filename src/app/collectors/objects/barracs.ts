@@ -3,6 +3,7 @@ export default interface Barracs {
   name: string;
   img: React.ReactNode;
   cost: number;
+  producing: string;
   prod_per_hour: number;
   workers: 1;
   level: 1;
