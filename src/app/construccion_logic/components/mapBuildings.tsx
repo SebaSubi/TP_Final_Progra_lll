@@ -3,10 +3,7 @@ import {
   glod_mine_Array,
   lumber_camp_Array,
   stone_mine_Array,
-<<<<<<< HEAD
-=======
   barracs_Array,
->>>>>>> origin/lDev
 } from "../utils/StructuresData";
 import Image from "next/image";
 import BuildingDetails from "./building";
@@ -31,12 +28,9 @@ const defaultBuilding: Collectors = {
   unlock_level: 1,
   maxWorkers: 1,
   position: { x: 0, y: 0 },
-<<<<<<< HEAD
-  updateTime: new Date(),
-  capacity: 1000,
-  boost: false
-=======
->>>>>>> origin/lDev
+  boost: false,
+  maxCapacity: 200,
+  updateTime: new Date()
 };
 
 export default function MapBuildings() {
@@ -87,18 +81,11 @@ export default function MapBuildings() {
             height={50}
             alt="png of Wood Collector"
           />
-<<<<<<< HEAD
-=======
           {/* {structure.img} */}
->>>>>>> origin/lDev
           <BuildingDetails
             collector={BuldingInformation}
             state={visibleBuildingDetails}
             buildingId={structure.id}
-<<<<<<< HEAD
-            // date={new Date()}
-=======
->>>>>>> origin/lDev
           />
         </div>
       ))}
@@ -113,8 +100,6 @@ export default function MapBuildings() {
           }}
         ></div>
       ))}
-<<<<<<< HEAD
-=======
       {barracs_Array.map((structure, index) => (
         <div
           key={index + "_barrac"}
@@ -128,13 +113,12 @@ export default function MapBuildings() {
           <Image
             key="Barrac"
             src="/Barracs.png"
-            width={40}
-            height={50}
+            width={45}
+            height={55}
             alt="png of Barrac"
           />
         </div>
       ))}
->>>>>>> origin/lDev
     </div>
   );
 }
