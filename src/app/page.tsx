@@ -1,24 +1,7 @@
-"use client"
+
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
-import collector, { Collectors } from "./collector";
-
-
-
-import I1 from '../../public/Level1_Elixir.png'
-import I2 from '../../public/Level2_Elixir.png'
-import I3 from '../../public/Level3_Elixir.png'  
-import I4 from '../../public/Level4_Elixir.png'  
-
-const images = [I1, I2, I3, I4]
-
-interface CollectorData {
-  
-  workersAssigned: number;
-  extractionCapacity: number;
-  production: number;
-  improvements: number;
-}
+// import GoldMine from "./components/GoldMine";
+//import SideNav from "./construccion/mode/constructionBar";
 
 export default function Home() {
   const images = [I1, I2, I3, I4]
@@ -80,22 +63,12 @@ export default function Home() {
   */
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div>
-        <h1 className="text-4xl font-bold text-center">Elixir Collector</h1>
-        
-        <p>Workers Assigned: {collectorData.workersAssigned}</p>
-        <p>Extraction Capacity: {collectorData.extractionCapacity}</p>
-        <p>Production: {collectorData.production}</p>
-        <p>Improvements: {collectorData.improvements}</p>
-        
-        <div className="flex items-center justify-center">
-        </div>
-
-        <div className="flex items-center justify-center">
-          <Image src={images[currentIndex]} alt="Level 1 Elixir" />
-        </div>
-      </div>
+    <main className="flex min-h-screen flex-col items-center justify-between p-24" 
+          style={{ backgroundImage: `url(/background.png)`, backgroundSize: 'cover' }}>
+      
     </main>
   );
 }
+
+
+
