@@ -15,11 +15,17 @@ import { User } from "../objects/user";
 import Collectors from "../collectors/objects/collector";
 import MapBuildings from "./components/mapBuildings";
 import TrainingMenu from "./components/trainingMenu";
+import Progressbar from "./components/progressbar";
+
 
 export default function Home() {
   const [placerApear, setPlacerApear] = useState(false);
   const [structure, setStructure] = useState<null | number>(null);
   const cursorPosition = useRef({ x: 0, y: 0 });
+  const [progressBar, setProgressBar] = useState<boolean | null>(null)
+  const [timer, setTimer] = useState<number | null>(0)
+  // let time = -1;
+  // const [timer, setTimer] = useState
 
   // console.log(glod_mine_Array);
   useEffect(() => {
@@ -50,7 +56,7 @@ export default function Home() {
     password: "f1_E>",
     level: 1,
   };
-
+  // console.log(time)
   return (
     <main className="flex min-h-screen items-center justify-center relative">
       {/* <button
@@ -62,8 +68,10 @@ export default function Home() {
       >
         Toggle Cursor Marker
       </button> */}
-      <TrainingMenu user={user} />
-      <SideBar user={user} setStructure={setStructure} />
+      <TrainingMenu user={user} setProgressBar={setProgressBar} setTimer={setTimer}  />
+      
+      {progressBar ? <Progressbar running={progressBar} totalSeconds={timer} /> : null}
+      {/* <SideBar user={user} setStructure={setStructure} /> */}
       {/*Here training Menu */}
 
       <Placer appearence={placerApear} structure={structure} />
@@ -88,6 +96,7 @@ export default function Home() {
         }}
         className="inset-0 w-full h-full object-cover"
       />
+      
     </main>
   );
 }

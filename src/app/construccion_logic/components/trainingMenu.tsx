@@ -2,7 +2,7 @@ import Units from "@/app/collectors/objects/Units"
 import Barracs from "@/app/collectors/objects/barracs"
 import { User } from "@/app/objects/user"
 import Image from "next/image"
-import { useState } from "react"
+import { Dispatch, SetStateAction, useState } from "react"
 import { barracs_Array } from "../utils/StructuresData"
 
 const units_Array: Units[] = [
@@ -79,9 +79,18 @@ const units_Array: Units[] = [
 
 
 export default function TrainingMenu(
-  { user }: { user: User }
+  { user, setProgressBar, setTimer}: { user: User, setProgressBar: Dispatch<SetStateAction<boolean | null>>, setTimer: Dispatch<SetStateAction<number | null>>}
 ) {
   const [trainingMenu, setTrainingMenu] = useState(true)
+
+  // function progressBarLogic() {
+  //   if(progressbar === true){
+  //     return null
+  //   }
+  //   else {
+  //     return true
+  //   }
+  // }
 
   const TrainingMenuIcons = (
     { units, user }: {units: Units, user: User}
@@ -90,9 +99,11 @@ export default function TrainingMenu(
       return(
         <div
           className="sidebar-icon group"
-          // onClick={() => {
-          //   setTrainingMenu(units.id);
-          // }}
+          onClick={() => {
+            setProgressBar(true);
+            setTimer(units.production_time)
+            // time = units.production_time
+          }}
         >
           {units.img}
           <span className="sidebar-name group-hover:scale-100">

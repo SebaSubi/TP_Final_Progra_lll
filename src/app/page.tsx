@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Progressbar from "./construccion_logic/components/progressbar";
 // import GoldMine from "./components/GoldMine";
 // import SideNav from "./construccion/mode/constructionBar";
 
@@ -112,6 +113,7 @@ export default function Home() {
           </p>
         </a>
       </div> */}
+      <Progressbar />
     </main>
   );
 }
