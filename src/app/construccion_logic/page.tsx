@@ -3,16 +3,26 @@
 import Image from "next/image";
 import Placer from "./components/objectPlacer";
 import { useState, useEffect } from "react";
+import { useRouter } from 'next/navigation';
 
+import { useSession, signOut } from "next-auth/react";
 import { glod_mine_Array, lumber_camp_Array, stone_mine_Array } from "./utils/StructuresData";
 import SideBar from "../construccion/mode/sideBar";
 import { User } from "../objects/user";
 import Collectors from "../collectors/objects/collector";
 
+
+
 export default function Home() {
   const [placerApear, setPlacerApear] = useState(false);
   const [structure, setStructure] = useState<null | number>(null);
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
+
+  const router = useRouter();
+
+  const handleSignOut = async () => {
+    await signOut({ callbackUrl: 'http://localhost:3000' });
+  };
 
   // console.log(glod_mine_Array);
   useEffect(() => {
@@ -54,6 +64,10 @@ export default function Home() {
       >
         Toggle Cursor Marker
       </button> */}
+        <button className="bg-zinc-800 px-4 py-2 block mb-2" onClick={handleSignOut}>
+        Logout
+      </button>
+      
       <SideBar user={user} setStructure={setStructure}/>
       <Placer appearence={placerApear} structure={structure} />
       <Image
