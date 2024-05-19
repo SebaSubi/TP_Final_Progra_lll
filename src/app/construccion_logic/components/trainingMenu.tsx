@@ -38,7 +38,7 @@ const units_Array: Units[] = [
     cost: 100,
     production_time: 200,
     level: 1,
-    unlock_level: 1
+    unlock_level: 2
   },
   {
     id: 3,
@@ -55,7 +55,7 @@ const units_Array: Units[] = [
     cost: 100,
     production_time: 200,
     level: 1,
-    unlock_level: 1
+    unlock_level: 3
   },
   {
     id: 4,
@@ -70,7 +70,7 @@ const units_Array: Units[] = [
       />
     ),
     cost: 100,
-    production_time: 200,
+    production_time: 30,
     level: 1,
     unlock_level: 1
   }
@@ -79,7 +79,7 @@ const units_Array: Units[] = [
 
 
 export default function TrainingMenu(
-  { user, setProgressBar, setTimer}: { user: User, setProgressBar: Dispatch<SetStateAction<boolean | null>>, setTimer: Dispatch<SetStateAction<number | null>>}
+  { user, setProgressBar, setUnit}: { user: User, setProgressBar: Dispatch<SetStateAction<boolean | null>>, setUnit: Dispatch<SetStateAction<Units | undefined>>}
 ) {
   const [trainingMenu, setTrainingMenu] = useState(true)
 
@@ -101,7 +101,7 @@ export default function TrainingMenu(
           className="sidebar-icon group"
           onClick={() => {
             setProgressBar(true);
-            setTimer(units.production_time)
+            setUnit(units)
             // time = units.production_time
           }}
         >
@@ -131,72 +131,27 @@ export default function TrainingMenu(
     }
   }
 
-  // const collectorData = updateData(collector)
-  // collector = updateData(collector)
-
-  // return (
-  //   <div className="flex flex-col">
-  //     <h2> Train: </h2>
-  //     <div className="flex flex-row">
-  //       {units.map((unit, index) => (
-  //         <div className="flex flex-row justify-center items-center w-22 h-22 bg-black rounded-md m-2" key={index}>
-  //           <div className="flexx flex-col bg-black">
-  //             Cost: {unit.cost}<br />
-  //             Time: {unit.production_time}<br />
-  //             Amount: x10
-  //           </div>
-  //           <i className="bg-black">{unit.img}</i>
-  //         </div>
-
-  //       ))}
-  //     </div>
-  //   </div>
-  // )
-  
-
-
-
-  // if(state && barracsId === barracs.id) {
-  //   return(
-  //     <div className="show-detail">
-  //       {/* {barracs.name}<br />
-  //       Currently Training: {barracs.producing}<br />
-  //       Time left: {/* logic for time */}<br />
-  //       Max capacity: {barracs.maxCap}<br />
-  //       level: {barracs.level}<br />
-  //       Workers: {barracs.workers} <br />
-  //       Boost: {/* boost logic */} <br />
-  //       <button >Train</button> */}
-        
-  //       {/* capacity: {barracs.capacity} / {barracs.maxCapacity} */}
-  //     </div>
-
-  //   )
-  // } else {
-  //   return null
-  // }
-
   return (
     <main>
       <div
-        className={`fixed top-0 left-[-100px] h-screen w-[100px] m-0 flex flex-col bg-gray-800 shadow-md  transition-all duration-300 ${
-          trainingMenu ? "translate-x-0" : "translate-x-full"
+        className={`fixed bottom-0 h-[100px] w-screen m-0 flex flex-row bg-gray-800 shadow-md  transition-all duration-300 ${
+          trainingMenu ? "translate-y-full" : "translate-y-0"
         }`}
       >
         {units_Array.map((units, index) => (
           <TrainingMenuIcons units={units} user={user} key={index} />
         ))}
       </div>
-      <div>
+      <div >
         <button
-          className={` fixed top-5 left-[5px] transition-all duration-300 ${
-            trainingMenu ? "translate-x-0" : "translate-x-[100px]"
+          className={` fixed bottom-[105px] left-[47%] transition-all duration-300 ${
+            trainingMenu ? "translate-y-[105px]" : "translate-y-0"
           }`}
           onClick={() => {
             setTrainingMenu(!trainingMenu);
           }}
         >
-          Units
+          Training Menu
         </button>
       </div>
     </main>

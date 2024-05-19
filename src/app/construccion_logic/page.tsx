@@ -16,6 +16,7 @@ import Collectors from "../collectors/objects/collector";
 import MapBuildings from "./components/mapBuildings";
 import TrainingMenu from "./components/trainingMenu";
 import Progressbar from "./components/progressbar";
+import Units from "../collectors/objects/Units";
 
 
 export default function Home() {
@@ -23,7 +24,9 @@ export default function Home() {
   const [structure, setStructure] = useState<null | number>(null);
   const cursorPosition = useRef({ x: 0, y: 0 });
   const [progressBar, setProgressBar] = useState<boolean | null>(null)
-  const [timer, setTimer] = useState<number | null>(0)
+  const [unit, setUnit] = useState<Units>()
+
+  
   // let time = -1;
   // const [timer, setTimer] = useState
 
@@ -68,10 +71,10 @@ export default function Home() {
       >
         Toggle Cursor Marker
       </button> */}
-      <TrainingMenu user={user} setProgressBar={setProgressBar} setTimer={setTimer}  />
       
-      {progressBar ? <Progressbar running={progressBar} totalSeconds={timer} /> : null}
-      {/* <SideBar user={user} setStructure={setStructure} /> */}
+      {barracs_Array.length ? <TrainingMenu user={user} setProgressBar={setProgressBar} setUnit={setUnit} /> : null}
+      {progressBar ? <Progressbar running={progressBar} unit={unit!} setProgressBar={setProgressBar} /> : null} {/*If this is throwing an error, ad an if inside to check if its undefined and take out the !*/}
+      <SideBar user={user} setStructure={setStructure} />
       {/*Here training Menu */}
 
       <Placer appearence={placerApear} structure={structure} />
