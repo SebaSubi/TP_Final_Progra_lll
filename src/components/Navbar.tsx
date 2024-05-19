@@ -11,7 +11,6 @@ async function Navbar(){
         <Link href="/">
           <h1 className='font-bold text-xl'>NextAuth</h1>
         </Link>
-
         <ul className='flex gap-x-2'>
           {
             session ? (
@@ -39,7 +38,6 @@ async function Navbar(){
                 <a className='px-4 py-2 bg-blue-500 text-white rounded'>Perfil</a>
               </Link>
               </li>
-
               <li className='flex gap-x-2'>
               <Link href="/about" passHref legacyBehavior>
                 <a className='px-4 py-2 bg-blue-500 text-white rounded'>About</a>
