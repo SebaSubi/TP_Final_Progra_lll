@@ -25,6 +25,7 @@ export default function Home() {
   const cursorPosition = useRef({ x: 0, y: 0 });
   const [progressBar, setProgressBar] = useState<boolean | null>(null)
   const [unit, setUnit] = useState<Units>()
+  const [quantity, setQuantity] = useState(0)
 
   
   // let time = -1;
@@ -72,8 +73,8 @@ export default function Home() {
         Toggle Cursor Marker
       </button> */}
       
-      {barracs_Array.length ? <TrainingMenu user={user} setProgressBar={setProgressBar} setUnit={setUnit} /> : null}
-      {progressBar ? <Progressbar running={progressBar} unit={unit!} setProgressBar={setProgressBar} /> : null} {/*If this is throwing an error, ad an if inside to check if its undefined and take out the !*/}
+      {barracs_Array.length ? <TrainingMenu user={user} setProgressBar={setProgressBar} setUnit={setUnit} setQuantity={setQuantity} quantity={quantity}/> : null}
+      {progressBar ? <Progressbar running={progressBar} unit={unit!} setProgressBar={setProgressBar} quantity={quantity} /> : null} {/*If this is throwing an error, ad an if inside to check if its undefined and take out the !*/}
       <SideBar user={user} setStructure={setStructure} />
       {/*Here training Menu */}
 

@@ -6,12 +6,15 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 interface ProgressbarProps {
   running: boolean;
   unit: Units
-  setProgressBar: Dispatch<SetStateAction<boolean | null>>
+  setProgressBar: Dispatch<SetStateAction<boolean | null>>,
+  quantity: number
 }
 
-export default function Progressbar({ running, unit, setProgressBar }: ProgressbarProps) {
+export default function Progressbar({ running, unit, quantity, setProgressBar }: ProgressbarProps) {
   const [seconds, setSeconds] = useState(0);
   const [isRunning, setIsRunning] = useState(running);
+  // const [progress, setProgress] = useState(0)
+  console.log(quantity, seconds)
 
   useEffect(() => {
     let intervalId: NodeJS.Timeout;
@@ -19,26 +22,28 @@ export default function Progressbar({ running, unit, setProgressBar }: Progressb
     if (isRunning) {
       intervalId = setInterval(() => {
         setSeconds(prevSeconds => {
-          if (prevSeconds >= unit.production_time!) {
+          if (prevSeconds >= unit.production_time * quantity!) {
             setIsRunning(false);
             setProgressBar(false)
             addTroopToDB(unit)
             return prevSeconds;
           } else {
             return prevSeconds + 1;
+            
           }
         });
       }, 1000);
     }
 
     return () => clearInterval(intervalId);
-  }, [isRunning, unit.production_time]);
+  }, [isRunning, unit.production_time, quantity]);
 
-  const progress = (seconds / unit.production_time!) * 100;
+   let progress = (seconds / (unit.production_time * quantity!)) * 100;
+  
 
-  const hourstotal = Math.floor((unit.production_time! || 0) / 3600);
-  const minutestotal = Math.floor(((unit.production_time! || 0) % 3600) / 60);
-  const secondstotal = (unit.production_time! || 0) % 60;
+  const hourstotal = Math.floor((unit.production_time * quantity! || 0) / 3600);
+  const minutestotal = Math.floor(((unit.production_time * quantity! || 0) % 3600) / 60);
+  const secondstotal = (unit.production_time * quantity! || 0) % 60;
 
   const formatTime = (value: number) => {
     return value.toString().padStart(2, '0');
@@ -58,7 +63,8 @@ export default function Progressbar({ running, unit, setProgressBar }: Progressb
         {formatTime(hourstotal)}:{formatTime(minutestotal)}:{formatTime(secondstotal)} 
       </span>
       <div>
-        Currently producting: {unit.name}
+        Currently producting: {quantity}x of: {unit.name}
+
       </div>
     </div>
   );

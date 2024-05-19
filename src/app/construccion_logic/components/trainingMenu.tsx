@@ -79,9 +79,22 @@ const units_Array: Units[] = [
 
 
 export default function TrainingMenu(
-  { user, setProgressBar, setUnit}: { user: User, setProgressBar: Dispatch<SetStateAction<boolean | null>>, setUnit: Dispatch<SetStateAction<Units | undefined>>}
+  { user,
+    quantity,
+    setProgressBar,
+    setUnit,
+    setQuantity
+  }: 
+  { 
+    user: User, 
+    setProgressBar: Dispatch<SetStateAction<boolean | null>>, 
+    setUnit: Dispatch<SetStateAction<Units | undefined>>,
+    setQuantity: Dispatch<SetStateAction<number>>,
+    quantity: number
+  }
 ) {
   const [trainingMenu, setTrainingMenu] = useState(true)
+  // const [trainingOptions, setTrainingOptions] = useState(false)
 
   // function progressBarLogic() {
   //   if(progressbar === true){
@@ -98,23 +111,25 @@ export default function TrainingMenu(
     if(user.level >= units.unlock_level) {
       return(
         <div
-          className="sidebar-icon group"
+          className="sidebar-icon "
           onClick={() => {
             setProgressBar(true);
+            // setTrainingOptions(true)
+            setQuantity(quantity + 1)
             setUnit(units)
             // time = units.production_time
           }}
         >
           {units.img}
-          <span className="sidebar-name group-hover:scale-100">
-            {units.name}
-            <br />
-            Cost: {units.cost}
-            <br />
-            Time: {units.production_time}
-            <br />
-            Amout: x10
-          </span>
+          <span className="sidebar-name">
+        {units.name}
+        <br />
+        Cost: {units.cost}
+        <br />
+        Time: {units.production_time}
+        <br />
+        Quantity x1
+    </span>
         </div>
       )
     }
@@ -131,6 +146,8 @@ export default function TrainingMenu(
     }
   }
 
+
+
   return (
     <main>
       <div
@@ -140,7 +157,10 @@ export default function TrainingMenu(
       >
         {units_Array.map((units, index) => (
           <TrainingMenuIcons units={units} user={user} key={index} />
+
         ))}
+
+      
       </div>
       <div >
         <button
@@ -153,6 +173,7 @@ export default function TrainingMenu(
         >
           Training Menu
         </button>
+
       </div>
     </main>
   );
