@@ -49,3 +49,22 @@ body {
   }
 }
 
+.mapadiv {
+  width: 80%;
+  margin: auto;
+}
+
+.mapadiv path {
+  fill: #50711eee;
+  stroke: #C9A259;
+  stroke-width: 5px;
+}
+
+.mapadiv path:hover {
+  fill: #7E9F3B;
+}
+
+.svg-background {
+  background-color: #124556
+}
+
