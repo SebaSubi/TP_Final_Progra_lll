@@ -17,6 +17,45 @@ import MapBuildings from "./components/mapBuildings";
 import TrainingMenu from "./components/trainingMenu";
 import Progressbar from "./components/progressbar";
 import Units from "../collectors/objects/Units";
+import { Boosts } from "../objects/boost";
+import BarracsMenu from "./components/barracsMenu";
+// import BarracsMenu from "./components/barracsMenu";
+
+const boost: Boosts[] = [
+  {
+  id: 1,
+  name: "Mate",
+  type: "mate",
+  img: (
+  <Image 
+    key="mate"
+    src="/Mate.png"
+    width={30}
+    height={40}
+    alt="png of a mate"
+  />),
+  quantity: 3,
+  boost: 1.5 
+},
+{
+  id: 2,
+  name: "Facturas",
+  type: "facturas",
+  img: (
+  <Image 
+    key="facturas"
+    src="/Facturas.png"
+    width={30}
+    height={40}
+    alt="png of facturas"
+  />),
+  quantity: 1, 
+  boost: 1.2
+},
+
+]
+
+
 
 
 export default function Home() {
@@ -26,6 +65,10 @@ export default function Home() {
   const [progressBar, setProgressBar] = useState<boolean | null>(null)
   const [unit, setUnit] = useState<Units>()
   const [quantity, setQuantity] = useState(0)
+  const [maxTraining, setMaxTraining] = useState(false)
+  const [appliedBoost, setAppliedBoost] = useState<Boosts | null>(null)
+  const [barracsMenu, setBarracsMenu] = useState(false)
+  // console.log(appliedBoost)
 
   
   // let time = -1;
@@ -59,6 +102,8 @@ export default function Home() {
     username: "Papi_de_Max",
     password: "f1_E>",
     level: 1,
+    boosts: boost, 
+    workers: 3
   };
   // console.log(time)
   return (
@@ -73,10 +118,41 @@ export default function Home() {
         Toggle Cursor Marker
       </button> */}
       
-      {barracs_Array.length ? <TrainingMenu user={user} setProgressBar={setProgressBar} setUnit={setUnit} setQuantity={setQuantity} quantity={quantity}/> : null}
-      {progressBar ? <Progressbar running={progressBar} unit={unit!} setProgressBar={setProgressBar} quantity={quantity} /> : null} {/*If this is throwing an error, ad an if inside to check if its undefined and take out the !*/}
+      {barracs_Array.length ? 
+      <TrainingMenu 
+          user={user} 
+          setProgressBar={setProgressBar} 
+          setUnit={setUnit} 
+          setQuantity={setQuantity} 
+          quantity={quantity} 
+          />
+      : 
+      null}
+
+      {progressBar ? 
+      <Progressbar 
+        running={progressBar} 
+        unit={unit!} 
+        setProgressBar={setProgressBar} 
+        quantity={quantity} 
+        barracs={barracs_Array[0]!} 
+        setMaxTraining={setMaxTraining} 
+        setQuantity={setQuantity}
+        boost={appliedBoost}
+
+        /> 
+      : 
+      null} {/*If this is throwing an error, ad an if inside to check if its undefined and take out the !*/}
       <SideBar user={user} setStructure={setStructure} />
-      {/*Here training Menu */}
+      {barracsMenu? 
+        <BarracsMenu 
+          barracs={barracs_Array[0]} 
+          user={user} 
+          setAppliedBoost={setAppliedBoost} 
+          progressBar={progressBar}
+        /> 
+      : null}
+      
 
       <Placer appearence={placerApear} structure={structure} />
       <MapBuildings />
@@ -100,6 +176,13 @@ export default function Home() {
         }}
         className="inset-0 w-full h-full object-cover"
       />
+      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 mt-4">
+        <button className="px-6 py-2 bg-black text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75"
+        onClick={() => {setBarracsMenu(barracs_Array.length? !barracsMenu : false)}}
+        >
+            Barracs
+        </button>
+      </div>
       
     </main>
   );
@@ -218,7 +301,7 @@ function addstructure(
         level: 1,
         unlock_level: 1,
         maxWorkers: 10,
-        maxCap: 20,
+        maxCap: 5,
         position: {x: 0, y: 0}
       });
       // stone_mine_Array.push({

@@ -8,7 +8,7 @@ import {
 import Image from "next/image";
 import BuildingDetails from "./building";
 import Collectors from "@/app/collectors/objects/collector";
-import BarracsMenu from "./barracsMenu";
+// import BarracsMenu from "./barracsMenu";
 import Barracs from "@/app/collectors/objects/barracs";
 import Collector from "@/app/collectors/components/resourceLogic";
 
@@ -169,11 +169,11 @@ export default function MapBuildings() {
             height={55}
             alt="png of Barrac"
           />
-          <BarracsMenu 
+          {/* <BarracsMenu 
             barracs={barracsInfo} 
             state={visibleBarracsDetails} 
             barracsId={structure.id} 
-          />
+          /> */}
         </div>
       ))}
     </div>

@@ -1,20 +1,48 @@
 "use client"
 
 import Units from "@/app/collectors/objects/Units";
+import Barracs from "@/app/collectors/objects/barracs";
+import { Boosts } from "@/app/objects/boost";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 interface ProgressbarProps {
   running: boolean;
-  unit: Units
-  setProgressBar: Dispatch<SetStateAction<boolean | null>>,
-  quantity: number
+  unit: Units;
+  setProgressBar: Dispatch<SetStateAction<boolean | null>>;
+  quantity: number;
+  barracs: Barracs;
+  setMaxTraining: Dispatch<SetStateAction<boolean>>;
+  setQuantity: Dispatch<SetStateAction<number>>
+  boost: Boosts | null
 }
 
-export default function Progressbar({ running, unit, quantity, setProgressBar }: ProgressbarProps) {
+export default function Progressbar(
+  { 
+    running, 
+    unit, 
+    quantity, 
+    setProgressBar, 
+    barracs, 
+    setMaxTraining, 
+    setQuantity, 
+    boost,
+  }: ProgressbarProps
+  )
+   {
   const [seconds, setSeconds] = useState(0);
   const [isRunning, setIsRunning] = useState(running);
-  // const [progress, setProgress] = useState(0)
-  console.log(quantity, seconds)
+  let maxReached = false;
+
+  if(quantity >= barracs.maxCap!) {
+    quantity = barracs.maxCap! 
+    maxReached = true
+  } 
+
+
+  useEffect(() => {
+    setMaxTraining(true)
+  }, [maxReached])
+
 
   useEffect(() => {
     let intervalId: NodeJS.Timeout;
@@ -25,11 +53,14 @@ export default function Progressbar({ running, unit, quantity, setProgressBar }:
           if (prevSeconds >= unit.production_time * quantity!) {
             setIsRunning(false);
             setProgressBar(false)
-            addTroopToDB(unit)
+            addTroopToDB(unit, quantity)
+            setQuantity(0)
             return prevSeconds;
-          } else {
-            return prevSeconds + 1;
-            
+          } else if(boost) {
+            return prevSeconds + boost.boost * barracs.workers
+          } 
+          else {
+            return prevSeconds + 1 * barracs.workers;
           }
         });
       }, 1000);
@@ -38,7 +69,9 @@ export default function Progressbar({ running, unit, quantity, setProgressBar }:
     return () => clearInterval(intervalId);
   }, [isRunning, unit.production_time, quantity]);
 
-   let progress = (seconds / (unit.production_time * quantity!)) * 100;
+
+
+  let progress = (seconds / (unit.production_time * quantity!)) * 100;
   
 
   const hourstotal = Math.floor((unit.production_time * quantity! || 0) / 3600);
@@ -49,8 +82,20 @@ export default function Progressbar({ running, unit, quantity, setProgressBar }:
     return value.toString().padStart(2, '0');
   };
 
-  function addTroopToDB(unit: Units) {
-    units.push(unit)
+  function addTroopToDB(unit: Units, quantity: number) {
+    for(let i = 0; i <= quantity; i++) {
+      units.push(unit)
+    }
+
+  }
+
+  const MaxTraining = () => {
+    return (
+      <span>
+        You hace reached the max <br />
+        training limit of: {barracs.maxCap}
+      </span>
+    )
   }
 
   return (
@@ -59,12 +104,13 @@ export default function Progressbar({ running, unit, quantity, setProgressBar }:
         <div className={`h-[100%] bg-black transition-all `} style={{ width: `${progress}%` }}></div>
       </div>
       <span className="">
-        {formatTime(Math.floor(seconds / 3600))}:{formatTime(Math.floor((seconds % 3600) / 60))}:{formatTime(seconds % 60)} /
+        {formatTime(Math.floor(seconds / 3600))}:{formatTime(Math.floor((seconds % 3600) / 60))}:{formatTime(Math.floor(seconds % 60))} /
         {formatTime(hourstotal)}:{formatTime(minutestotal)}:{formatTime(secondstotal)} 
       </span>
       <div>
-        Currently producting: {quantity}x of: {unit.name}
-
+        Currently producting: {quantity}x of: {unit.name} <br />
+        Workers: {barracs.workers}
+        {maxReached? <MaxTraining /> : null}
       </div>
     </div>
   );

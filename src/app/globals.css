@@ -52,5 +52,16 @@ body {
     @apply absolute w-auto p-2 m-2 min-w-max  rounded-md shadow-md
     text-white bg-gray-900 text-xs font-bold
   }
+  
+  .barracs-menu {
+    @apply absolute flex flex-col top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
+    p-2 m-2 w-[300px] justify-center items-center rounded-md shadow-md text-white bg-gray-900 text-sm font-bold
+  }
+  
+  .boost-menu {
+    @apply absolute top-9 left-9 w-auto p-2 m-2 min-w-max rounded-md shadow-md
+    text-white bg-gray-900 text-xs font-bold
+  }
+
 }
 

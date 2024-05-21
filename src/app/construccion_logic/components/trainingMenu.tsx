@@ -2,8 +2,10 @@ import Units from "@/app/collectors/objects/Units"
 import Barracs from "@/app/collectors/objects/barracs"
 import { User } from "@/app/objects/user"
 import Image from "next/image"
-import { Dispatch, SetStateAction, useState } from "react"
+import { Dispatch, SetStateAction, use, useEffect, useState } from "react"
 import { barracs_Array } from "../utils/StructuresData"
+import BarracsMenu from "./barracsMenu"
+import { Boosts } from "@/app/objects/boost"
 
 const units_Array: Units[] = [
   {
@@ -73,7 +75,7 @@ const units_Array: Units[] = [
     production_time: 30,
     level: 1,
     unlock_level: 1
-  }
+  },
 ]
 
 
@@ -83,17 +85,19 @@ export default function TrainingMenu(
     quantity,
     setProgressBar,
     setUnit,
-    setQuantity
+    setQuantity,
   }: 
   { 
     user: User, 
     setProgressBar: Dispatch<SetStateAction<boolean | null>>, 
     setUnit: Dispatch<SetStateAction<Units | undefined>>,
     setQuantity: Dispatch<SetStateAction<number>>,
-    quantity: number
+    quantity: number,
+
   }
 ) {
   const [trainingMenu, setTrainingMenu] = useState(true)
+  // const [maxCapacity, setMaxCapacity] = useState(false)
   // const [trainingOptions, setTrainingOptions] = useState(false)
 
   // function progressBarLogic() {
@@ -104,6 +108,10 @@ export default function TrainingMenu(
   //     return true
   //   }
   // }
+  // useEffect(() => {
+  //   console.log("we are in the use effect" + maxCapacity)
+  //   setMaxCapacity(true)
+  // }, [maxTraining, setMaxCapacity])
 
   const TrainingMenuIcons = (
     { units, user }: {units: Units, user: User}
@@ -111,7 +119,7 @@ export default function TrainingMenu(
     if(user.level >= units.unlock_level) {
       return(
         <div
-          className="sidebar-icon "
+          className="sidebar-icon group"
           onClick={() => {
             setProgressBar(true);
             // setTrainingOptions(true)
@@ -121,7 +129,7 @@ export default function TrainingMenu(
           }}
         >
           {units.img}
-          <span className="sidebar-name">
+          <span className="sidebar-name group-hover:scale-100">
         {units.name}
         <br />
         Cost: {units.cost}
@@ -132,9 +140,21 @@ export default function TrainingMenu(
     </span>
         </div>
       )
+    // } else if(user.level >= units.unlock_level && maxCapacity ){
+    //   console.log("we are in")
+    //   return (
+    //     <div className="min-lev-req group ">
+    //       <i className="opacity-20">{units.img}</i>
+    //       <span className="sidebar-name group-hover:scale-100 opacity-80 flex flex-col">
+    //         <div>{`You have reached the max training limit of yout barracs: ${barracs.maxCap}`}</div>
+    //         <div>Upgrade your barracs to increase your capacity</div>
+    //       </span>
+    //     </div>
+    //   )
     }
-    else {
-      return (
+    
+     else {
+      return(
         <div className="min-lev-req group ">
           <i className="opacity-20">{units.img}</i>
           <span className="sidebar-name group-hover:scale-100 opacity-80 flex flex-col">
@@ -143,7 +163,11 @@ export default function TrainingMenu(
           </span>
         </div>
       )
+      
     }
+  
+  
+    
   }
 
 
@@ -160,6 +184,7 @@ export default function TrainingMenu(
 
         ))}
 
+            
       
       </div>
       <div >
