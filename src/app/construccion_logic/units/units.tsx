@@ -10,9 +10,9 @@ export default function Unit() {
   const poisitionToMove = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
-    moveRandomUnit(750, {
+    moveRandomUnit(600, {
       x: window.innerWidth / 2,
-      y: 400,
+      y: 500,
     });
   }, []);
 
