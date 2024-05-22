@@ -55,7 +55,15 @@ const boost: Boosts[] = [
 
 ]
 
-
+export const user: User = {
+  id: 1,
+  name: "Lando Norris",
+  username: "Papi_de_Max",
+  password: "f1_E>",
+  level: 1,
+  boosts: boost, 
+  workers: 3
+};
 
 
 export default function Home() {
@@ -96,15 +104,7 @@ export default function Home() {
     }
   }, [structure]);
 
-  const user: User = {
-    id: 1,
-    name: "Lando Norris",
-    username: "Papi_de_Max",
-    password: "f1_E>",
-    level: 1,
-    boosts: boost, 
-    workers: 3
-  };
+  
   // console.log(time)
   return (
     <main className="flex min-h-screen items-center justify-center relative">
@@ -155,7 +155,10 @@ export default function Home() {
       
 
       <Placer appearence={placerApear} structure={structure} />
-      <MapBuildings />
+      <MapBuildings 
+        setBarracsMenu={setBarracsMenu}
+        barracMenu={barracsMenu}
+      />
       <Image
         src="/Map_Classic_Scenery.jpg"
         alt="clash_map"
@@ -302,7 +305,7 @@ function addstructure(
         unlock_level: 1,
         maxWorkers: 10,
         maxCap: 5,
-        position: {x: 0, y: 0}
+        position: { x: position.x, y: position.y }
       });
       // stone_mine_Array.push({
       //   id: stone_mine_Array.length,

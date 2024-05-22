@@ -72,7 +72,7 @@ const units_Array: Units[] = [
       />
     ),
     cost: 100,
-    production_time: 30,
+    production_time: 5,
     level: 1,
     unlock_level: 1
   },

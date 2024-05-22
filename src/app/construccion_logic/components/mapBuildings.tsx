@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import {
   glod_mine_Array,
   lumber_camp_Array,
@@ -11,6 +11,10 @@ import Collectors from "@/app/collectors/objects/collector";
 // import BarracsMenu from "./barracsMenu";
 import Barracs from "@/app/collectors/objects/barracs";
 import Collector from "@/app/collectors/components/resourceLogic";
+import BarracsMenu from "./barracsMenu";
+import { user } from "../page";
+import { units } from "./progressbar";
+import Unit from "../units/units";
 
 const defaultBuilding: Collectors = {
   id: 2,
@@ -62,7 +66,9 @@ const defaultBarracs: Barracs = {
 
 }
 
-export default function MapBuildings() {
+export default function MapBuildings(
+  { setBarracsMenu, barracMenu }: { setBarracsMenu: Dispatch<SetStateAction<boolean>>, barracMenu: boolean }
+) {
   const [visibleBuildingDetails, setvisibleBuildingDetails] = useState(false);
   const [visibleBarracsDetails, setvisibleBarracsDetails] = useState(false)
   const [barracsInfo, setBarracsInformation] = useState(defaultBarracs)
@@ -159,7 +165,7 @@ export default function MapBuildings() {
             left: Math.floor(structure.position.x / 30) * 30,
             top: Math.floor(structure.position.y / 30) * 30,
           }}
-          onClick={() => barracsMenu(index)}
+          onClick={() => setBarracsMenu(!barracMenu)}
 
         >
           <Image
@@ -169,11 +175,12 @@ export default function MapBuildings() {
             height={55}
             alt="png of Barrac"
           />
-          {/* <BarracsMenu 
-            barracs={barracsInfo} 
-            state={visibleBarracsDetails} 
-            barracsId={structure.id} 
-          /> */}
+          
+        </div>
+      ))}
+      {units.map((index) => (
+        <div key={index + "_Unit"}>
+          <Unit/>
         </div>
       ))}
     </div>

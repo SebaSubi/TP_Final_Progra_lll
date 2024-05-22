@@ -116,6 +116,6 @@ export default function Progressbar(
   );
 }
 
-const units: Units[] = [
+export const units: Units[] = [
 
 ]
