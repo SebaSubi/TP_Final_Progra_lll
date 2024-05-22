@@ -6,7 +6,6 @@ import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { set } from 'mongoose';
 
-
 function RegisterPage() {
 
   const [error, setError] = useState<string | undefined>();
@@ -56,19 +55,13 @@ function RegisterPage() {
 
   return (
     <main className="container mx-auto flex flex-col justify-center items-center min-h-screen bg-black">
-
-      {/* <img src="/title.svg" alt="Title" className="mr-10" style={{ width: '15%', height: 'auto' }}/> */}
-
       <img src="/p11chad.svg" alt="p11" style={{ width: '15%', height: 'auto' }}/>
-
-      <h2 style={{textShadow: '3px 3px 2px rgba(255, 0, 0, 0.5)'}} className="text-5xl font-bold text-center w-full text-red-500 mt-10"> SIGN UP </h2>
-
+      <h2 style={{textShadow: '3px 3px 2px rgba(255, 0, 0, 0.5)'}} className="text-5xl font-bold mb-6 text-center w-full text-red-500 mr-5 mt-10"> SIGN UP </h2>
       <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', maxWidth: '100%', margin: '0 auto' }}>
-        <img src="/barbarianKingDef.svg" style={{ maxWidth: '35%', height: 'auto', marginRight: 10 }} alt="Barbarian King" />
+        <img src="/barbarianKingDef.svg" style={{ maxWidth: '35%', height: 'auto'}} alt="Barbarian King" />
           <div className="flex justify-center items-center space-x-20" style={{ width: '100%', maxWidth: '100%', height:'70%', maxHeight: '70%' }}>
-
           <div className="flex justify-between">
-            <form onSubmit={handleSubmit} className="w-full max-w-md bg-black border border-gray-300 p-4 flex flex-col justify-center items-center" style={{boxShadow: '0px 0px 5px 5px rgba(255, 255, 255, 0.2)'}}>
+            <form onSubmit={handleSubmit} className="w-full max-w-md bg-black mr-6 border border-gray-300 p-4 flex flex-col justify-center items-center" style={{boxShadow: '0px 0px 5px 5px rgba(255, 255, 255, 0.2)'}}>
                 <input 
                   type="text" 
                   placeholder="Username" 
@@ -102,13 +95,11 @@ function RegisterPage() {
               </form>
             </div>
           </div>
-        <img src="/newQueenArcher.svg" style={{ maxWidth: '30%', height: 'auto', marginLeft: 60 }} alt="Queen Archer" />
+        <img src="/newQueenArcher.svg" style={{ maxWidth: '30%', height: 'auto', marginLeft: 50}} alt="Queen Archer" />
       </div>
-
       <p className="text-2xl text-center text-white ml-10">
         Go back <a href="/register" onClick={handleRegisterClick} className="underline hover:text-red-900">Home</a>
       </p>
-      
     </main>
   );
 }

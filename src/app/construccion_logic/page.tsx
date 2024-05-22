@@ -3,6 +3,9 @@
 import Image from "next/image";
 import Placer from "./components/objectPlacer";
 import { useState, useEffect, useRef } from "react";
+import { useRouter } from 'next/navigation';
+
+import { signOut } from 'next-auth/react';
 
 import {
   glod_mine_Array,
@@ -82,7 +85,7 @@ export default function Home() {
 
   
   // let time = -1;
-  // const [timer, setTimer] = useState
+  //const [timer, setTimer] = useState
 
   const router = useRouter();
 
@@ -126,6 +129,10 @@ export default function Home() {
         Toggle Cursor Marker
       </button> */}
       
+      <button className="bg-zinc-800 px-4 py-2 block mb-2" onClick={handleSignOut}>
+        Logout
+      </button>
+
       {barracs_Array.length ? 
       <TrainingMenu 
           user={user} 
