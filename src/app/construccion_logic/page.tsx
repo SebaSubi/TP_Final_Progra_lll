@@ -15,7 +15,7 @@ import { User } from "../objects/user";
 import Collectors from "../collectors/objects/collector";
 import MapBuildings from "./components/mapBuildings";
 import TrainingMenu from "./components/trainingMenu";
-import Progressbar from "./components/progressbar";
+import Progressbar, { units } from "./components/progressbar";
 import Units from "../collectors/objects/Units";
 import { Boosts } from "../objects/boost";
 import BarracsMenu from "./components/barracsMenu";
@@ -179,17 +179,19 @@ export default function Home() {
         }}
         className="inset-0 w-full h-full object-cover"
       />
-      <div className="absolute top-0 left-1/2 transform -translate-x-1/2 mt-4">
+      {/* <div className="absolute top-0 left-1/2 transform -translate-x-1/2 mt-4">
         <button className="px-6 py-2 bg-black text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75"
         onClick={() => {setBarracsMenu(barracs_Array.length? !barracsMenu : false)}}
         >
             Barracs
         </button>
-      </div>
+      </div> */}
       
     </main>
   );
 }
+
+console.log(units)
 
 function checkTerrain( //this function will chech if the terrain is suitable for the structure and taht it is not occupied by another structure
   position: { x: number; y: number },

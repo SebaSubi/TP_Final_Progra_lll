@@ -38,11 +38,11 @@ export default function BarracsMenu({
   };
 
   const handleWorkerClick = () => {
-    if(user.workers > 0 && barracs.workers >= barracs.maxWorkers) {
+    if(user.workers > 0 && barracs.workers <= barracs.maxWorkers) {
       barracs.workers += 1
       user.workers -= 1
     }
-    console.log(user.workers)  
+    // console.log(user.workers)  
   }
 
 
