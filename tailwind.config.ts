@@ -15,6 +15,12 @@ const config: Config = {
       },
     },
   },
+  variants: {
+    extend: {
+      transform: ['responsive'], // Agrega 'transform' a la lista de variantes
+    },
+  },
   plugins: [],
 };
+
 export default config;

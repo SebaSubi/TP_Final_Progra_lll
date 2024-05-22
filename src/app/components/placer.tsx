@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import Image from "next/image";
 import React, { useState, useEffect, MouseEventHandler } from "react";
@@ -38,10 +38,7 @@ const Placer = () => {
         <div
           className="absolute w-10 h-10 bg-green-500 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none rotate-[38deg] -skew-x-[15deg]"
           //   onClick={handleClick}
-          style={{
-            left: Math.floor(cursorPosition.x / 30) * 30,
-            top: Math.floor(cursorPosition.y / 30) * 30,
-          }}
+          style={{ left: cursorPosition.x, top: cursorPosition.y }}
         ></div>
       )}
 
@@ -50,10 +47,7 @@ const Placer = () => {
           key={index}
           className="absolute w-10 h-10 bg-red-500 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none rotate-[37deg] -skew-x-[15deg]"
           //   className="absolute w-10 h-10 bg-red-500 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none rotate-[40deg] -skew-x-[6deg]"
-          style={{
-            left: Math.floor(structure.x / 30) * 30,
-            top: Math.floor(structure.y / 30) * 30,
-          }}
+          style={{ left: structure.x, top: structure.y }}
         ></div>
       ))}
       <Image
@@ -72,3 +66,8 @@ const Placer = () => {
 };
 
 export default Placer;
+
+//66 494
+//104 512
+
+//1100, 800 --> 38, 503

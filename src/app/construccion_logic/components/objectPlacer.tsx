@@ -1,15 +1,27 @@
 "use client";
-
-// import Image from "next/image";
 import React, { useState, useEffect } from "react";
-import { glod_mine_Array, lumber_camp_Array, stone_mine_Array } from "../utils/StructuresData";
 import Image from "next/image";
+import I1 from "../../public/Level1_Elixir.png";
+import I2 from "../../public/Level2_Elixir.png";
+import I3 from "../../public/Level3_Elixir.png";
+import I4 from "../../public/Level4_Elixir.png";
 
 export default function Placer(props: {
   appearence: boolean;
   structure: number | null;
 }) {
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
+  const [visibleBuildingDetails, setvisibleBuildingDetails] = useState(false);
+
+  //   useEffect(() => {
+  //     const intervalId = setInterval(() => {
+  //         setCurrentIndex(prevIndex => (prevIndex + 1) % images.length);
+  //     }, 3000)
+
+  //     return () => clearInterval(intervalId);
+  // }, [])
+
+  // const[]
 
   useEffect(() => {
     const handleMouseMove = (event: MouseEvent) => {
@@ -18,67 +30,61 @@ export default function Placer(props: {
 
     // Agrega el event listener cuando el componente se monta
     document.addEventListener("mousemove", handleMouseMove);
+    // document.addEventListener("click", () => {setvisibleBuildingDetails(false)})
 
     // Limpia el event listener cuando el componente se desmonta
     return () => {
       document.removeEventListener("mousemove", handleMouseMove);
+      // document.removeEventListener("click", () => {setvisibleBuildingDetails(false)})
     };
   }, []);
 
+  // const images = [I1, I2, I3, I4]
+
+  // function buildingAnimation() {
+  //   return (
+  //       <div>
+  //         <div className="flex items-center justify-center">
+  //           <Image src={images[currentIndex]} alt="Level 1 Elixir" />
+  //         </div>
+  //       </div>
+  //   );
+  // }
+
+  const structure_images = {
+    1: "Gold_Mine1.png",
+    2: "Elexir_Collector.png",
+    3: "Barracs.png",
+  };
+
+  const img_prop: string = props.structure
+    ? //@ts-ignore  // i dont know why this is not working
+      structure_images[props.structure]
+    : structure_images[1];
+
   return (
+    //hay que mover los arrays a otro componente porque se regenra siempre que movemos el mouse.
     <div>
       {props.appearence && (
         <div
-          className="absolute w-10 h-10 bg-green-500 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none rotate-[38deg] -skew-x-[15deg]"
+          className="absolute pointer-events-none"
           style={{
             left: Math.floor(cursorPosition.x / 30) * 30,
             top: Math.floor(cursorPosition.y / 30) * 30,
           }}
-        ></div>
-      )}
-
-      {glod_mine_Array.map((structure, index) => (
-        <div
-          key={index + "_gold_mine"}
-          className="absolute w-10 h-10 bg-yellow-500 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none rotate-[37deg] -skew-x-[15deg]"
-          //   className="absolute w-10 h-10 bg-red-500 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none rotate-[40deg] -skew-x-[6deg]"
-          style={{
-            left: Math.floor(structure.position.x / 30) * 30,
-            top: Math.floor(structure.position.y / 30) * 30,
-          }}
-        ></div>
-      ))}
-      {lumber_camp_Array.map((structure, index) => (
-        <div
-          key={index + "_wooden_collector"}
-          className="absolute justify-center items-center"
-          // className="absolute w-10 h-10 bg-red-950 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none rotate-[37deg] -skew-x-[15deg]"
-          //   className="absolute w-10 h-10 bg-red-500 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none rotate-[40deg] -skew-x-[6deg]"
-          style={{
-            left: Math.floor(structure.position.x / 30) * 30,
-            top: Math.floor(structure.position.y / 30) * 30,
-          }}
         >
-          <Image 
-            key='WoodCollecor'
-            src='/Elexir_Collector.png'
-            width={40}
-            height={50}
-            alt='png of Wood Collector'
-          />
+          <div className="flex flex-col">
+            <Image
+              className="realtive justify-center items-center z-20"
+              src={`/${img_prop}`}
+              width={40}
+              height={50}
+              alt="structure to place"
+            />
+            <div className="absolute w-10 h-10 bg-green-500 rotate-[38deg] -skew-x-[15deg] z-10 mt-3" />
+          </div>
         </div>
-      ))}
-      {stone_mine_Array.map((structure, index) => (
-        <div
-          key={index + "_stone_mine"}
-          className="absolute w-10 h-10 bg-gray-500 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none rotate-[37deg] -skew-x-[15deg]"
-          //   className="absolute w-10 h-10 bg-red-500 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none rotate-[40deg] -skew-x-[6deg]"
-          style={{
-            left: Math.floor(structure.position.x / 30) * 30,
-            top: Math.floor(structure.position.y / 30) * 30,
-          }}
-        ></div>
-      ))}
+      )}
     </div>
-  );
+  );
 }
