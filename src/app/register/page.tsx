@@ -1,38 +1,45 @@
-
 "use client"
+
 import axios, {AxiosError} from 'axios';
 import { FormEvent, useState } from 'react';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { set } from 'mongoose';
 
 
 function RegisterPage() {
 
-  const [error, setError] = useState();
+  const [error, setError] = useState<string | undefined>();
+  const [success, setSuccess] = useState<string | undefined>();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [fullname, setFullname] = useState("");
   const router = useRouter();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const formData = new FormData(e.currentTarget)
-
     try {
 
-    const signupResponse = await axios.post('/api/auth/signup', {
-      email: formData.get('email'),
-      password: formData.get('password'),
-      fullname: formData.get('fullname'),
-    })
+      const signupResponse = await axios.post('/api/auth/signup', {
+        email,
+        password,
+        fullname,
+      })
 
-    
-    const res = await signIn('credentials', {
-      email: signupResponse.data.email,
-      password: formData.get('password'),
-      redirect: false,
-    });
-    
+      const res = await signIn('credentials', {
+        email: signupResponse.data.email,
+        password,
+        redirect: false,
+      });
 
-    if (res?.ok) return router.push("/login")
+      if (res?.ok) {
+        setSuccess("Account created successfully")
+        setEmail("");
+        setPassword("");
+        setFullname("");
+        return router.push("/")
+      }
   
     } catch(error){
       console.log(error)
@@ -42,20 +49,67 @@ function RegisterPage() {
     }
   }
 
-  return (
+  const handleRegisterClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    router.push('/');
+  }
 
-      <div className="justify-center h-[calc(100vh-4rem)] flex items-center">
-        <form onSubmit={handleSubmit}>
-          
-          <h1>Register</h1>
-          <input type="text" placeholder="Username" name="fullname" className="bd-zinc-800 px-4 oy-2 block mb-2" />
-          <input type="Email" placeholder="Email" name="email"
-          className="bd-zinc-800 px-4 oy-2 block mb-2" />
-          <input type="password" placeholder="********" name="password"
-          className="bd-zinc-800 px-4 oy-2 block mb-2"/>
-          <button className="bg-indigo-500 px-4 py-2">Register</button>
-        </form>
+  return (
+    <main className="container mx-auto flex flex-col justify-center items-center min-h-screen bg-black">
+
+      {/* <img src="/title.svg" alt="Title" className="mr-10" style={{ width: '15%', height: 'auto' }}/> */}
+
+      <img src="/p11chad.svg" alt="p11" style={{ width: '15%', height: 'auto' }}/>
+
+      <h2 style={{textShadow: '3px 3px 2px rgba(255, 0, 0, 0.5)'}} className="text-5xl font-bold text-center w-full text-red-500 mt-10"> SIGN UP </h2>
+
+      <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', maxWidth: '100%', margin: '0 auto' }}>
+        <img src="/barbarianKingDef.svg" style={{ maxWidth: '35%', height: 'auto', marginRight: 10 }} alt="Barbarian King" />
+          <div className="flex justify-center items-center space-x-20" style={{ width: '100%', maxWidth: '100%', height:'70%', maxHeight: '70%' }}>
+
+          <div className="flex justify-between">
+            <form onSubmit={handleSubmit} className="w-full max-w-md bg-black border border-gray-300 p-4 flex flex-col justify-center items-center" style={{boxShadow: '0px 0px 5px 5px rgba(255, 255, 255, 0.2)'}}>
+                <input 
+                  type="text" 
+                  placeholder="Username" 
+                  name="fullname" 
+                  value={fullname}
+                  onChange={e => setFullname(e.target.value)}
+                  className="w-full p-2 border border-gray-300 rounded-lg mb-4 text-white bg-black"
+                />
+                <input 
+                  type="Email" 
+                  placeholder="Email" 
+                  name="email"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  className="w-full p-2 border border-gray-300 rounded-lg mb-4 text-white bg-black"
+                />
+                <input 
+                  type="password" 
+                  placeholder="********" 
+                  name="password"
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
+                  className="w-full p-2 border border-gray-300 rounded-lg mb-4 text-white bg-black"
+                />
+                <button 
+                  className="w-full p-2 bg-black text-white border border-white rounded-lg font-bold uppercase duration-200 hover:bg-gray-900 mb-4">
+                    SIGN-UP
+                  </button>
+                {success && <p className="text-green-500">{success}</p>}
+                {error && <p className="text-red-500">{error}</p>}
+              </form>
+            </div>
+          </div>
+        <img src="/newQueenArcher.svg" style={{ maxWidth: '30%', height: 'auto', marginLeft: 60 }} alt="Queen Archer" />
       </div>
+
+      <p className="text-2xl text-center text-white ml-10">
+        Go back <a href="/register" onClick={handleRegisterClick} className="underline hover:text-red-900">Home</a>
+      </p>
+      
+    </main>
   );
 }
 
