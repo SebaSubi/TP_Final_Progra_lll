@@ -6,11 +6,17 @@ import { useSearchParams } from 'next/navigation';
 import EmailTemplate from '@/components/EmailTemplate'; // adjust this import path to match your project structure
 import { Form, Input, SubmitButton } from '../components/Form'; // ajusta esta ruta de importación para que coincida con la estructura de tu proyecto
 import { FormEvent } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function ChangePasswordPage() {
   const { finishLoading, isLoading, startLoading } = useLoading();
   const searchParams = useSearchParams();
   const authFetch = useAuthFetch();
+  const router = useRouter();
+
+  const handleForgetChangedClick = () => {
+    router.push('/'); // Replace with your forget-password page path
+  };
   
   const changePassword = async (e: FormEvent<HTMLFormElement>) => {
     console.log('changePassword');
@@ -28,7 +34,7 @@ export default function ChangePasswordPage() {
     await authFetch({
       endpoint: '/api/auth/change-password',
       redirectRoute: '/',
-      formData: { currentPassword: formData.get('currentPassword'), newPassword: formData.get('newPassword'), confirmPassword: formData.get('confirmPassword')},
+      formData: {newPassword: formData.get('newPassword'), confirmPassword: formData.get('confirmPassword')},
       headers,
     });
 
@@ -37,16 +43,11 @@ export default function ChangePasswordPage() {
   
   return (
     <>
-      <EmailTemplate buttonUrl="/change-password" />
+      
       <Form onSubmit={changePassword}>
-      <div className="my-[10px] flex flex-col gap-4">
-        <Input
-          placeholder="Ingresa tu contraseña actual..."
-          label="Contraseña Actual"
-          name="currentPassword"
-          type="password"
-        />
-        <Input
+      <div className="w-full p-2 bg-black mb-4 text-white border border-white rounded-lg font-bold uppercase duration-200 hover:bg-gray-900 ">
+    
+        <Input 
           placeholder="Ingresa tu nueva contraseña..."
           label="Nueva Contraseña"
           name="newPassword"
@@ -59,7 +60,12 @@ export default function ChangePasswordPage() {
           type="password"
         />
       </div>
-      <SubmitButton buttonText="Cambiar Contraseña" isLoading={isLoading} />
+      <EmailTemplate buttonUrl="/change-password" />
+      <button 
+          type="button" // Prevent form submission
+          onClick={ handleForgetChangedClick} // Handle click event
+          className="w-full p-2 bg-black mb-4 text-white border border-white rounded-lg font-bold uppercase duration-200 hover:bg-gray-300"
+        >Back to login</button>
     </Form>
     </>
   );

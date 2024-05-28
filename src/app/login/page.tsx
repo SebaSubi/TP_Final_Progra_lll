@@ -10,6 +10,10 @@ function LoginPage() {
   const [error, setError] = useState<string | undefined>();
   const router = useRouter();
 
+  const handleForgetPasswordClick = () => {
+    router.push('/forget-password'); // Replace with your forget-password page path
+  };
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -60,8 +64,16 @@ function LoginPage() {
               className="w-full p-2 bg-black mb-4 text-white border border-white rounded-lg font-bold uppercase duration-200 hover:bg-gray-900">
               Login
           </button>
+          <button 
+          type="button" // Prevent form submission
+          onClick={handleForgetPasswordClick} // Handle click event
+          className="w-full p-2 bg-black mb-4 text-white border border-white rounded-lg font-bold uppercase duration-200 hover:bg-gray-900"
+        >
+          Forget password
+        </button>
           {error && <p className="text-red-500 ">{error}</p>}
         </form>
+        
         </div>
     </main>
   );
