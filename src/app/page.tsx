@@ -4,14 +4,24 @@ import Image from "next/image";
 // import GoldMine from "./components/GoldMine";
 // import SideNav from "./construccion/mode/constructionBar";
 import Mapa from "./components/mapa";
+import React, { useState } from "react";
+import CoinProgressBar from "./components/coinProgressBar";
+import coinIcon from '../../public/coin.png';
 
-export default function Home() {
+const Home: React.FC = () => {
+  const [currentCoins, setCurrentCoins] = useState<number>(50);
+  const maxCoins = 100;
+
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <body>
-        {/* Llamada a la función que contiene el mapa */}
-        <Mapa />
-      </body>
+      {/* <div> */}
+      {/* <CoinProgressBar currentCoins={currentCoins} maxCoins={maxCoins} coinIcon={coinIcon} /> */}
+      {/* add logic */}
+      {/* <button onClick={() => setCurrentCoins(prev => Math.min(prev + 10, maxCoins))}> */}
+      {/* Añadir Monedas */}
+      {/* </button> */}
+      {/* </div> */}
+      <Mapa />
       {/* <SideNav />
       <GoldMine /> */}
       {/* <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
@@ -121,4 +131,6 @@ export default function Home() {
       </div> */}
     </main>
   );
-}
+};
+
+export default Home;
