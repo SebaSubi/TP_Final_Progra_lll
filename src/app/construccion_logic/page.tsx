@@ -2,21 +2,90 @@
 
 import Image from "next/image";
 import Placer from "./components/objectPlacer";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from 'next/navigation';
 
-import { useSession, signOut } from "next-auth/react";
-import { glod_mine_Array, lumber_camp_Array, stone_mine_Array } from "./utils/StructuresData";
-import SideBar from "../construccion/mode/sideBar";
+import { signOut } from 'next-auth/react';
+
+import {
+  glod_mine_Array,
+  lumber_camp_Array,
+  stone_mine_Array,
+  barracs_Array,
+} from "./utils/StructuresData";
+import SideBar from "./components/sideBar";
 import { User } from "../objects/user";
 import Collectors from "../collectors/objects/collector";
+import MapBuildings from "./components/mapBuildings";
+import TrainingMenu from "./components/trainingMenu";
+import Progressbar, { units } from "./components/progressbar";
+import Units from "../collectors/objects/Units";
+import { Boosts } from "../objects/boost";
+import BarracsMenu from "./components/barracsMenu";
+// import BarracsMenu from "./components/barracsMenu";
+
+const boost: Boosts[] = [
+  {
+  id: 1,
+  name: "Mate",
+  type: "mate",
+  img: (
+  <Image 
+    key="mate"
+    src="/Mate.png"
+    width={30}
+    height={40}
+    alt="png of a mate"
+  />),
+  quantity: 3,
+  boost: 1.5 
+},
+{
+  id: 2,
+  name: "Facturas",
+  type: "facturas",
+  img: (
+  <Image 
+    key="facturas"
+    src="/Facturas.png"
+    width={30}
+    height={40}
+    alt="png of facturas"
+  />),
+  quantity: 1, 
+  boost: 1.2
+},
+
+]
+
+export const user: User = {
+  id: 1,
+  name: "Lando Norris",
+  username: "Papi_de_Max",
+  password: "f1_E>",
+  level: 1,
+  boosts: boost, 
+  workers: 3
+};
+
 
 
 
 export default function Home() {
   const [placerApear, setPlacerApear] = useState(false);
   const [structure, setStructure] = useState<null | number>(null);
-  const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
+  const cursorPosition = useRef({ x: 0, y: 0 });
+  const [progressBar, setProgressBar] = useState<boolean | null>(null)
+  const [unit, setUnit] = useState<Units>()
+  const [quantity, setQuantity] = useState(0)
+  const [maxTraining, setMaxTraining] = useState(false)
+  const [appliedBoost, setAppliedBoost] = useState<Boosts | null>(null)
+  const [barracsMenu, setBarracsMenu] = useState(false)
+  // console.log(appliedBoost)
+
+  
+  // let time = -1;
+  //const [timer, setTimer] = useState
 
   const router = useRouter();
 
@@ -27,7 +96,7 @@ export default function Home() {
   // console.log(glod_mine_Array);
   useEffect(() => {
     const handleMouseMove = (event: MouseEvent) => {
-      setCursorPosition({ x: event.clientX, y: event.clientY });
+      cursorPosition.current = { x: event.clientX, y: event.clientY };
     };
 
     // Agrega el event listener cuando el componente se monta
@@ -40,19 +109,14 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    if(structure){
+    if (structure) {
       setPlacerApear(true);
+      document.body.classList.add("cursor-none");
     }
-  },[structure])
+  }, [structure]);
 
-  const user: User = {
-    id: 1,
-    name: 'Lando Norris',
-    username: 'Papi_de_Max',
-    password: 'f1_E>',
-    level: 1
-  }
-
+  
+  // console.log(time)
   return (
     <main className="flex min-h-screen items-center justify-center relative">
       {/* <button
@@ -64,12 +128,52 @@ export default function Home() {
       >
         Toggle Cursor Marker
       </button> */}
-        <button className="bg-zinc-800 px-4 py-2 block mb-2" onClick={handleSignOut}>
+      
+      <button className="bg-zinc-800 px-4 py-2 block mb-2" onClick={handleSignOut}>
         Logout
       </button>
+
+      {barracs_Array.length ? 
+      <TrainingMenu 
+          user={user} 
+          setProgressBar={setProgressBar} 
+          setUnit={setUnit} 
+          setQuantity={setQuantity} 
+          quantity={quantity} 
+          />
+      : 
+      null}
+
+      {progressBar ? 
+      <Progressbar 
+        running={progressBar} 
+        unit={unit!} 
+        setProgressBar={setProgressBar} 
+        quantity={quantity} 
+        barracs={barracs_Array[0]!} 
+        setMaxTraining={setMaxTraining} 
+        setQuantity={setQuantity}
+        boost={appliedBoost}
+
+        /> 
+      : 
+      null} {/*If this is throwing an error, ad an if inside to check if its undefined and take out the !*/}
+      <SideBar user={user} setStructure={setStructure} />
+      {barracsMenu? 
+        <BarracsMenu 
+          barracs={barracs_Array[0]} 
+          user={user} 
+          setAppliedBoost={setAppliedBoost} 
+          progressBar={progressBar}
+        /> 
+      : null}
       
-      <SideBar user={user} setStructure={setStructure}/>
+
       <Placer appearence={placerApear} structure={structure} />
+      <MapBuildings 
+        setBarracsMenu={setBarracsMenu}
+        barracMenu={barracsMenu}
+      />
       <Image
         src="/Map_Classic_Scenery.jpg"
         alt="clash_map"
@@ -77,85 +181,153 @@ export default function Home() {
         height={500}
         onClick={() => {
           if (placerApear) {
-            checkTerrain(cursorPosition,structure) ? addstructure(cursorPosition,structure) : null;
+            checkTerrain(cursorPosition.current, structure)
+              ? addstructure(cursorPosition.current, structure)
+              : null;
           }
           // console.log("click en el mapa");
           if (placerApear) {
-            console.log(lumber_camp_Array)
-             setPlacerApear(false);
-             setStructure(null);
-          }//this if is to hide the cursor marker when the map is clicked, if the conditional doesn`t exist it will always reload the component because of how useState works.
+            setPlacerApear(false);
+            setStructure(null);
+            document.body.classList.remove("cursor-none");
+          } //this if is to hide the cursor marker when the map is clicked, if the conditional doesn`t exist it will always reload the component because of how useState works.
         }}
         className="inset-0 w-full h-full object-cover"
       />
+      {/* <div className="absolute top-0 left-1/2 transform -translate-x-1/2 mt-4">
+        <button className="px-6 py-2 bg-black text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75"
+        onClick={() => {setBarracsMenu(barracs_Array.length? !barracsMenu : false)}}
+        >
+            Barracs
+        </button>
+      </div> */}
+      
     </main>
   );
 }
 
-function checkTerrain(position: { x: number; y: number }, structure:number | null): boolean {
+console.log(units)
+
+function checkTerrain( //this function will chech if the terrain is suitable for the structure and taht it is not occupied by another structure
+  position: { x: number; y: number },
+  structure: number | null
+): boolean {
   return true;
 }
-
 
 const collectorArray: Collectors[] = [
   {
     id: 1,
-    name: 'Gold Collector',
-    img: <Image 
-    key='GoldMine'
-    src='/Gold_Mine1.png'
-    width={60}
-    height={70}
-    alt='png of Gold Mine'
-    />,
+    name: "Gold Collector",
+    img: (
+      <Image
+        key="GoldMine"
+        src="/Gold_Mine1.png"
+        width={60}
+        height={70}
+        alt="png of Gold Mine"
+      />
+    ),
     cost: 100,
     prod_per_hour: 1,
     workers: 1,
     level: 1,
     unlock_level: 2,
-    maxWorkers: 1
+    maxWorkers: 1,
+    position: { x: 0, y: 0 },
+    boost: false,
+    maxCapacity: 200,
+    updateTime: new Date()
   },
   {
     id: 2,
-    name: 'Wood Collector',
-    img: <Image 
-    key='WoodCollecor'
-    src='/Elexir_Collector.png'
-    width={60}
-    height={70}
-    alt='png of Wood Collector'
-    />,
+    name: "Wood Collector",
+    img: (
+      <Image
+        key="WoodCollecor"
+        src="/Elexir_Collector.png"
+        width={60}
+        height={70}
+        alt="png of Wood Collector"
+      />
+    ),
     cost: 100,
     prod_per_hour: 1,
     workers: 1,
     level: 1,
     unlock_level: 1,
-    maxWorkers: 1
-  }
+    maxWorkers: 1,
+    position: { x: 0, y: 0 },
+    boost: false,
+    maxCapacity: 200,
+    updateTime: new Date()
+  },
+];
 
-]
-
-
-
-function addstructure(position: { x: number; y: number }, structure: number | null): void {
-  switch(structure){
+function addstructure(
+  position: { x: number; y: number },
+  structure: number | null
+): void {
+  switch (structure) {
     case 1:
-      glod_mine_Array.push({
-        id: glod_mine_Array.length,
-        position: { x: position.x, y: position.y },
-        });
-        break;
+      // glod_mine_Array.push({
+      //   id: glod_mine_Array.length,
+      //   position: { x: position.x, y: position.y },
+      // });
+      break;
     case 2:
       lumber_camp_Array.push({
-        id: lumber_camp_Array.length,   //ESTO HAY QUE CORREGIRLO A FUTURO
+        id: lumber_camp_Array.length, //ESTO HAY QUE CORREGIRLO A FUTURO
         position: { x: position.x, y: position.y },
-        });
-        break;
+        name: "Wood Collector",
+        img: (
+          <Image
+            key="WoodCollecor"
+            src="/Elexir_Collector.png"
+            width={60}
+            height={70}
+            alt="png of Wood Collector"
+          />
+        ),
+        cost: 100,
+        prod_per_hour: 1,
+        workers: 1,
+        level: 1,
+        unlock_level: 1,
+        maxWorkers: 1,
+        boost: false,
+        maxCapacity: 200,
+        updateTime: new Date()
+      });
+      break;
     case 3:
-      stone_mine_Array.push({
-        id: stone_mine_Array.length,
-        position: { x: position.x, y: position.y },
-        });
-        break;
+      barracs_Array.push({
+        //i need seba to check this
+        id: barracs_Array.length, //ESTO HAY QUE CORREGIRLO A FUTURO
+        name: 'Barracs',
+        cost: 5,
+        producing: '',
+        img: (
+          <Image
+            key="BattasImg"
+            src="/Barracs.png"
+            width={60}
+            height={70}
+            alt="png of the Barracs"
+          />
+        ),
+        prod_per_hour: 1,
+        workers: 1,
+        level: 1,
+        unlock_level: 1,
+        maxWorkers: 10,
+        maxCap: 5,
+        position: { x: position.x, y: position.y }
+      });
+      // stone_mine_Array.push({
+      //   id: stone_mine_Array.length,
+      //   position: { x: position.x, y: position.y },
+      // });
+      break;
   }
 }
