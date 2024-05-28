@@ -4,7 +4,8 @@ import axios, {AxiosError} from 'axios';
 import { FormEvent, useState } from 'react';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-
+import { messages } from '../utils/message';
+import { NextResponse } from 'next/server';
 
 function RegisterPage() {
 
@@ -35,10 +36,15 @@ function RegisterPage() {
     if (res?.ok) return router.push("/login")
   
     } catch(error){
-      console.log(error)
+      
       if (error instanceof AxiosError) {
         setError(error.response ?.data.message)
+        return NextResponse.json ({
+          error: messages.error.needProps
+            }
+          )
       }
+    
     }
   }
 
