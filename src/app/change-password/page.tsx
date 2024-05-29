@@ -15,7 +15,7 @@ export default function ChangePasswordPage() {
   const router = useRouter();
 
   const handleForgetChangedClick = () => {
-    router.push('/'); // Replace with your forget-password page path
+    router.push('/'); 
   };
   
   const changePassword = async (e: FormEvent<HTMLFormElement>) => {
@@ -43,30 +43,29 @@ export default function ChangePasswordPage() {
   
   return (
     <>
-      
-      <Form onSubmit={changePassword}>
-      <div className="w-full p-2 bg-black mb-4 text-white border border-white rounded-lg font-bold uppercase duration-200 hover:bg-gray-900 ">
-    
-        <Input 
-          placeholder="Ingresa tu nueva contraseña..."
-          label="Nueva Contraseña"
-          name="newPassword"
-          type="password"
-        />
-        <Input
-          placeholder="Repite tu nueva contraseña..."
-          label="Confirmar Nueva Contraseña"
-          name="confirmPassword"
-          type="password"
-        />
-      </div>
-      <EmailTemplate buttonUrl="/change-password" />
-      <button 
-          type="button" // Prevent form submission
-          onClick={ handleForgetChangedClick} // Handle click event
-          className="w-full p-2 bg-black mb-4 text-white border border-white rounded-lg font-bold uppercase duration-200 hover:bg-gray-300"
-        >Back to login</button>
-    </Form>
+    <main className="container mx-auto flex flex-col justify-center items-center min-h-screen bg-black">
+      <img src="/p11chad.svg" alt="p11" className='mb-5' style={{ width: '15%', height: 'auto' }}/>
+        <Form onSubmit={changePassword}>
+          <div className="w-full p-2 bg-white mb-4 text-black border border-white rounded-lg font-bold uppercase duration-200 bg-black">
+            <Input 
+              placeholder="Ingresa tu nueva contraseña:"
+              label="Nueva Contraseña"
+              name="newPassword"
+              type="password"
+            />
+            <Input
+              placeholder="Repite tu nueva contraseña"
+              label="Confirmar Nueva Contraseña"
+              name="confirmPassword"
+              type="password"
+            />
+          </div>
+          <EmailTemplate buttonUrl="/change-password" />
+          <button type="button" onClick={ handleForgetChangedClick} className="w-full p-2 bg-white mb-4 text-black border border-white rounded-lg font-bold uppercase duration-200 hover:bg-gray-300 mt-4">
+            Back to login
+          </button>
+        </Form>
+      </main>
     </>
   );
 }

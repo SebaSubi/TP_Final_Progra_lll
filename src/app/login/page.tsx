@@ -11,7 +11,7 @@ function LoginPage() {
   const router = useRouter();
 
   const handleForgetPasswordClick = () => {
-    router.push('/forget-password'); // Replace with your forget-password page path
+    router.push('/forget-password');
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -41,6 +41,11 @@ function LoginPage() {
   }
 }
 
+const handleRegisterClick = (e: React.MouseEvent) => {
+  e.preventDefault();
+  router.push('/register');
+}
+
   return (
       <main className="container mx-auto flex flex-col justify-center items-center bg-black">
         <h2 style={{textShadow: '3px 3px 2px rgba(255, 0, 0, 0.5)'}} className="text-5xl font-bold mb-6 text-center w-full text-red-500 mr-5"> LOGIN </h2>
@@ -64,14 +69,13 @@ function LoginPage() {
               className="w-full p-2 bg-black mb-4 text-white border border-white rounded-lg font-bold uppercase duration-200 hover:bg-gray-900">
               Login
           </button>
-          <button 
-          type="button" // Prevent form submission
-          onClick={handleForgetPasswordClick} // Handle click event
-          className="w-full p-2 bg-black mb-4 text-white border border-white rounded-lg font-bold uppercase duration-200 hover:bg-gray-900"
-        >
-          Forget password
-        </button>
-          {error && <p className="text-red-500 ">{error}</p>}
+          {error && <p className="text-red-500">{error}</p>}
+          <button type="button" className="text-1xl text-center text-white p-1 border border-white rounded-lg hover:bg-gray-900 mb-4">
+            <a href="/forget-password" onClick={handleForgetPasswordClick} className='text-red'>¿Forgot your password?</a>
+          </button>
+          <p className="text-1xl text-center text-white">
+            ¿Don't have an account? <a href="/register" onClick={handleRegisterClick} className="underline hover:text-red-900">Sign Up</a>
+          </p>
         </form>
         
         </div>

@@ -9,7 +9,7 @@ import mongoose from "mongoose"; // Import the 'mongoose' package
 
 
 interface BodyProps {
-  currentPassword: string;
+  
   newPassword: string;
   confirmPassword: string;
 }
@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
   try {
     const body: BodyProps = await request.json();
 
-    const { newPassword, confirmPassword, currentPassword } = body;
+    const { newPassword, confirmPassword } = body;
     
 
     // Validamos que esten todos los campos
@@ -30,7 +30,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Validamos que esten todos los campos
-    if (!currentPassword || !newPassword || !confirmPassword) {
+    if (!newPassword || !confirmPassword) {
       return NextResponse.json(
         { message: messages.error.needProps },
         { status: 400 }
@@ -75,14 +75,16 @@ export async function POST(request: NextRequest) {
         { status: 404 }
       );
     }
-
-    const passwordMatch = await bcrypt.compare(currentPassword, user.password);
+    
+    /*
+    const passwordMatch = await bcrypt.compare(newPassword, user.password);
     if (!passwordMatch) {
       return NextResponse.json(
         { message: "Wrong " },
         { status: 400 }
       );
     }
+    */
     
     // Validamos que la nueva contraseña sea igual a la confirmacion
     if (newPassword !== confirmPassword) {
@@ -112,4 +114,3 @@ export async function POST(request: NextRequest) {
     await mongoose.connection.close();
   }
 }
-

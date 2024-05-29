@@ -4,9 +4,7 @@ import Image from "next/image";
 import Placer from "./components/objectPlacer";
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from 'next/navigation';
-
 import { signOut } from 'next-auth/react';
-
 import {
   glod_mine_Array,
   lumber_camp_Array,
@@ -22,6 +20,7 @@ import Progressbar, { units } from "./components/progressbar";
 import Units from "../collectors/objects/Units";
 import { Boosts } from "../objects/boost";
 import BarracsMenu from "./components/barracsMenu";
+import MessageSection from "./components/messages";
 // import BarracsMenu from "./components/barracsMenu";
 
 const boost: Boosts[] = [
@@ -81,6 +80,7 @@ export default function Home() {
   const [maxTraining, setMaxTraining] = useState(false)
   const [appliedBoost, setAppliedBoost] = useState<Boosts | null>(null)
   const [barracsMenu, setBarracsMenu] = useState(false)
+  const [showMessages, setShowMessages] = useState(true);
   // console.log(appliedBoost)
 
   
@@ -144,6 +144,15 @@ export default function Home() {
       : 
       null}
 
+      {showMessages ? 
+        <div className="absolute flex flex-col justify-center items-center top-0 right-0 bottom-0 left-0">
+          <button onClick={() => setShowMessages(!showMessages)}>
+            {showMessages ? 'Cerrar mensajes' : 'Abrir mensajes'}
+          </button>
+          {showMessages && <MessageSection />}
+        </div>
+      : null}
+
       {progressBar ? 
       <Progressbar 
         running={progressBar} 
@@ -167,7 +176,6 @@ export default function Home() {
           progressBar={progressBar}
         /> 
       : null}
-      
 
       <Placer appearence={placerApear} structure={structure} />
       <MapBuildings 
@@ -194,6 +202,7 @@ export default function Home() {
         }}
         className="inset-0 w-full h-full object-cover"
       />
+
       {/* <div className="absolute top-0 left-1/2 transform -translate-x-1/2 mt-4">
         <button className="px-6 py-2 bg-black text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75"
         onClick={() => {setBarracsMenu(barracs_Array.length? !barracsMenu : false)}}

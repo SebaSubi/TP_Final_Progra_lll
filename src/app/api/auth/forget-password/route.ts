@@ -5,7 +5,7 @@ import { Resend } from "resend";
 import EmailTemplate from "@/components/EmailTemplate";
 import jwt from "jsonwebtoken";
 
-const resend = new Resend("re_BFTZrEhq_C5ZBgXytECB2bW6EFFuTaLDd");
+const resend = new Resend("re_THzsBuHx_P7PFe3rQXT37LXdDppW2StsV");
 
 export async function POST(request: NextRequest) {
   try {
@@ -16,7 +16,6 @@ export async function POST(request: NextRequest) {
     await connect();
     const userFind = await User.findOne({ email });
 
-    // Validar que exista el usuario
     if (!userFind) {
       return NextResponse.json(
         { message: "error" },
@@ -29,7 +28,9 @@ export async function POST(request: NextRequest) {
       userId: userFind._id,
     };
 
-    const token = jwt.sign({ data: tokenData }, process.env.JWT_SECRET, {
+    const secretKey = "secreto";
+
+    const token = jwt.sign({ data: tokenData }, secretKey, {
       expiresIn: 86400,
     });
 

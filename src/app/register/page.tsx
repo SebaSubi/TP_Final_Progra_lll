@@ -44,7 +44,7 @@ function RegisterPage() {
       
       if (error instanceof AxiosError) {
         setError(error.response ?.data.message)
-        return NextResponse.json ({
+        return Response.json ({
           error: messages.error.needProps
             }
           )
@@ -61,7 +61,7 @@ function RegisterPage() {
   return (
     <main className="container mx-auto flex flex-col justify-center items-center min-h-screen bg-black">
       <img src="/p11chad.svg" alt="p11" style={{ width: '15%', height: 'auto' }}/>
-      <h2 style={{textShadow: '3px 3px 2px rgba(255, 0, 0, 0.5)'}} className="text-5xl font-bold mb-6 text-center w-full text-red-500 mr-5 mt-10"> SIGN UP </h2>
+      <h2 style={{textShadow: '3px 3px 2px rgba(255, 0, 0, 0.5)'}} className="text-5xl font-bold mb-6 text-center w-full text-red-500 mr-5"> SIGN UP </h2>
       <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', maxWidth: '100%', margin: '0 auto' }}>
         <img src="/barbarianKingDef.svg" style={{ maxWidth: '35%', height: 'auto'}} alt="Barbarian King" />
           <div className="flex justify-center items-center space-x-20" style={{ width: '100%', maxWidth: '100%', height:'70%', maxHeight: '70%' }}>
@@ -94,17 +94,17 @@ function RegisterPage() {
                 <button 
                   className="w-full p-2 bg-black text-white border border-white rounded-lg font-bold uppercase duration-200 hover:bg-gray-900 mb-4">
                     SIGN-UP
-                  </button>
+                </button>
                 {success && <p className="text-green-500">{success}</p>}
                 {error && <p className="text-red-500">{error}</p>}
+                <p className="text-1xl text-center text-white">
+                 ¿Already have an account? <a href="/register" onClick={handleRegisterClick} className="underline hover:text-red-900">Login</a>
+                </p>
               </form>
             </div>
           </div>
         <img src="/newQueenArcher.svg" style={{ maxWidth: '30%', height: 'auto', marginLeft: 50}} alt="Queen Archer" />
       </div>
-      <p className="text-2xl text-center text-white ml-10">
-        Go back <a href="/register" onClick={handleRegisterClick} className="underline hover:text-red-900">Home</a>
-      </p>
     </main>
   );
 }
