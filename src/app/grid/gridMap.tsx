@@ -1,8 +1,10 @@
 "use client";
+import { useRef } from "react";
 import Place from "./place";
 
 export default function GridMap() {
   //logic for the creation of the grid map
+  const placing = useRef(false);
   const places: string[][] = [];
   for (let i = 0; i < 20; i++) {
     places.push([]);
@@ -11,22 +13,37 @@ export default function GridMap() {
     }
   }
 
+  const handleClick = (rowIndex: number, colIndex: number) => {
+    alert(`You clicked row ${rowIndex + 1}, column ${colIndex + 1}`);
+  };
+
   return (
-    <div className="flex justify-center items-center h-screen ">
-      <div className="grid grid-cols-20 grid-rows-20 gap-[0.67px] ">
-        {places.map((row, i) =>
-          row.map((place, j) => (
-            // <div
-            //   key={`${i}${j}`}
-            //   className="bg-green-600 flex items-center justify-center h-10 w-10"
-            // >
-            //   {/* <div key={`${i}${j}`} className="bg-green-500 h-10 w-10"> */}
-            //   {place}
-            // </div>
-            <Place key={`${i}${j}`} occupied={false} text={place} />
-          ))
-        )}
+    <>
+      <button
+        className="bg-red-500 h-8"
+        onClick={() => {
+          placing.current = !placing.current;
+          console.log(placing.current);
+        }}
+      >
+        place something :)
+      </button>
+      <div className="flex justify-center items-center h-screen ">
+        <div className="grid grid-cols-20 grid-rows-20 gap-[0.67px] ">
+          {places.map((row, i) =>
+            row.map((place, j) => (
+              // here we would compare if the starting block is water and if its next to
+              <div
+                className="h-10 w-10"
+                key={`${i}${j}`}
+                // onClick={() => handleClick(i, j)}
+              >
+                <Place occupied={false} text={place} BuildMode={placing} />
+              </div>
+            ))
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
