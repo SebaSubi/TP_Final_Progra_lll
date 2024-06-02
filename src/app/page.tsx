@@ -1,37 +1,18 @@
-import Image from "next/image";
-import Progressbar from "./construccion_logic/components/progressbar";
-// import GoldMine from "./components/GoldMine";
-// import SideNav from "./construccion/mode/constructionBar";
+'use client'
 
-const getUser = async() => {
-  try {
-    const res = await fetch('http://localhost:3000/api/user_instance', { cache: 'no-store' }) //Fetches the information, and sets the cache to no-store*
-    if(!res.ok) {
-      throw new Error("failed to fetch data")
-    } //We check if the response is ok\
-    console.log(res)
-    return res.json()
+import LoginPage from "./login/page";
 
-  } catch (error) {
-    console.log("Error loading topics:", error)
-  }
-}
-//*The fetch normallyi will store the fist fetch in a cache, so if we update data and do the fetch, the updated data will not show
-
-
-export default async function Home() {
-
-  const {instance: users} = await getUser(); // Renaming instance cause i dirint feel like rewriting the html code
-
+export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      {users.map((t: any, index: any) => (
-        <div key={index}>
-          The users are: {t.fullname} <br/>
-          thir mail is: {t.email}
-        </div>
-      ))}
-  
+    <main className="container mx-auto flex flex-col justify-center items-center min-h-screen bg-black">
+      <img src="/p11chad.svg" alt="p11" style={{ width: '15%', height: 'auto' }}/>
+      <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', maxWidth: '100%', margin: '0 auto' }}>
+        <img src="/barbarianKingDef.svg" style={{ maxWidth: '35%', height: 'auto'}} alt="Barbarian King" />
+          <div className="flex justify-center items-center space-x-20 mt-20" style={{ width: '100%', maxWidth: '100%', height:'70%', maxHeight: '70%' }}>
+            <LoginPage />
+          </div>
+        <img src="/newQueenArcher.svg" style={{ maxWidth: '30%', height: 'auto', marginLeft: 60 }} alt="Queen Archer" />
+      </div>
     </main>
   );
 }

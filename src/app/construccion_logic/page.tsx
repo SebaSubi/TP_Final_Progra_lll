@@ -3,7 +3,8 @@
 import Image from "next/image";
 import Placer from "./components/objectPlacer";
 import { useState, useEffect, useRef } from "react";
-
+import { useRouter } from 'next/navigation';
+import { signOut } from 'next-auth/react';
 import {
   glod_mine_Array,
   lumber_camp_Array,
@@ -19,9 +20,11 @@ import Progressbar, { units } from "./components/progressbar";
 import Units from "../collectors/objects/Units";
 import { Boosts } from "../objects/boost";
 import BarracsMenu from "./components/barracsMenu";
+// import BarracsMenu from "./components/barracsMenu";
 import { getUserBuildings, postUserBuildings } from "../server/buildings";
 import userBuildings from "../models/userBuildings";
-// import BarracsMenu from "./components/barracsMenu";
+import MessageSection from "./components/messages";
+import InboxSection from "./components/buzon";
 
 const boost: Boosts[] = [
   {
@@ -67,6 +70,8 @@ export const user: User = {
   workers: 3
 };
 
+
+
 export interface placerApear {
   beingPlaced: boolean,
   placed: boolean
@@ -84,7 +89,12 @@ export default function Home() {
   const [appliedBoost, setAppliedBoost] = useState<Boosts | null>(null)
   const [barracsMenu, setBarracsMenu] = useState(false)
   const [existingBuildings, setExistingBuildings] = useState<any[]>([])
-  // const [placesBuilding]
+
+  const router = useRouter();
+
+  const handleSignOut = async () => {
+    await signOut({ callbackUrl: 'http://localhost:3000' });
+  };
 
 
   useEffect(() => {
@@ -95,16 +105,13 @@ export default function Home() {
     fetchUserBuildings();
   }, []);
 
-
   useEffect(() => {
     const handleMouseMove = (event: MouseEvent) => {
       cursorPosition.current = { x: event.clientX, y: event.clientY };
     };
 
-    // Agrega el event listener cuando el componente se monta
     document.addEventListener("mousemove", handleMouseMove);
 
-    // Limpia el event listener cuando el componente se desmonta
     return () => {
       document.removeEventListener("mousemove", handleMouseMove);
     };
@@ -117,10 +124,18 @@ export default function Home() {
     }
   }, [structure]);
 
-  
-  // console.log(time)
-  return (
+    return (
     <main className="flex min-h-screen items-center justify-center relative">
+        <div className="absolute bottom-0 right-0 m-4">
+          <button className="p-2 bg-black text-white border border-white rounded-lg font-bold uppercase duration-200 hover:bg-gray-900 h-10" onClick={handleSignOut}>
+              Logout
+          </button>
+      </div>
+
+      <MessageSection/>
+      <InboxSection/>
+
+      
       {barracs_Array.length ? 
       <TrainingMenu 
           user={user} 
@@ -128,7 +143,7 @@ export default function Home() {
           setUnit={setUnit} 
           setQuantity={setQuantity} 
           quantity={quantity} 
-          />
+      />
       : 
       null}
 
@@ -156,7 +171,6 @@ export default function Home() {
           progressBar={progressBar}
         /> 
       : null}
-      
 
       <Placer appearence={placerApear} structure={structure} />
       {existingBuildings.length? existingBuildings.map((building, index) => (
@@ -205,6 +219,13 @@ export default function Home() {
         }}
         className="inset-0 w-full h-full object-cover"
       />
+      {/* <div className="absolute top-0 left-1/2 transform -translate-x-1/2 mt-4">
+        <button className="px-6 py-2 bg-black text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75"
+        onClick={() => {setBarracsMenu(barracs_Array.length? !barracsMenu : false)}}
+        >
+            Barracs
+        </button>
+      </div> */}
       
     </main>
   );
