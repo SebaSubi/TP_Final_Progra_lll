@@ -55,11 +55,12 @@ const MessageSection = () => {
 
     useEffect(() => {
         const fetchMessages = async () => {
-            const messages = await getMessages();
-            setMessages(messages);
+            const allMessages = await getMessages();
+            const userMessages = allMessages.filter((msg: Message) => msg.author === (session?.user as any)?.fullname);
+            setMessages(userMessages);
         };
         fetchMessages();
-    }, []);
+    }, [session]);
 
     const handleSendMessage = async () => {
         if (message.length < 1 || message.length > 50) {
