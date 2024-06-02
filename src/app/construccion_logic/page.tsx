@@ -173,7 +173,7 @@ export default function Home() {
       : null}
 
       <Placer appearence={placerApear} structure={structure} />
-      {existingBuildings.length? existingBuildings.map((building, index) => (
+      {/* {existingBuildings.length? existingBuildings.map((building, index) => (
         <MapBuildings 
         key={index}
         setBarracsMenu={setBarracsMenu}
@@ -185,15 +185,15 @@ export default function Home() {
       />
       )):
       null
-      }
-      <MapBuildings 
+      } */}
+      {/* <MapBuildings 
         setBarracsMenu={setBarracsMenu}
         barracMenu={barracsMenu}
         building={cursorPosition}
         placed={placerApear}
         structure={structure}
         // setPlacerApear={setPlacerApear}
-      />
+      /> */}
       <Image
         src="/Map_Classic_Scenery.jpg"
         alt="clash_map"
