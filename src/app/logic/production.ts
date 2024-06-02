@@ -3,9 +3,9 @@ import Collectors from "../collectors/objects/collector";
 import { cookies } from "next/headers";
 
 
-export function updateData(collector: Collectors) {
+export function updateData(collector: any) {
   const currentTime: Date = new Date()
-  console.log("This is the current time: " + currentTime + "the collector time is: " + collector.updateTime)
+  console.log("This is the current time: " + currentTime + "the collector time is: " + collector.lastCollected)
 
   const timeDifference: number = currentTime.getMinutes() - collector.updateTime.getMinutes()
   console.log("The time difference is: " + timeDifference)

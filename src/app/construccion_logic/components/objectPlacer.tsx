@@ -8,7 +8,7 @@ import I4 from "../../public/Level4_Elixir.png";
 
 export default function Placer(props: {
   appearence: boolean;
-  structure: number | null;
+  structure: any;
 }) {
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
   const [visibleBuildingDetails, setvisibleBuildingDetails] = useState(false);
@@ -76,7 +76,7 @@ export default function Placer(props: {
           <div className="flex flex-col">
             <Image
               className="realtive justify-center items-center z-20"
-              src={`/${img_prop}`}
+              src={props.structure.img}
               width={40}
               height={50}
               alt="structure to place"

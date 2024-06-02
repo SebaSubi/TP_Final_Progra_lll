@@ -2,6 +2,10 @@ import { connect } from '@/app/libs/mongodb'
 import UserInstance from '@/app/models/instance';
 import { NextRequest, NextResponse } from 'next/server'
 
+export interface Params {
+  id: string;
+}
+
 
 export async function POST(request: NextRequest) {
   const {fullname, email, password} = await request.json()
@@ -22,3 +26,4 @@ export async function DELETE(request: NextRequest) {
   await UserInstance.findByIdAndDelete(id);
   return NextResponse.json({ message: "instance Deleted"}, { status: 200 })
 }
+
