@@ -8,9 +8,8 @@ if (!MONGODB_URI) {
 
 export const connect = async () => {
   try {
-  //Respuesta de conexión a la base de datos
   const {connection} = await mongoose.connect(MONGODB_URI);
-  //Veo si está conectado con el valor 1
+
   if(connection.readyState === 1){
     console.log("Connected to MongoDB")
     return Promise.resolve(true);
@@ -20,6 +19,3 @@ export const connect = async () => {
     return Promise.reject(error);
   }
 }
-
-
-

@@ -21,6 +21,7 @@ import Units from "../collectors/objects/Units";
 import { Boosts } from "../objects/boost";
 import BarracsMenu from "./components/barracsMenu";
 import MessageSection from "./components/messages";
+// import MailboxSection from "./components/buzon";
 // import BarracsMenu from "./components/barracsMenu";
 
 const boost: Boosts[] = [
@@ -80,29 +81,19 @@ export default function Home() {
   const [maxTraining, setMaxTraining] = useState(false)
   const [appliedBoost, setAppliedBoost] = useState<Boosts | null>(null)
   const [barracsMenu, setBarracsMenu] = useState(false)
-  const [showMessages, setShowMessages] = useState(true);
-  // console.log(appliedBoost)
-
-  
-  // let time = -1;
-  //const [timer, setTimer] = useState
-
   const router = useRouter();
 
   const handleSignOut = async () => {
     await signOut({ callbackUrl: 'http://localhost:3000' });
   };
 
-  // console.log(glod_mine_Array);
   useEffect(() => {
     const handleMouseMove = (event: MouseEvent) => {
       cursorPosition.current = { x: event.clientX, y: event.clientY };
     };
 
-    // Agrega el event listener cuando el componente se monta
     document.addEventListener("mousemove", handleMouseMove);
 
-    // Limpia el event listener cuando el componente se desmonta
     return () => {
       document.removeEventListener("mousemove", handleMouseMove);
     };
@@ -115,9 +106,7 @@ export default function Home() {
     }
   }, [structure]);
 
-  
-  // console.log(time)
-  return (
+    return (
     <main className="flex min-h-screen items-center justify-center relative">
       {/* <button
         className="absolute bg-blue-500 text-white px-4 py-2 rounded-md"
@@ -128,10 +117,56 @@ export default function Home() {
       >
         Toggle Cursor Marker
       </button> */}
+      {/* <div className="absolute flex flex-col justify-center items-center"> 
+        <button className="p-2 bg-black text-white border border-white rounded-lg font-bold uppercase duration-200 hover:bg-gray-900 h-10" onClick={handleSignOut}>
+          Logout
+        </button>
+      </div> */}
       
-      <button className="bg-zinc-800 px-4 py-2 block mb-2" onClick={handleSignOut}>
-        Logout
-      </button>
+      <div className="absolute bottom-0 right-0 m-4">
+          <button className="p-2 bg-black text-white border border-white rounded-lg font-bold uppercase duration-200 hover:bg-gray-900 h-10" onClick={handleSignOut}>
+              Logout
+          </button>
+      </div>
+
+      {/* <button className="bg-zinc-800 px-4 py-2 block mb-2" onClick={() => setShowMessages(!showMessages)}>
+        Mensajes
+        
+      </button> */}
+
+      <MessageSection/>
+
+      {/* {showMessages ?
+        <MessageSection/>
+      : null} */}
+
+      {/* {showMessages ?
+        <div className="bg-zinc-800 px-4 py-2 block mb-2">
+          <button onClick={() => setShowMessages(!showMessages)}>
+            {showMessages ? 'Close Messages' : 'Open Messages'}
+          </button>
+          {showMessages && <MessageSection />}
+        </div>
+      : null} */}
+      
+      {/* <div className="fixed bottom-0 h-[100px] w-screen m-0 flex flex-row bg-gray-800 shadow-md transition-all duration-300">
+          <button className="bg-zinc-800 px-4 py-2 flex mb-2" onClick={() => setShowMessages(true)}>
+              Messages
+          </button>
+      </div>  */}
+
+      {/* {showMessages ? 
+          <div className="absolute flex flex-col justify-center items-center top-0 right-0 bottom-0 left-0">
+              <button onClick={() => setShowMessages(!showMessages)}>
+                  {showMessages ? 'Close msg' : 'Open msg'}
+              </button>
+              {showMessages && 
+                  <div className="absolute flex-col justify-between items-center">
+                      <MessageSection />
+                  </div>
+              }
+          </div>
+      : null} */}
 
       {barracs_Array.length ? 
       <TrainingMenu 
@@ -140,18 +175,9 @@ export default function Home() {
           setUnit={setUnit} 
           setQuantity={setQuantity} 
           quantity={quantity} 
-          />
+      />
       : 
       null}
-
-      {showMessages ? 
-        <div className="absolute flex flex-col justify-center items-center top-0 right-0 bottom-0 left-0">
-          <button onClick={() => setShowMessages(!showMessages)}>
-            {showMessages ? 'Cerrar mensajes' : 'Abrir mensajes'}
-          </button>
-          {showMessages && <MessageSection />}
-        </div>
-      : null}
 
       {progressBar ? 
       <Progressbar 

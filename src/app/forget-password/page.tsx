@@ -33,6 +33,8 @@ function ForgetPasswordPage() {
   return (
     <main className="container mx-auto flex flex-col justify-center items-center min-h-screen bg-black">
       <img src="/p11chad.svg" alt="p11" className='mb-5' style={{ width: '15%', height: 'auto' }}/>
+      <h2 style={{textShadow: '3px 3px 2px rgba(255, 0, 0, 0.5)'}} className="text-5xl font-bold mb-6 text-center w-full text-red-500 mr-5"> SOS BLDO ?? </h2>
+      <h2 style={{textShadow: '3px 3px 2px rgba(255, 0, 0, 0.5)'}} className="text-2xl font-bold mb-6 text-center w-full text-red-500 mr-5"> COMO TE LA VAS A OLVIDAR GIL </h2>
       <div className='justify-center flex items-center'>
         <form onSubmit={handleSubmit} className="flex flex-col items-center p-4 border border-white rounded-lg">
           <h2 style={{textShadow: '3px 3px 2px rgba(255, 0, 0, 0.5)'}} className="text-2xl font-bold mb-6 text-center w-full text-red-500 mr-5"> Reset your Password </h2>
