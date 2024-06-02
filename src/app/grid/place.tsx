@@ -1,24 +1,28 @@
 import { useState, useEffect, memo, MutableRefObject } from "react";
 import Image from "next/image";
+import { mapPlace, DefaultMap } from "./mapData";
 
 function Place({
-  occupied,
-  text,
+  mapPlace,
+  position,
   BuildMode,
 }: {
-  occupied: boolean;
-  text: string;
+  mapPlace: mapPlace;
+  position: { row: number; colomn: number };
   BuildMode: MutableRefObject<boolean>;
 }) {
-  const [isOccupied, setIsOccupied] = useState(occupied);
+  const [isOccupied, setIsOccupied] = useState(mapPlace.occupied);
   const [hover, setHover] = useState(false);
 
   useEffect(() => {
-    setIsOccupied(occupied);
-  }, [occupied]);
+    setIsOccupied(mapPlace.occupied);
+  }, [mapPlace.occupied, mapPlace.structureType, mapPlace.strutctureID]);
 
   const handleClick = () => {
-    if (BuildMode.current && !occupied) setIsOccupied(true);
+    if (BuildMode.current && !isOccupied) {
+      // setIsOccupied(true);   //this is not really necesary since the prop will automaticaly rerender the component because we're modifing the orignal array
+      DefaultMap[position.row][position.colomn].occupied = true;
+    }
   };
 
   return (
@@ -37,7 +41,7 @@ function Place({
         onMouseOver={() => setHover(true)}
         onMouseLeave={() => setHover(false)}
       >
-        {text}
+        {mapPlace.text}
       </div>
 
       {/* <Image    //this is going tio be the building i the place
