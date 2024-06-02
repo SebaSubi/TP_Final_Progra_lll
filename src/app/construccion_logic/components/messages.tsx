@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 
+
+
 interface Message {
     text: string;
     author: string;
@@ -10,6 +12,7 @@ interface Message {
 }
 
 const sendMessage = async (message: { text: string; author: string; timestamp: string; }) => {
+    console.log(message);
     const response = await fetch('/api/messages', {
         method: 'POST',
         headers: {
@@ -32,11 +35,13 @@ const getMessages = async () => {
         if(!response.ok) {
             throw new Error('Error fetching messages');
         }
-
+            
         const data = await response.json();
+        console.log(data); // Print the data
         return data;
     } catch (error) {
         console.error(error);
+        return { error: 'Error fetching messages' }; // Return an error message
     }
 }
 
@@ -44,9 +49,9 @@ const MessageSection = () => {
     const { data: session } = useSession();
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState<Message[]>([]);
+    const [recipient, setRecipient] = useState('');
     const [confirmation, setConfirmation] = useState('');
     const [showMessages, setShowMessages] = useState(false);
-    // const [userId, setUserId] = useState('defaultUserId');
 
     useEffect(() => {
         const fetchMessages = async () => {
@@ -65,9 +70,9 @@ const MessageSection = () => {
 
         const newMessage = {
             text: message,
-            author: session?.user?.name || 'Anonymous',
+            author: (session?.user as any)?.fullname || 'Anonymous', // Aserción de tipo aquí
             attachments: [],
-            recipient: 'Admin',
+            recipient: recipient || 'Admin',
             timestamp: new Date().toLocaleTimeString(),
         };
 
@@ -115,10 +120,18 @@ const MessageSection = () => {
                                 onChange={(e) => setMessage(e.target.value)} 
                                 placeholder="Write your msg here..."
                                 className="text-black p-2 mb-4 w-full border border-black rounded-lg font-bold mt-2"
-                                style={{ backgroundColor: 'transparent', color: 'black'}}
+                                style={{ backgroundColor: 'gray', color: 'black'}}
+                            />
+                            {confirmation && <p style={{ color: 'black', textAlign: 'center', fontWeight: 'bold' }}>{confirmation}</p>}
+                            <input 
+                                type="text"
+                                value={recipient} 
+                                onChange={(e) => setRecipient(e.target.value)} 
+                                placeholder="Send To.."
+                                className="text-black p-2 mb-4 w-full border border-black rounded-lg font-bold mt-2"
+                                style={{ backgroundColor: 'gray', color: 'black'}}
                             />
                             <button onClick={handleSendMessage} className="w-full p-1 text-black border border-black rounded-lg font-bold uppercase">Enviar</button>
-                            {confirmation && <p style={{ color: 'black', textAlign: 'center', fontWeight: 'bold' }}>{confirmation}</p>}
                         </div>
                     </div>
                 </div>

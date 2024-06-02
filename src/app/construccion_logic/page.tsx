@@ -21,6 +21,7 @@ import Units from "../collectors/objects/Units";
 import { Boosts } from "../objects/boost";
 import BarracsMenu from "./components/barracsMenu";
 import MessageSection from "./components/messages";
+import InboxSection from "./components/buzon";
 // import MailboxSection from "./components/buzon";
 // import BarracsMenu from "./components/barracsMenu";
 
@@ -135,6 +136,8 @@ export default function Home() {
       </button> */}
 
       <MessageSection/>
+      <InboxSection/>
+
 
       {/* {showMessages ?
         <MessageSection/>
