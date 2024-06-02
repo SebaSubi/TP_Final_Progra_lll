@@ -8,5 +8,6 @@ export interface User {
   level: number,
   boosts?: Boosts[]
   workers: number; 
+  fullname?: string,
 }
 

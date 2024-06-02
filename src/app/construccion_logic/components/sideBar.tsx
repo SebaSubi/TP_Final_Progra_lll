@@ -151,7 +151,7 @@ export default function SideBar({
   return (
     <main>
       <div
-        className={`fixed top-0 left-[-100px] h-screen w-[100px] m-0 flex flex-col bg-gray-800 shadow-md  transition-all duration-300 ${
+        className={`fixed top-0 left-[-100px] h-screen w-[100px] m-0 flex flex-col bg-gray-800 shadow-md  transition-all duration-300 border border-black ${
           sideBar ? "translate-x-0" : "translate-x-full"
         }`}
       >
@@ -161,7 +161,7 @@ export default function SideBar({
       </div>
       <div>
         <button
-          className={` fixed top-0 left-[5px] transition-all duration-300 ${
+          className={` fixed top-0 left-[5px] transition-all duration-300 p-1 bg-black text-white border border-white rounded-lg font-bold mt-2 ${
             sideBar ? "translate-x-0" : "translate-x-[100px]"
           }`}
           onClick={() => {
