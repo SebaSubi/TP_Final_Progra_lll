@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
-
-
+import { User } from '@/app/objects/user';
+// import io from 'socket.io-client';
 
 interface Message {
     text: string;
@@ -9,6 +9,7 @@ interface Message {
     attachments: string[];
     recipient: string;
     timestamp: string;
+    sentAt: string;
 }
 
 const sendMessage = async (message: { text: string; author: string; timestamp: string; }) => {
@@ -37,13 +38,29 @@ const getMessages = async () => {
         }
             
         const data = await response.json();
-        console.log(data); // Print the data
+        console.log(data); 
         return data;
     } catch (error) {
         console.error(error);
-        return { error: 'Error fetching messages' }; // Return an error message
+        return { error: 'Error fetching messages' }; 
     }
 }
+
+const getUsers = async () => {
+    try {
+      const response = await fetch('/api/users');
+  
+      if (!response.ok) {
+        throw new Error('Error fetching users');
+      }
+  
+      const data = await response.json();
+      return data.users; // assuming the API response is { users: [...] }
+    } catch (error) {
+      console.error(error);
+      return { error: 'Error fetching users' };
+    }
+  };
 
 const MessageSection = () => {
     const { data: session } = useSession();
@@ -52,6 +69,55 @@ const MessageSection = () => {
     const [recipient, setRecipient] = useState('');
     const [confirmation, setConfirmation] = useState('');
     const [showMessages, setShowMessages] = useState(false);
+    const [users, setUsers] = useState<User[]>([]);
+
+    // useEffect(() => {
+    //     Notification.requestPermission().then((permission) => {
+    //         if (permission === 'granted') {
+    //             console.log('Notification permission granted.');
+    //         } else {
+    //             console.log('Unable to get permission to notify.');
+    //         }
+    //     });
+    // }, []);
+
+    // useEffect(() => {
+    //     const socket = io('http://localhost:3000');
+    //     socket.on('new message', (msg) => {
+    //         setMessages(prevMessages => [...prevMessages, msg]);
+    
+    //         // Mostrar una notificación
+    //         if (Notification.permission === 'granted') {
+    //             new Notification('Nuevo mensaje', { body: msg.text });
+    //         }
+    //     });
+    
+    //     return () => {
+    //         socket.disconnect();
+    //     };
+    // }, []);
+
+    useEffect(() => {
+        getUsers().then(data => {
+          if (data.error) {
+            console.error(data.error);
+          } else {
+            setUsers(data);
+          }
+        });
+      }, []);
+
+    useEffect(() => {
+        fetch('http://localhost:3000/api/users')
+            .then(response => response.json())
+            .then(data => {
+                if (Array.isArray(data)) {
+                    setUsers(data);
+                } else {
+                    console.error('Data from API is not an array:', data);
+                }
+            });
+    }, []);
 
     useEffect(() => {
         const fetchMessages = async () => {
@@ -60,7 +126,7 @@ const MessageSection = () => {
             setMessages(userMessages);
         };
         fetchMessages();
-    }, [session]);
+    }, [session]);
 
     const handleSendMessage = async () => {
         if (message.length < 1 || message.length > 50) {
@@ -71,14 +137,17 @@ const MessageSection = () => {
 
         const newMessage = {
             text: message,
-            author: (session?.user as any)?.fullname || 'Anonymous', // Aserción de tipo aquí
+            author: (session?.user as any)?.fullname || 'Anonymous', 
             attachments: [],
             recipient: recipient || 'Admin',
             timestamp: new Date().toLocaleTimeString(),
+            sentAt: new Date().toISOString(),
         };
 
         try {
             await sendMessage(newMessage);
+            // const socket = io('http://localhost:3000');
+            // socket.emit('new message', newMessage);
             setMessages(prevMessages => [...prevMessages, newMessage]);
             setMessage('');
             setConfirmation('Mensaje enviado');
@@ -105,13 +174,13 @@ const MessageSection = () => {
                 <div className="relative w-full">
                     <img src="/cart.jpg" alt="Background" className="w-full h-auto object-cover rounded-lg" style={{ maxHeight: '600px' }} />
                     <div className="absolute inset-0 flex flex-col items-center justify-center p-4 overflow-hidden">
-                        <div className="w-full max-w-lg bg-transparent p-4 rounded-lg shadow-md" style={{ maxHeight: '500px', overflowY: 'auto' }}>
-                            <div className="message-section" style={{ overflowY: 'auto', maxHeight: '300px', marginTop: '0.8rem', scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-                            <h2 style={{textShadow: '3px 3px 2px rgba(255, 0, 0, 0.5)'}} className="text-5xl font-bold mb-6 text-center w-full text-red-500 mr-5"> MESSAGES </h2>
+                        <div className="w-full max-w-lg bg-transparent p-4 rounded-lg shadow-md" style={{ maxHeight: '500px', overflowY: 'auto', scrollbarWidth: 'none', scrollbarColor: 'transparent transparent', }}>
+                            <div className="message-section" style={{ overflowY: 'auto', maxHeight: '300px', marginTop: '0.8rem', scrollbarWidth: 'none', scrollbarColor: 'transparent transparent', msOverflowStyle: 'none' }}>
+                            <h2 style={{textShadow: '3px 3px 2px rgba(255, 0, 0, 0.5)'}} className="text-4xl font-bold mb-6 text-center w-full text-red-500 mr-5"> MESSAGES </h2>
                                 {messages.map((msg, index) => (
                                     <div key={index} style={{ border: '1px solid black', padding: '5px', margin: '5px', borderRadius: '5px' }}>
                                         <p style={{ fontSize: '20px', fontWeight: 'bold', color: 'black' }}>{msg.text}</p>
-                                        <p style={{ fontSize: '12px', color: 'black' }}>{msg.timestamp}</p>
+                                        <p style={{ fontSize: '12px', color: 'black' }}>Sent at: {new Date(msg.sentAt).toLocaleString()}</p>
                                     </div>
                                 ))}
                             </div>
@@ -121,18 +190,30 @@ const MessageSection = () => {
                                 onChange={(e) => setMessage(e.target.value)} 
                                 placeholder="Write your msg here..."
                                 className="text-black p-2 mb-4 w-full border border-black rounded-lg font-bold mt-2"
-                                style={{ backgroundColor: 'gray', color: 'black'}}
+                                style={{ backgroundColor: 'rgba(200, 200, 200, 0.6)', color: 'black'}}
                             />
-                            {confirmation && <p style={{ color: 'black', textAlign: 'center', fontWeight: 'bold' }}>{confirmation}</p>}
-                            <input 
+                            {/* <input 
                                 type="text"
                                 value={recipient} 
                                 onChange={(e) => setRecipient(e.target.value)} 
                                 placeholder="Send To.."
-                                className="text-black p-2 mb-4 w-full border border-black rounded-lg font-bold mt-2"
-                                style={{ backgroundColor: 'gray', color: 'black'}}
-                            />
-                            <button onClick={handleSendMessage} className="w-full p-1 text-black border border-black rounded-lg font-bold uppercase">Enviar</button>
+                                className="text-black p-2 mb-4 w-full border border-black rounded-lg font-bold"
+                                style={{ backgroundColor: 'rgba(200, 200, 200, 0.6)', color: 'black'}}
+                            /> */}
+                            <select 
+                                value={recipient} 
+                                onChange={(e) => setRecipient(e.target.value)} 
+                                className="text-black p-2 mb-4 w-full border border-black rounded-lg font-bold"
+                                style={{ backgroundColor: 'rgba(200, 200, 200, 0.6)', color: 'black'}}
+                            >
+                                {users.map(user => (
+                                <option key={user.id} value={user.fullname || user.username}>
+                                    {user.fullname || user.username}
+                                </option>
+                                ))}
+                            </select>
+                            <button onClick={handleSendMessage} className="w-full p-1 text-black border border-black rounded-lg font-bold uppercase ">Enviar</button>
+                            {confirmation && <p style={{ color: 'black', textAlign: 'center', fontWeight: 'bold' }}>{confirmation}</p>}
                         </div>
                     </div>
                 </div>

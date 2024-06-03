@@ -84,6 +84,8 @@ export default function Home() {
   const [barracsMenu, setBarracsMenu] = useState(false)
   const router = useRouter();
 
+  // const socket = io('http://localhost:3000');
+
   const handleSignOut = async () => {
     await signOut({ callbackUrl: 'http://localhost:3000' });
   };
@@ -118,11 +120,6 @@ export default function Home() {
       >
         Toggle Cursor Marker
       </button> */}
-      {/* <div className="absolute flex flex-col justify-center items-center"> 
-        <button className="p-2 bg-black text-white border border-white rounded-lg font-bold uppercase duration-200 hover:bg-gray-900 h-10" onClick={handleSignOut}>
-          Logout
-        </button>
-      </div> */}
       
       <div className="absolute bottom-0 right-0 m-4">
           <button className="p-2 bg-black text-white border border-white rounded-lg font-bold uppercase duration-200 hover:bg-gray-900 h-10" onClick={handleSignOut}>
@@ -130,46 +127,8 @@ export default function Home() {
           </button>
       </div>
 
-      {/* <button className="bg-zinc-800 px-4 py-2 block mb-2" onClick={() => setShowMessages(!showMessages)}>
-        Mensajes
-        
-      </button> */}
-
       <MessageSection/>
       <InboxSection/>
-
-
-      {/* {showMessages ?
-        <MessageSection/>
-      : null} */}
-
-      {/* {showMessages ?
-        <div className="bg-zinc-800 px-4 py-2 block mb-2">
-          <button onClick={() => setShowMessages(!showMessages)}>
-            {showMessages ? 'Close Messages' : 'Open Messages'}
-          </button>
-          {showMessages && <MessageSection />}
-        </div>
-      : null} */}
-      
-      {/* <div className="fixed bottom-0 h-[100px] w-screen m-0 flex flex-row bg-gray-800 shadow-md transition-all duration-300">
-          <button className="bg-zinc-800 px-4 py-2 flex mb-2" onClick={() => setShowMessages(true)}>
-              Messages
-          </button>
-      </div>  */}
-
-      {/* {showMessages ? 
-          <div className="absolute flex flex-col justify-center items-center top-0 right-0 bottom-0 left-0">
-              <button onClick={() => setShowMessages(!showMessages)}>
-                  {showMessages ? 'Close msg' : 'Open msg'}
-              </button>
-              {showMessages && 
-                  <div className="absolute flex-col justify-between items-center">
-                      <MessageSection />
-                  </div>
-              }
-          </div>
-      : null} */}
 
       {barracs_Array.length ? 
       <TrainingMenu 

@@ -40,3 +40,17 @@ export async function GET(request: NextRequest) {
     );
   }
 }
+
+export async function GET_ALL(request: NextRequest) {
+  try {
+    await connect();
+    const users = await User.find();
+
+    return NextResponse.json({ users }, { status: 200 });
+  } catch (error) {
+    return NextResponse.json(
+      { message: messages.error.default, error },
+      { status: 500 }
+    );
+  }
+}
