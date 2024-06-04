@@ -12,7 +12,7 @@ export default function GridMap() {
       structureType: place.structureType === null ? "" : place.structureType,
     }))
   );
-  console.log(JSON.stringify(modifiedDefaultMap));
+  // console.log(JSON.stringify(modifiedDefaultMap));
 
   return (
     <div className="flex flex-row h-screen w-screen">
