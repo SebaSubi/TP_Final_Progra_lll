@@ -6,12 +6,12 @@ export default function GridMap() {
   //   //logic for the creation of the grid map
 
   const places: mapPlace[][] = DefaultMap;
-  let modifiedDefaultMap = DefaultMap.map((row) =>
-    row.map((place) => ({
-      ...place,
-      structureType: place.structureType === null ? "" : place.structureType,
-    }))
-  );
+  // let modifiedDefaultMap = DefaultMap.map((row) =>
+  //   row.map((place) => ({
+  //     ...place,
+  //     structureType: place.structureType === null ? "" : place.structureType,
+  //   }))
+  // );
   // console.log(JSON.stringify(modifiedDefaultMap));
 
   return (
