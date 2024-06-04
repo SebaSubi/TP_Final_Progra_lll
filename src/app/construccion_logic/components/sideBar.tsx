@@ -5,17 +5,20 @@ import { Dispatch, SetStateAction, useContext, useEffect, useState } from "react
 import { User } from "@/app/objects/user";
 import { getGeneralBuildings } from "@/app/server/buildings"; // Ensure this import is correct
 import { BuildingContext } from "@/app/grid/page";
+import { getUserInstanceById } from "@/app/server/userInstance";
 
 // The main SideBar component
 export default function SideBar({
-  user,
+  userId,
 }: {
-  user: User;
+  userId: string;
 }) {
   // State to control the sidebar visibility
   const [sideBar, setSideBar] = useState<boolean>(true);
   // State to store the fetched buildings data
-  const [buildings, setBuildings] = useState<any[]>([]);
+  const [buildings, setBuildings] = useState<any[]>([])
+  // State to store the user instance data
+  const [userInstance, setUserInstance] = useState<any>(null);
 
   const context = useContext(BuildingContext); //this is great, it imports states from other components
 
@@ -36,15 +39,33 @@ export default function SideBar({
     fetchBuildings();
   }, []);
 
+  useEffect(() => {
+    const fetchUserInstance = async () => {
+      if(userId) {
+        console.log(userId)
+        const instanceData = await getUserInstanceById(userId);
+        setUserInstance(instanceData);
+      }
+
+    };
+  
+    fetchUserInstance();
+  }, [userId]);
+
+  console.log(userInstance.level)
+
+  
+
+
   // Component to render each building icon in the sidebar
   const SideBarIcon = ({
     building,
     user,
   }: {
     building: any;
-    user: User;
+    user: any;
   }) => {
-    if (user.level >= building.unlock_level) {
+    if (user?.level >= building.unlock_level) {
       // Render the building icon if the user's level is sufficient
       return (
         <div
@@ -102,9 +123,9 @@ export default function SideBar({
         sideBar ? "translate-x-0" : "translate-x-full"
       }`}
       >
-        {Array.isArray(buildings) && buildings.length > 0 ? (
+        {Array.isArray(buildings) && buildings.length > 0 && userInstance ? (
           buildings.map((building: any, index: number) => (
-            <SideBarIcon building={building} user={user} key={index} />
+            <SideBarIcon building={building} user={userInstance} key={index} />
           ))
         ) : (
           <p>No buildings available</p>

@@ -13,6 +13,6 @@ const userInstanceSchema = new Schema(
   }
 );
 
-const UserInstance = mongoose.models.Instance || mongoose.model("userInstance", userInstanceSchema)
+const UserInstance = mongoose.models.userInstance || mongoose.model("userInstance", userInstanceSchema)
 
 export default UserInstance

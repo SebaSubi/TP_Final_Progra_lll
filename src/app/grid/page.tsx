@@ -22,7 +22,7 @@ export default function TryGrid() {
 
   return (
     <BuildingContext.Provider value={{ StructureType, placing }}>
-      <SideBar user={(session?.user as any)?._id} />
+      <SideBar userId={(session?.user as any)?._id} />
       <div className="flex flex-row items-center justify-center h-screen w-screen">
         <div className="flex flex-col justify-center gap-2">
           <button
