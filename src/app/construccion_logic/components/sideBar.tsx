@@ -1,22 +1,26 @@
 'use client';
 
 import Image from "next/image";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useContext, useEffect, useState } from "react";
 import { User } from "@/app/objects/user";
 import { getGeneralBuildings } from "@/app/server/buildings"; // Ensure this import is correct
+import { BuildingContext } from "@/app/grid/page";
 
 // The main SideBar component
 export default function SideBar({
   user,
-  setStructure,
 }: {
   user: User;
-  setStructure: Dispatch<SetStateAction<string | null>>;
 }) {
   // State to control the sidebar visibility
   const [sideBar, setSideBar] = useState<boolean>(true);
   // State to store the fetched buildings data
   const [buildings, setBuildings] = useState<any[]>([]);
+
+  const context = useContext(BuildingContext); //this is great, it imports states from other components
+
+  const StructureType = context!.StructureType;
+  const BuildMode = context!.placing;
 
   // Fetch buildings data when the component mounts
   useEffect(() => {
@@ -46,7 +50,7 @@ export default function SideBar({
         <div
           className="sidebar-icon group"
           onClick={() => {
-            setStructure(building);
+            StructureType.current = building.name
             // console.log("This is the building ID: " + building._id);
           }}
         >
@@ -92,11 +96,11 @@ export default function SideBar({
 
   // Render the sidebar with building icons
   return (
-    <main>
+    <main className="relative z-50">
       <div
-        className={`fixed top-0 left-[-100px] h-screen w-[100px] m-0 flex flex-col bg-gray-800 shadow-md transition-all duration-300 ${
-          sideBar ? "translate-x-0" : "translate-x-full"
-        }`}
+       className={`fixed top-0 left-[-100px] h-screen w-[100px] m-0 flex flex-col bg-[#f7cd8d] border-[3px] border-[#b7632b] shadow-md transition-all duration-300 ${
+        sideBar ? "translate-x-0" : "translate-x-full"
+      }`}
       >
         {Array.isArray(buildings) && buildings.length > 0 ? (
           buildings.map((building: any, index: number) => (
@@ -106,8 +110,26 @@ export default function SideBar({
           <p>No buildings available</p>
         )}
       </div>
-      <div>
-        <button
+      <div className={`fixed top-0 left-1 transition-all duration-300 transform ${
+            sideBar ? "translate-x-0" : "translate-x-[100px]"
+            } active:transition-none active:scale-90`} 
+            onClick={
+              () => setSideBar(!sideBar)
+            }>
+        <Image
+          src="/SidebarMenuIcon.png"
+          width={30}
+          height={30}
+          alt="SidebarMenuIcon"
+          className="hover:brightness-75"
+        />
+      </div>
+    </main>
+  );
+}
+
+
+{/* <button
           className={`fixed top-0 left-[5px] transition-all duration-300 ${
             sideBar ? "translate-x-0" : "translate-x-[100px]"
           }`}
@@ -116,8 +138,4 @@ export default function SideBar({
           }}
         >
           Side Bar
-        </button>
-      </div>
-    </main>
-  );
-}
+        </button> */}

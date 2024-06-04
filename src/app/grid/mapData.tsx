@@ -3,8 +3,8 @@ import { MutableRefObject } from "react";
 
 export type mapPlace = {
   occupied: boolean;
-  structureType: number | null;
-  strutctureID: number | null;
+  structureType: string | null;
+  strutctureID: string | null;
   text: string;
 };
 

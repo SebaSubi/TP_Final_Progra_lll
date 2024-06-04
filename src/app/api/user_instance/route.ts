@@ -1,5 +1,5 @@
 import { connect } from '@/app/libs/mongodb'
-import UserInstance from '@/app/models/instance';
+import UserInstance from '@/app/models/userInstance';
 import { NextRequest, NextResponse } from 'next/server'
 
 export interface Params {

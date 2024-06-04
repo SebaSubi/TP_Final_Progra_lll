@@ -60,7 +60,7 @@ const MessageSection = () => {
             setMessages(userMessages);
         };
         fetchMessages();
-    }, [session]);
+    }, [session]);
 
     const handleSendMessage = async () => {
         if (message.length < 1 || message.length > 50) {
