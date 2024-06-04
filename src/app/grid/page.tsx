@@ -29,11 +29,12 @@ export default function TryGrid() {
           <button
             className="bg-blue-500 h-8 w-32"
             onClick={() => {
-              placing.current = !placing.current;
-              StructureType.current = "water";
-              console.log(placing.current);
+              if (StructureType.current === "water") {
+                placing.current = !placing.current;
+              } else {
+                StructureType.current = "water";
+              }
               console.log(StructureType.current);
-              // console.log(JSON.stringify(places));
             }}
           >
             place water
@@ -41,10 +42,12 @@ export default function TryGrid() {
           <button
             className="bg-amber-400 h-8 w-32"
             onClick={() => {
-              placing.current = !placing.current;
-              StructureType.current = "LumberCamp";
+              if (StructureType.current === "LumberCamp") {
+                placing.current = !placing.current;
+              } else {
+                StructureType.current = "LumberCamp";
+              }
               console.log(placing.current);
-              // console.log(JSON.stringify(places));
             }}
           >
             place structure

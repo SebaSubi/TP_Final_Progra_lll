@@ -1,8 +1,8 @@
 import { useState, useEffect, memo, MutableRefObject, useContext } from "react";
 import Image from "next/image";
 import { mapPlace, DefaultMap } from "./mapData";
-import SideBar from "../construccion_logic/components/sideBar";
 import { useBuldingContext } from "./BuildingContext";
+import Building from "./building";
 
 function Place({
   mapPlace,
@@ -46,10 +46,13 @@ function Place({
             : ""
         } flex items-center justify-center select-none z-10`}
         onClick={handleClick}
-        onMouseOver={() => setHover(true)}
-        onMouseLeave={() => setHover(false)}
+        onMouseOver={() => {
+          BuildMode.current ? setHover(true) : null;
+        }}
+        onMouseLeave={() => (BuildMode.current ? setHover(false) : null)}
       >
-        {/* {mapPlace.text} */}
+        {/* <Building buildingName={StructureType.current} /> */}
+        {hover && <Building buildingName={StructureType.current} />}
       </div>
 
       {/* <Image    //this is going tio be the building i the place
