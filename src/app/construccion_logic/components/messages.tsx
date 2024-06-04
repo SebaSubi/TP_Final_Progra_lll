@@ -4,6 +4,7 @@ import { User } from '@/app/objects/user';
 import Select from 'react-select';
 import { text } from 'stream/consumers';
 
+
 interface Message {
     text: string;
     author: string;
@@ -120,9 +121,8 @@ const MessageSection = () => {
             setTimeout(() => setConfirmation(''), 5000); 
             return;
         }
-
+    
         const newMessage = {
-            // text: `<u>To: "${recipient || 'Admin'}"</u><br />${message}`,
             text: message,
             author: (session?.user as any)?.fullname || 'Anonymous', 
             attachments: [],
@@ -130,8 +130,9 @@ const MessageSection = () => {
             timestamp: new Date().toLocaleTimeString(),
             sentAt: new Date().toISOString(),
         };
-
+    
         try {
+            await sendMessage(newMessage); // Aquí es donde envías el mensaje al servidor
             setMessages(prevMessages => [...prevMessages, newMessage]);
             setMessage('');
             setConfirmation('Mensaje enviado');
@@ -141,12 +142,6 @@ const MessageSection = () => {
             setConfirmation('Error al enviar el mensaje');
             setTimeout(() => setConfirmation(''), 5000);
         }
-
-        // setMessages(prevMessages => [...prevMessages, newMessage]);
-        // setMessage('');
-
-        // setConfirmation('Mensaje enviado');
-        // setTimeout(() => setConfirmation(''), 5000);
     };
 
     return (
