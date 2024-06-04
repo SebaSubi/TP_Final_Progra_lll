@@ -15,7 +15,7 @@ interface ContextProps {
 
 // export const BuildingContext = React.createContext<ContextProps | null>(null);
 
-export default function TryGrid() {
+export default function GridPage() {
   const { data: session } = useSession();
   console.log((session?.user as any)?._id);
   const placing = useRef(false);
