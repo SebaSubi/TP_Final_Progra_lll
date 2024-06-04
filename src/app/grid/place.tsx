@@ -1,8 +1,8 @@
 import { useState, useEffect, memo, MutableRefObject, useContext } from "react";
 import Image from "next/image";
 import { mapPlace, DefaultMap } from "./mapData";
-import { BuildingContext } from "./page";
 import SideBar from "../construccion_logic/components/sideBar";
+import { useBuldingContext } from "./BuildingContext";
 
 function Place({
   mapPlace,
@@ -18,10 +18,10 @@ function Place({
     setIsOccupied(mapPlace.occupied);
   }, [mapPlace.occupied, mapPlace.structureType, mapPlace.strutctureID]);
 
-  const context = useContext(BuildingContext); //this is great, it imports states from other components
+  const context = useBuldingContext(); //this is great, it imports states from other components
 
-  const StructureType = context!.StructureType;
-  const BuildMode = context!.placing;
+  const StructureType = context.StructureType;
+  const BuildMode = context.placing;
 
   const handleClick = () => {
     if (BuildMode.current && !isOccupied) {

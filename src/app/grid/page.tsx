@@ -6,13 +6,14 @@ import React, { useRef, useEffect } from "react";
 // import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
 import SideBar from "../construccion_logic/components/sideBar";
 import { useSession } from "next-auth/react";
+import { useBuldingContext, BuildingContext } from "./BuildingContext";
 
 interface ContextProps {
   StructureType: React.MutableRefObject<string>;
   placing: React.MutableRefObject<boolean>;
 }
 
-export const BuildingContext = React.createContext<ContextProps | null>(null);
+// export const BuildingContext = React.createContext<ContextProps | null>(null);
 
 export default function TryGrid() {
   const { data: session } = useSession();
