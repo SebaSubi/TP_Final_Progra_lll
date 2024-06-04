@@ -1,8 +1,8 @@
 import { useState, useEffect, memo, MutableRefObject, useContext } from "react";
 import Image from "next/image";
 import { mapPlace, DefaultMap } from "./mapData";
-import { BuildingContext } from "./page";
 import SideBar from "../construccion_logic/components/sideBar";
+import { useBuldingContext } from "./BuildingContext";
 
 function Place({
   mapPlace,
@@ -18,16 +18,16 @@ function Place({
     setIsOccupied(mapPlace.occupied);
   }, [mapPlace.occupied, mapPlace.structureType, mapPlace.strutctureID]);
 
-  const context = useContext(BuildingContext); //this is great, it imports states from other components
+  const context = useBuldingContext(); //this is great, it imports states from other components
 
-  const StructureType = context!.StructureType;
-  const BuildMode = context!.placing;
+  const StructureType = context.StructureType;
+  const BuildMode = context.placing;
 
   const handleClick = () => {
     if (BuildMode.current && !isOccupied) {
       // setIsOccupied(true);   //this is not really necesary since the prop will automaticaly rerender the component because we're modifing the orignal array
       DefaultMap[position.row][position.column].occupied = true;
-      DefaultMap[position.row][position.column].structureType = 
+      DefaultMap[position.row][position.column].structureType =
         StructureType.current;
       // StructureType.current = 0;
     }
@@ -35,8 +35,6 @@ function Place({
 
   return (
     <div className="h-full w-full flex">
-      
-
       <div
         className={`h-full w-full ${
           BuildMode.current
@@ -64,7 +62,8 @@ function Place({
 
       {isOccupied ? (
         DefaultMap[position.row][position.column].structureType != "" ? (
-          DefaultMap[position.row][position.column].structureType === "water" ? (
+          DefaultMap[position.row][position.column].structureType ===
+          "water" ? (
             <Image
               className="absolute z-[9]"
               src={"/minecraftWater.png"}
