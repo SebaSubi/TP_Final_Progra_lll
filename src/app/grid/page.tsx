@@ -16,7 +16,7 @@ export const BuildingContext = React.createContext<ContextProps | null>(null);
 
 export default function TryGrid() {
   const { data: session } = useSession();
-  console.log((session?.user as any)?._id)
+  console.log((session?.user as any)?._id);
   const placing = useRef(false);
   const StructureType = useRef("");
 
@@ -41,7 +41,7 @@ export default function TryGrid() {
             className="bg-amber-400 h-8 w-32"
             onClick={() => {
               placing.current = !placing.current;
-              StructureType.current = "";
+              StructureType.current = "LumberCamp";
               console.log(placing.current);
               // console.log(JSON.stringify(places));
             }}

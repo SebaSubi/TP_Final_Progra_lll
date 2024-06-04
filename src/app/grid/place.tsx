@@ -27,7 +27,7 @@ function Place({
     if (BuildMode.current && !isOccupied) {
       // setIsOccupied(true);   //this is not really necesary since the prop will automaticaly rerender the component because we're modifing the orignal array
       DefaultMap[position.row][position.column].occupied = true;
-      DefaultMap[position.row][position.column].structureType = 
+      DefaultMap[position.row][position.column].structureType =
         StructureType.current;
       // StructureType.current = 0;
     }
@@ -35,8 +35,6 @@ function Place({
 
   return (
     <div className="h-full w-full flex">
-      
-
       <div
         className={`h-full w-full ${
           BuildMode.current
@@ -64,7 +62,8 @@ function Place({
 
       {isOccupied ? (
         DefaultMap[position.row][position.column].structureType != "" ? (
-          DefaultMap[position.row][position.column].structureType === "water" ? (
+          DefaultMap[position.row][position.column].structureType ===
+          "water" ? (
             <Image
               className="absolute z-[9]"
               src={"/minecraftWater.png"}
