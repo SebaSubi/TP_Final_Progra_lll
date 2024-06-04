@@ -23,8 +23,8 @@ export default function GridPage() {
 
   return (
     <BuildingContext.Provider value={{ StructureType, placing }}>
-      <SideBar user={(session?.user as any)?._id} />
-      <div className="flex flex-row items-center justify-center h-screen w-screen absolute">
+      <SideBar userId={(session?.user as any)?._id} />
+      <div className="flex flex-row items-center justify-center h-screen w-screen ">
         <div className="flex flex-col justify-center gap-2">
           <button
             className="bg-blue-500 h-8 w-32"
