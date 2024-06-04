@@ -51,7 +51,7 @@ export default function Home() {
         onClick={() => {
           setPlacerApear(!placerApear);
         }}
-      >
+        >
         Toggle Cursor Marker
       </button> */}
       <SideBar user={user} setStructure={setStructure}/>
