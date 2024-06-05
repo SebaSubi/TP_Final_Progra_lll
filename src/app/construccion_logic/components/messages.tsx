@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { User } from '@/app/objects/user';
-import Select from 'react-select';
+// import Select from 'react-select';
 import { text } from 'stream/consumers';
 
 
