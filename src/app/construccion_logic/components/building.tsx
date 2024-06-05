@@ -4,12 +4,12 @@ import { updateData } from '@/app/logic/production'
 
 
 export default function BuildingDetails(
-  { collector, state, buildingId }: { collector: Collectors, state: boolean, buildingId: number}
+  { collector, state, buildingId }: { collector: any, state: boolean, buildingId: number}
 ) {
-  console.log(collector.updateTime)
+  // console.log(collector.updateTime)
   // collector.updateTime = new Date()
   // const collectorData = updateData(collector)
-  collector = updateData(collector)
+  state? collector = updateData(collector): null
   // console.log(collectorData)
   // console.log(new Date())
   

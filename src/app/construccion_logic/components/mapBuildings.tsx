@@ -8,181 +8,273 @@ import {
 import Image from "next/image";
 import BuildingDetails from "./building";
 import Collectors from "@/app/collectors/objects/collector";
-// import BarracsMenu from "./barracsMenu";
 import Barracs from "@/app/collectors/objects/barracs";
 import Collector from "@/app/collectors/components/resourceLogic";
 import BarracsMenu from "./barracsMenu";
-import { user } from "../page";
+import { placerApear, user } from "../page";
 import { units } from "./progressbar";
 import Unit from "../units/units";
 
-const defaultBuilding: Collectors = {
-  id: 2,
-  name: "Wood Collector",
-  img: (
-    <Image
-      key="WoodCollecor"
-      src="/Elexir_Collector.png"
-      width={60}
-      height={70}
-      alt="png of Wood Collector"
-    />
-  ),
-  cost: 100,
-  prod_per_hour: 1,
-  workers: 1,
-  level: 1,
-  unlock_level: 1,
-  maxWorkers: 1,
-  position: { x: 0, y: 0 },
-  boost: false,
-  maxCapacity: 200,
-  updateTime: new Date()
-};
+export default function MapBuildings({
+  setBarracsMenu,
+  barracMenu,
+  building,
+  placed,
+  structure,
+}: {
+  setBarracsMenu: Dispatch<SetStateAction<boolean>>,
+  barracMenu: boolean,
+  building: any,
+  placed: boolean,
+  structure: any
+}) {
+  const [visibleBuildingDetails, setVisibleBuildingDetails] = useState(false);
+  const [visibleBarracsDetails, setVisibleBarracsDetails] = useState(false);
+  const [BuildingInformation, setBuildingInformation] = useState<any>();
+  console.log("This is the buldings"+building.buildings);
 
-const defaultBarracs: Barracs = {
-  id: 1,
-  name: 'Barracs',
-  cost: 5,
-  producing: '',
-  img: (
-    <Image
-      key="BattasImg"
-      src="/Barracs.png"
-      width={60}
-      height={70}
-      alt="png of the Barracs"
-    />
-  ),
-  prod_per_hour: 1,
-  workers: 1,
-  level: 1,
-  unlock_level: 1,
-  maxWorkers: 10,
-  maxCap: 20,
-  position: {x: 0, y: 0}
-
-
-
-}
-
-export default function MapBuildings(
-  { setBarracsMenu, barracMenu }: { setBarracsMenu: Dispatch<SetStateAction<boolean>>, barracMenu: boolean }
-) {
-  const [visibleBuildingDetails, setvisibleBuildingDetails] = useState(false);
-  const [visibleBarracsDetails, setvisibleBarracsDetails] = useState(false)
-  const [barracsInfo, setBarracsInformation] = useState(defaultBarracs)
-  const [BuldingInformation, setBuldingInformation] = useState(defaultBuilding);
-  // const [barracsMenu, setBarracsMenu] = useState(false)
-
-  function collectorData(index: number) {
-
-    const building = lumber_camp_Array.find(
-      (collector) => collector.id === index
-    )
-    if (building) {
-      setBuldingInformation(building);
-      setvisibleBuildingDetails(!visibleBuildingDetails);
-      // console.log(building)
-      // console.log(visibleBuildingDetails)
+  function collectorData(building1: any) {
+    console.log("Collector Data Function Called");
+    console.log("Collector Data Function Called");
+    if (building1.buildings) {
+      console.log("Building Data:", building1.buildings);
+      setBuildingInformation(building);
+      setVisibleBuildingDetails(!visibleBuildingDetails);
     }
   }
 
-  
   function barracsMenu(index: number) {
-
-    const barracs = barracs_Array.find(
-      (barracs) => barracs.id === index
-    )
+    const barracs = barracs_Array.find((barracs) => barracs.id === index);
     if (barracs) {
-      setBarracsInformation(barracs);
-      setvisibleBarracsDetails(!visibleBarracsDetails);
+      setVisibleBarracsDetails(!visibleBarracsDetails);
     }
   }
 
-
-  
-  return (
-    <div>
-      {glod_mine_Array.map((collector, index) => (
-        <div
-          key={index + "_gold_mine"}
-          className="absolute w-10 h-10 bg-yellow-500 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none rotate-[37deg] -skew-x-[15deg] mr-5 mt -5"
-          //   className="absolute w-10 h-10 bg-red-500 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none rotate-[40deg] -skew-x-[6deg]"
-          style={{
-            left: Math.floor(collector.position.x / 30) * 30,
-            top: Math.floor(collector.position.y / 30) * 30,
-          }}
-        ></div>
-      ))}
-      {lumber_camp_Array.map((structure, index) => (
-        <div
-          key={index + "_wooden_collector"}
-          className="absolute justify-center items-center"
-          // className="absolute w-10 h-10 bg-red-950 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none rotate-[37deg] -skew-x-[15deg]"
-          //   className="absolute w-10 h-10 bg-red-500 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none rotate-[40deg] -skew-x-[6deg]"
-          style={{
-            left: Math.floor(structure.position.x / 30) * 30,
-            top: Math.floor(structure.position.y / 30) * 30,
-          }}
-          
-        >
-          <i onClick={() => collectorData(index)} >
+  if (building.name) {
+    return (
+      <div
+        className="absolute justify-center items-center"
+        style={{
+          left: Math.floor(building.position.x / 30) * 30,
+          top: Math.floor(building.position.y / 30) * 30,
+        }}
+      >
+        <i onClick={() => collectorData(building)} style={{ pointerEvents: 'auto' }}>
           <Image
-            key="WoodCollecor"
-            src="/Elexir_Collector.png"
+            key={building.name}
+            src={building.img}
             width={40}
             height={50}
-            alt="png of Wood Collector"
+            alt={`png of ${building.name}`}
           />
-          </i>
-          
-          {/* {structure.img} */}
-          <BuildingDetails
-            collector={BuldingInformation}
-            state={visibleBuildingDetails}
-            buildingId={structure.id}
-          />
-        </div>
-      ))}
-      {stone_mine_Array.map((structure, index) => (
-        <div
-          key={index + "_stone_mine"}
-          className="absolute w-10 h-10 bg-gray-500 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none rotate-[37deg] -skew-x-[15deg]"
-          //   className="absolute w-10 h-10 bg-red-500 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none rotate-[40deg] -skew-x-[6deg]"
-          style={{
-            left: Math.floor(structure.position.x / 30) * 30,
-            top: Math.floor(structure.position.y / 30) * 30,
-          }}
-        ></div>
-      ))}
-      {barracs_Array.map((structure, index) => (
-        <div
-          key={index + "_barrac"}
-          className="absolute justify-center items-center"
-          //   className="absolute w-10 h-10 bg-red-500 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none rotate-[40deg] -skew-x-[6deg]"
-          style={{
-            left: Math.floor(structure.position.x / 30) * 30,
-            top: Math.floor(structure.position.y / 30) * 30,
-          }}
-          onClick={() => setBarracsMenu(!barracMenu)}
+        </i>
 
-        >
+        <BuildingDetails
+          collector={BuildingInformation}
+          state={visibleBuildingDetails}
+          buildingId={building.id}
+        />
+      </div>
+    );
+  } else if (structure && placed) {
+    return (
+      <div
+        className="absolute justify-center items-center"
+        style={{
+          left: Math.floor(building.x / 30) * 30,
+          top: Math.floor(building.y / 30) * 30,
+        }}
+      >
+        <i onClick={() => collectorData(structure)} style={{ pointerEvents: 'auto' }}>
           <Image
-            key="Barrac"
-            src="/Barracs.png"
-            width={45}
-            height={55}
-            alt="png of Barrac"
+            key={structure.name}
+            src={structure.img}
+            width={40}
+            height={50}
+            alt={`png of ${structure.name}`}
           />
-          
-        </div>
-      ))}
-      {units.map((index) => (
-        <div key={index + "_Unit"}>
-          <Unit/>
-        </div>
-      ))}
-    </div>
-  );
+        </i>
+
+        <BuildingDetails
+          collector={BuildingInformation}
+          state={visibleBuildingDetails}
+          buildingId={building.id}
+        />
+      </div>
+    );
+  }
+
+  return null;
 }
+
+
+
+// import { Dispatch, SetStateAction, useState } from "react";
+// import {
+//   glod_mine_Array,
+//   lumber_camp_Array,
+//   stone_mine_Array,
+//   barracs_Array,
+// } from "../utils/StructuresData";
+// import Image from "next/image";
+// import BuildingDetails from "./building";
+// import Collectors from "@/app/collectors/objects/collector";
+// // import BarracsMenu from "./barracsMenu";
+// import Barracs from "@/app/collectors/objects/barracs";
+// import Collector from "@/app/collectors/components/resourceLogic";
+// import BarracsMenu from "./barracsMenu";
+// import { placerApear, user } from "../page";
+// import { units } from "./progressbar";
+// import Unit from "../units/units";
+
+// const defaultBuilding: Collectors = {
+//   id: 2,
+//   name: "Wood Collector",
+//   img: (
+//     <Image
+//       key="WoodCollecor"
+//       src="/LumberCamp.png"
+//       width={60}
+//       height={70}
+//       alt="png of Wood Collector"
+//     />
+//   ),
+//   cost: 100,
+//   prod_per_hour: 1,
+//   workers: 1,
+//   level: 1,
+//   unlock_level: 1,
+//   maxWorkers: 1,
+//   position: { x: 0, y: 0 },
+//   boost: false,
+//   maxCapacity: 200,
+//   updateTime: new Date()
+// };
+
+// const defaultBarracs: Barracs = {
+//   id: 1,
+//   name: 'Barracs',
+//   cost: 5,
+//   producing: '',
+//   img: (
+//     <Image
+//       key="BattasImg"
+//       src="/Barracs.png"
+//       width={60}
+//       height={70}
+//       alt="png of the Barracs"
+//     />
+//   ),
+//   prod_per_hour: 1,
+//   workers: 1,
+//   level: 1,
+//   unlock_level: 1,
+//   maxWorkers: 10,
+//   maxCap: 20,
+//   position: {x: 0, y: 0}
+
+
+
+// }
+
+// export default function MapBuildings(
+//   { setBarracsMenu, barracMenu, building, placed, structure }: { setBarracsMenu: Dispatch<SetStateAction<boolean>>, barracMenu: boolean, building: any, placed: boolean, structure: any }
+// ) {
+//   const [visibleBuildingDetails, setvisibleBuildingDetails] = useState(false);
+//   const [visibleBarracsDetails, setvisibleBarracsDetails] = useState(false)
+//   // const [barracsInfo, setBarracsInformation] = useState(defaultBarracs) //HAVE TO MAKE THIS WORK WITH DB
+//   const [BuldingInformation, setBuldingInformation] = useState(); //HAVE TO MAKE THIS WORK WITH DB
+//   // const [barracsMenu, setBarracsMenu] = useState(false)
+
+//   function collectorData(building1: any) {
+//     if (building1.buildings) {
+//       console.log("YOU ARE LOOKING FOR THIS"+building1.buildings)
+//       setBuldingInformation(building);
+//       setvisibleBuildingDetails(!visibleBuildingDetails);
+//       // console.log(building)
+//       // console.log(visibleBuildingDetails)
+//     } 
+//   }
+
+  
+//   function barracsMenu(index: number) {
+
+//     const barracs = barracs_Array.find(
+//       (barracs) => barracs.id === index
+//     )
+//     if (barracs) {
+//       // setBarracsInformation(barracs);
+//       setvisibleBarracsDetails(!visibleBarracsDetails);
+//     }
+//   }
+//  //if building.name, it means that its a bulding being brought from the DB,
+//  //else, it means you are bringing the object for the position
+//   if(building.name) {
+//     // console.log("We are in the building.name")
+//     // setPlacerApear({beingPlaced: false, placed: false})
+//     return (
+//       <div
+//         // key={index + "_wooden_collector"}
+//         className="absolute justify-center items-center"
+//         // className="absolute w-10 h-10 bg-red-950 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none rotate-[37deg] -skew-x-[15deg]"
+//         //   className="absolute w-10 h-10 bg-red-500 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none rotate-[40deg] -skew-x-[6deg]"
+//         style={{
+//           left: Math.floor(building.position.x / 30) * 30,
+//           top: Math.floor(building.position.y / 30) * 30,
+//         }}
+          
+//       >
+//         <i onClick={() => collectorData(building)} >
+//           <Image
+//             key={building.name}
+//             src={building.img}
+//             width={40}
+//             height={50}
+//             alt={`png of ${building.name}`}
+//           />
+//         </i>
+          
+//         <BuildingDetails
+//           collector={BuldingInformation}
+//           state={visibleBuildingDetails}
+//           buildingId={building.id}
+//         />
+//       </div>
+//     );
+//   } else if (structure && placed){
+//     // console.log("We are in the else")
+//     return (
+      
+//       <div
+//         // key={index + "_wooden_collector"}
+        
+//         className="absolute justify-center items-center"
+//         // className="absolute w-10 h-10 bg-red-950 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none rotate-[37deg] -skew-x-[15deg]"
+//         //   className="absolute w-10 h-10 bg-red-500 transform -translate-x-1/2 -translate-y-1/2 pointer-events-none rotate-[40deg] -skew-x-[6deg]"
+//         style={{
+//           left: Math.floor(building.x / 30) * 30,
+//           top: Math.floor(building.y / 30) * 30,
+//         }}
+          
+//       >
+//         <i onClick={() => collectorData(structure)} >
+//         <Image
+//           key={structure.name}
+//           src={structure.img}
+//           width={40}
+//           height={50}
+//           alt={`png of ${structure.name}`}
+//         />
+//         </i>
+          
+//         <BuildingDetails
+//           collector={BuldingInformation}
+//           state={visibleBuildingDetails}
+//           buildingId={building.id}
+//         />
+//       </div>
+//     );
+//   }
+//   // console.log(building.x)
+  
+// }
