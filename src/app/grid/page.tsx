@@ -11,21 +11,22 @@ import { useBuldingContext, BuildingContext } from "./BuildingContext";
 interface ContextProps {
   StructureType: React.MutableRefObject<string>;
   placing: React.MutableRefObject<boolean>;
+
 }
 
 // export const BuildingContext = React.createContext<ContextProps | null>(null);
 
 export default function GridPage() {
   const { data: session } = useSession();
-  console.log((session?.user as any)?._id);
   const placing = useRef(false);
-  const StructureType = useRef("");
+  const StructureType = useRef(null);
+  const User = useRef(null)
 
   return (
-    <BuildingContext.Provider value={{ StructureType, placing }}>
+    <BuildingContext.Provider value={{ StructureType, placing, User }}>
       <SideBar userId={(session?.user as any)?._id} />
       <div className="flex flex-row items-center justify-center h-screen w-screen ">
-        <div className="flex flex-col justify-center gap-2">
+        {/* <div className="flex flex-col justify-center gap-2">
           <button
             className="bg-blue-500 h-8 w-32"
             onClick={() => {
@@ -52,7 +53,7 @@ export default function GridPage() {
           >
             place structure
           </button>
-        </div>
+        </div> */}
         {/* <Image src={"/background_easter_egg.jpg"} alt="que miras bobo" fill /> */}
         <TransformWrapper
           //TODO:

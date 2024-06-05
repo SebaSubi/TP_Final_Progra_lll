@@ -1,8 +1,8 @@
 import mongoose, { Schema } from "mongoose"
 
-const userBuildingsSchema = new Schema(
+const userInstanceBuildingsSchema = new Schema(
   {
-    userId: Number,
+    userId: String,
     name: String,
     cost: Number,
     img: String,
@@ -17,6 +17,6 @@ const userBuildingsSchema = new Schema(
   }
 );
 
-const userBuildings = mongoose.models.userBuildings || mongoose.model("userBuildings", userBuildingsSchema)
+const userInstanceBuildings = mongoose.models.userInstanceBuildings || mongoose.model("userInstanceBuildings", userInstanceBuildingsSchema)
 
-export default userBuildings
+export default userInstanceBuildings

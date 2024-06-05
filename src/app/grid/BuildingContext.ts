@@ -1,8 +1,9 @@
 import { createContext, useContext } from "react";
 
 interface BuildingContextType {
-    StructureType: React.MutableRefObject<string>;
+    StructureType: any;
     placing: React.MutableRefObject<boolean>;
+    User: any
 }
 
 export const BuildingContext = createContext<BuildingContextType | undefined>(undefined);

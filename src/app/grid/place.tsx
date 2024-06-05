@@ -3,6 +3,7 @@ import Image from "next/image";
 import { mapPlace, DefaultMap } from "./mapData";
 import { useBuldingContext } from "./BuildingContext";
 import Building from "./building";
+import { postUserBuildings } from "../server/userBuilding";
 
 function Place({
   mapPlace,
@@ -22,6 +23,7 @@ function Place({
 
   const StructureType = context.StructureType;
   const BuildMode = context.placing;
+  const user = context.User
 
   const handleClick = () => {
     if (BuildMode.current && !isOccupied) {
@@ -30,6 +32,8 @@ function Place({
       DefaultMap[position.row][position.column].structureType =
         StructureType.current;
       // StructureType.current = 0;
+      // console.log(user.current.userId)
+      postUserBuildings(StructureType.current, user.current.userId, new Date(), {x: position.row, y: position.column})
     }
   };
 
@@ -52,7 +56,7 @@ function Place({
         onMouseLeave={() => (BuildMode.current ? setHover(false) : null)}
       >
         {/* <Building buildingName={StructureType.current} /> */}
-        {hover && <Building buildingName={StructureType.current} />}
+        {hover && <Building buildingName={StructureType.current.name} />}
       </div>
 
       {/* <Image    //this is going tio be the building i the place

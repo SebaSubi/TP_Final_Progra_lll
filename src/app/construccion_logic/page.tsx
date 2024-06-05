@@ -21,7 +21,7 @@ import Units from "../collectors/objects/Units";
 import { Boosts } from "../objects/boost";
 import BarracsMenu from "./components/barracsMenu";
 // import BarracsMenu from "./components/barracsMenu";
-import { getUserBuildings, postUserBuildings } from "../server/buildings";
+import { getUserBuildings, postUserBuildings } from "../server/userBuilding";
 import userBuildings from "../models/userBuildings";
 import MessageSection from "./components/messages";
 import InboxSection from "./components/buzon";

@@ -15,7 +15,6 @@ export const getAllUserInstances = async() => {
 
 export async function getUserInstanceById(userId: string) {
   try {
-    console.log(`http://localhost:3000/api/user_instance?userId=${userId}`)
     const res = await fetch(`/api/user_instance?userId=${userId}`, 
     { 
       cache: 'no-store',
@@ -33,23 +32,29 @@ export async function getUserInstanceById(userId: string) {
   }
 }
 
-export async function postUserInstance(building: any, userId: number, lastCollected: Date, position: { x: number, y: number }) {
-  // const router = useRouter();
+export async function postUserInstance
+(
+  userId: string, 
+  name: string, 
+  level: number, 
+  country: string, 
+  boosts: any[], 
+  units: any[], 
+  gold: number, 
+  materials: any[]
+) {
   try {
-    const res = await fetch("/api/userInstance", {
+    const res = await fetch("/api/numbers", {
       method: "POST",
       headers: {
         "Content-type": "application/json",
 
       },
-      body: JSON.stringify({ ...building, userId, lastCollected, position}) 
+      body: JSON.stringify({ userId, name, level, country, boosts, units, gold, materials }) 
     });
 
-    // if(res.ok) {
-    //   Router.push("/")
-    // } else {
-    //   throw new Error("Failed to create building")
-    // }
+    const data = await res.json()
+    return data
   } catch (error) {
     console.log(error)
   }

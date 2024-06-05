@@ -14,7 +14,7 @@ export const getGeneralBuildings = async() => {
   }
 }
 
-export const getUserBuildings = async() => {
+export async function getUserBuilding() {
   try {
     const res = await fetch('http://localhost:3000/api/userBuildings', { cache: 'no-store' }) //Fetches the information, and sets the cache to no-store*
     if(!res.ok) {
@@ -29,8 +29,9 @@ export const getUserBuildings = async() => {
   }
 }
 
-export async function postUserBuildings(building: any, userId: number, lastCollected: Date, position: { x: number, y: number }) {
+export async function postUserBuildings(building: any, userId: string, lastCollected: Date, position: { x: number, y: number }) {
   // const router = useRouter();
+  const { _id, ...buildingWithoutId } = building;
   try {
     const res = await fetch("http://localhost:3000/api/userBuildings", {
       method: "POST",
@@ -38,14 +39,9 @@ export async function postUserBuildings(building: any, userId: number, lastColle
         "Content-type": "application/json",
 
       },
-      body: JSON.stringify({ ...building, userId, lastCollected, position}) 
+      body: JSON.stringify({ ...buildingWithoutId, userId, lastCollected, position}) 
     });
-
-    // if(res.ok) {
-    //   Router.push("/")
-    // } else {
-    //   throw new Error("Failed to create building")
-    // }
+    console.log(JSON.stringify({ ...buildingWithoutId, userId, lastCollected, position}))
   } catch (error) {
     console.log(error)
   }

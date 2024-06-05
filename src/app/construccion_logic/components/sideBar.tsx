@@ -9,7 +9,7 @@ import {
   useState,
 } from "react";
 import { User } from "@/app/objects/user";
-import { getGeneralBuildings } from "@/app/server/buildings"; // Ensure this import is correct
+import { getGeneralBuildings } from "@/app/server/userBuilding"; // Ensure this import is correct
 import { useBuldingContext } from "../../grid/BuildingContext";
 import { getUserInstanceById } from "@/app/server/userInstance";
 import { set } from "mongoose";
@@ -30,6 +30,7 @@ export default function SideBar({
 
   const StructureType = context.StructureType;
   const BuildMode = context.placing;
+  const user = context.User
 
   // Fetch buildings data when the component mounts
   useEffect(() => {
@@ -51,19 +52,19 @@ export default function SideBar({
   useEffect(() => {
     const fetchUserInstance = async () => {
       if(userId) {
-        console.log(userId)
+        // console.log(userId)
         const instanceData = await getUserInstanceById(userId);
         setUserInstance(instanceData);
+        user.current = instanceData
+        // console.log(user.current)
       }
 
     };
   
     fetchUserInstance();
-  }, [userId]);
+  }, [userId, user]);
 
   // console.log(userInstance.level);
-
-  
 
 
   // Component to render each building icon in the sidebar
@@ -80,7 +81,6 @@ export default function SideBar({
         <div
           className="sidebar-icon group"
           onClick={() => {
-            StructureType.current = building.name;
             setBuildingMenu(!buildingMenu);
             setSelectedBuilding(building)
           }}
@@ -144,7 +144,13 @@ export default function SideBar({
             <h2 className=" text-[#6a1e07] font-comic mt1">Cost: {selectedBuilding.cost}</h2>
           </div>
         </div>
-        <div className="relative flex items-center justify-center hover:brightness-75 active:transition-none active:scale-90 mt-10">
+        <div className="relative flex items-center justify-center hover:brightness-75 active:transition-none active:scale-90 mt-10" 
+          onClick={() => {
+            StructureType.current = selectedBuilding;
+            BuildMode.current = true
+            setBuildingMenu(false)
+          }}
+        >
           <p className="absolute inset-0 flex items-center justify-center text-[#6a1e07] font-comic">Build</p>
           <Image
             src="/BuildButton.png"
