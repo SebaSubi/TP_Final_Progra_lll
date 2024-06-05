@@ -3,7 +3,14 @@ import Image from "next/image";
 import { mapPlace, DefaultMap } from "./mapData";
 import { useBuldingContext } from "./BuildingContext";
 import Building from "./building";
-import { postUserBuildings } from "../server/userBuilding";
+import { getUserBuildings, postUserBuildings } from "../server/userBuilding";
+import { useSession } from "next-auth/react";
+import { getUserInstanceById } from "../server/userInstance";
+
+
+
+
+
 
 function Place({
   mapPlace,
@@ -14,16 +21,21 @@ function Place({
 }) {
   const [isOccupied, setIsOccupied] = useState(mapPlace.occupied);
   const [hover, setHover] = useState(false);
-
-  useEffect(() => {
-    setIsOccupied(mapPlace.occupied);
-  }, [mapPlace.occupied, mapPlace.structureType, mapPlace.strutctureID]);
-
+  // const [userBuildings, setUserBuildings] = useState<any[]>()
+  // const [currentUser, setCurrentUser] = useState<any>()
   const context = useBuldingContext(); //this is great, it imports states from other components
 
   const StructureType = context.StructureType;
   const BuildMode = context.placing;
   const user = context.User
+  const occupied = context.Occupied
+
+
+  useEffect(() => { 
+    setIsOccupied(mapPlace.occupied);
+  }, [mapPlace.occupied, mapPlace.structureType, mapPlace.strutctureID]);
+
+
 
   const handleClick = () => {
     if (BuildMode.current && !isOccupied) {
@@ -32,10 +44,22 @@ function Place({
       DefaultMap[position.row][position.column].structureType =
         StructureType.current;
       // StructureType.current = 0;
-      // console.log(user.current.userId)
+      // console.log(user.current.userId) 
       postUserBuildings(StructureType.current, user.current.userId, new Date(), {x: position.row, y: position.column})
     }
   };
+
+  function alreadyOccupied() {
+    occupied.current.map((building) => {
+      if(position.row == building.position.x && position.column == building.position.y) {
+        DefaultMap[position.row][position.column].occupied = true;
+        DefaultMap[position.row][position.column].structureType =
+        building.name;
+      }
+    })
+  }
+
+  alreadyOccupied() 
 
   return (
     <div className="h-full w-full flex">
@@ -111,3 +135,64 @@ function Place({
 }
 
 export default memo(Place);
+
+  // console.log(occupied)
+
+
+  // useEffect(() => {
+  //   const fetchUser = async () => {
+  //     const userId = user.userId; // replace this with actual user ID
+  //     const userData = await getUserInstanceById(userId);
+  //     if(userData) {
+  //       setCurrentUser(userData);
+  //       console.log(userData)
+  //     }
+
+  //   };
+
+  //   fetchUser();
+  // }, []);
+
+  // console.log(user.current.userId)
+
+  // useEffect(() => {
+    // const fetchUserInstance = async () => {
+    //   if((session?.user as any)?._id) {
+    //     // console.log(userId)
+    //     const instanceData = await getUserInstanceById((session?.user as any)?._id);
+    //     setCurrentUser(instanceData);
+    //     user.current = instanceData
+    //     console.log(currentUser)
+    //   }
+
+    // };
+
+    // fetchUserInstance();
+    
+  //   const fetchUserBuildings = async () => {
+  //     const userBuildingsData = await getUserBuildings(user.current.userId);
+  //     console.log(userBuildingsData)
+  //     if (Array.isArray(userBuildingsData)) {
+  //       setUserBuildings(userBuildingsData);
+  //     } else {
+  //       console.error(
+  //         "Failed to fetch buildings data, received:",
+  //         userBuildings
+  //       );
+  //     }
+  //   };
+  //   if(user.current.userId != null) {
+  //     fetchUserBuildings();
+  //   }
+    
+  // }, [user, userBuildings]);
+
+    // function loadBuildings() {
+  //   if(userBuildings) {
+  //     userBuildings.map((building) => {
+  //       DefaultMap[building.position.x][building.position.y].occupied = true;
+  //       DefaultMap[building.position.x][building.position.y].structureType = StructureType.current;
+  //     })
+  //   }
+  // }
+  // loadBuildings()

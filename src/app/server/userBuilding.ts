@@ -14,15 +14,20 @@ export const getGeneralBuildings = async() => {
   }
 }
 
-export async function getUserBuilding() {
+export async function getUserBuildings(userId: string) {
+  // console.log(userId)
   try {
-    const res = await fetch('http://localhost:3000/api/userBuildings', { cache: 'no-store' }) //Fetches the information, and sets the cache to no-store*
+    const res = await fetch(`http://localhost:3000/api/userBuildings?userId=${userId}`, 
+      { 
+        cache: 'no-store',
+        method: 'GET'
+      }
+  ) //Fetches the information, and sets the cache to no-store*
     if(!res.ok) {
       throw new Error("failed to fetch data")
     } //We check if the response is ok
-    // console.log(res)
     const data = await res.json()
-    console.log(data)
+    // console.log(data)
     return data.buildings;
   } catch (error) {
     console.log("Error loading userBuildings:", error)

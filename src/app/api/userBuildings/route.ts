@@ -39,8 +39,9 @@ export async function POST(request: NextRequest) {
   return NextResponse.json({message: "Building Instance created"}, { status: 201 })
 }
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const id = request.nextUrl.searchParams.get("userId")
   await connect();
-  const buildings = await userInstanceBuildings.find();
+  const buildings = await userInstanceBuildings.find({ userId: id  });
   return NextResponse.json({buildings})
 }

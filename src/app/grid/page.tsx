@@ -8,11 +8,6 @@ import SideBar from "../construccion_logic/components/sideBar";
 import { useSession } from "next-auth/react";
 import { useBuldingContext, BuildingContext } from "./BuildingContext";
 
-interface ContextProps {
-  StructureType: React.MutableRefObject<string>;
-  placing: React.MutableRefObject<boolean>;
-
-}
 
 // export const BuildingContext = React.createContext<ContextProps | null>(null);
 
@@ -21,9 +16,12 @@ export default function GridPage() {
   const placing = useRef(false);
   const StructureType = useRef(null);
   const User = useRef(null)
+  const Occupied = useRef([])
+
+  // console.log((session?.user as any)?._id)
 
   return (
-    <BuildingContext.Provider value={{ StructureType, placing, User }}>
+    <BuildingContext.Provider value={{ StructureType, placing, User, Occupied }}>
       <SideBar userId={(session?.user as any)?._id} />
       <div className="flex flex-row items-center justify-center h-screen w-screen ">
         {/* <div className="flex flex-col justify-center gap-2">
