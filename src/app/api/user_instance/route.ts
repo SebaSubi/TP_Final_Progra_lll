@@ -1,5 +1,5 @@
 import { connect } from '@/app/libs/mongodb'
-import UserInstance from '@/app/models/userInstance';
+import UserInstances from '@/app/models/userInstances';
 import { NextRequest, NextResponse } from 'next/server'
 
 export interface Params {
@@ -8,29 +8,37 @@ export interface Params {
 
 
 export async function POST(request: NextRequest) {
-  const {userId, name, level, country, boosts, units, gold, materials} = await request.json()
+  const { userId, name, level, country, boosts, units, gold, materials } = await request.json()
   await connect();
-  await UserInstance.create({userId, name, level, country, boosts, units, gold, materials});
-  return NextResponse.json({message: "User Instance created"}, { status: 201 })
+  await UserInstances.create({ userId, name, level, country, boosts, units, gold, materials });
+  return NextResponse.json({ message: "User Instance created" }, { status: 201 })
 }
 
-export async function GETALL() { 
+export async function GETALL() {
   await connect();
-  const instance = await UserInstance.find();
-  return NextResponse.json({instance})
+  const instance = await UserInstances.find();
+  return NextResponse.json({ instance })
 }
 
 export async function DELETE(request: NextRequest) {
   const id = request.nextUrl.searchParams.get("id");
   await connect();
-  await UserInstance.findByIdAndDelete(id);
-  return NextResponse.json({ message: "instance Deleted"}, { status: 200 })
+  await UserInstances.findByIdAndDelete(id);
+  return NextResponse.json({ message: "instance Deleted" }, { status: 200 })
 }
 
-export async function GET(request: NextRequest) {
-  const id = request.nextUrl.searchParams.get("userId");
+export async function GET(request?: NextRequest) {
   await connect();
-  const instance = await UserInstance.findOne({userId: id});
-  return NextResponse.json({instance})
+  //@ts-ignore
+  const id = request.nextUrl.searchParams.get("userId");
+  let instance;
+
+  if (id) {
+    instance = await UserInstances.findOne({ userId: id });
+  } else {
+    instance = await UserInstances.find();
+  }
+
+  return NextResponse.json({ instance });
 }
 
