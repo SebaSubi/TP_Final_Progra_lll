@@ -9,7 +9,7 @@ function Building({ buildingName }: { buildingName: string }) {
   //i could put this in a useEfeffect hook
   useEffect(() => {
     switch (buildingName) {
-      case "LumberCamp":
+      case "Lumber Camp":
         //   if (buildingImg != "LumberCamp") {
         setBuildingImg("/LumberCamp.png");
         //   }
@@ -18,6 +18,15 @@ function Building({ buildingName }: { buildingName: string }) {
         //   if (buildingImg != "water") {
         setBuildingImg("/minecraftWater.png");
         //   }
+        break;
+      case "Gold Mine":
+        setBuildingImg("/Gold_Mine.png");
+        break;
+      case "Barracs":
+        setBuildingImg("/Barracs.png");
+        break;
+      case "Stone Mine":
+        setBuildingImg("/StoneMine.png"); 
         break;
     }
   }, [buildingName]);

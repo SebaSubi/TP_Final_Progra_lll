@@ -20,7 +20,7 @@ export default function GridMap() {
     // console.log(user.current.userId)
     if (user.current && user.current.userId) {
       const userBuildingsData = await getUserBuildings(user.current.userId);
-      occupied.current = userBuildingsData;
+      occupied.current = userBuildingsData; 
     }
   }
 
@@ -40,15 +40,12 @@ export default function GridMap() {
   // console.log(JSON.stringify(modifiedDefaultMap));
 
   return (
-    <div className="flex flex-row h-screen w-screen">
-      <div className="flex justify-center items-center h-screen w-screen ">
-        {/* <div className="grid grid-cols-20 grid-rows-20 gap-[0.67px] "> */}
+    <div className="flex flex-row w-[1920px]">
+      <div className="flex justify-center items-center">
         <div className="grid grid-cols-48 grid-rows-27 ">
-          {/* the values of the cols and rows of the grid are this way because the dysplay 16:9 */}
           {places.map((row, i) =>
             row.map((place, j) => (
-              // here we would compare if the starting block is water and if its next to
-              <div className="h-10 w-10" key={`${i}${j}`}>
+              <div className="min-h-10 min-w-10" key={`${i}${j}`}>
                 <Place mapPlace={place} position={{ row: i, column: j }} />
               </div>
             ))
