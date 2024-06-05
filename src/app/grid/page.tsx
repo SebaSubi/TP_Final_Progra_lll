@@ -7,6 +7,9 @@ import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
 import SideBar from "../construccion_logic/components/sideBar";
 import { useSession } from "next-auth/react";
 import { useBuldingContext, BuildingContext } from "./BuildingContext";
+import MessageSection from "../construccion_logic/components/messages"
+import InboxSection from "../construccion_logic/components/buzon";
+import { signOut } from 'next-auth/react';
 
 
 // export const BuildingContext = React.createContext<ContextProps | null>(null);
@@ -19,6 +22,10 @@ export default function GridPage() {
   const Occupied = useRef([])
 
   // console.log((session?.user as any)?._id)
+
+  const handleSignOut = async () => {
+    await signOut({ callbackUrl: 'http://localhost:3000' });
+  };
 
   return (
     <BuildingContext.Provider value={{ StructureType, placing, User, Occupied }}>
@@ -53,6 +60,16 @@ export default function GridPage() {
           </button>
         </div> */}
         {/* <Image src={"/background_easter_egg.jpg"} alt="que miras bobo" fill /> */}
+
+        <div className="absolute bottom-0 right-0 m-4 z-50">
+          <button className="p-2 bg-black text-white border border-white rounded-lg font-bold uppercase duration-200 hover:bg-gray-900 h-10" onClick={handleSignOut}>
+              Logout
+          </button>
+        </div>
+
+        <MessageSection/>
+        <InboxSection/>
+
         <TransformWrapper
           //TODO:
           //add the zoom in and out buttons

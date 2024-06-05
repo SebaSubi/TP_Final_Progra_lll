@@ -20,11 +20,16 @@ import Progressbar, { units } from "./components/progressbar";
 import Units from "../collectors/objects/Units";
 import { Boosts } from "../objects/boost";
 import BarracsMenu from "./components/barracsMenu";
+import ChatSection from "./components/chat";
 // import BarracsMenu from "./components/barracsMenu";
 import { getUserBuildings, postUserBuildings } from "../server/userBuilding";
 import userBuildings from "../models/userBuildings";
 import MessageSection from "./components/messages";
 import InboxSection from "./components/buzon";
+import InboxSection1 from "./components/buzon";
+import MessageSection1 from "./components/messages";
+// import MailboxSection from "./components/buzon";
+// import BarracsMenu from "./components/barracsMenu";
 
 const boost: Boosts[] = [
   {
@@ -92,6 +97,8 @@ export default function Home() {
 
   const router = useRouter();
 
+  // const socket = io('http://localhost:3000');
+
   const handleSignOut = async () => {
     await signOut({ callbackUrl: 'http://localhost:3000' });
   };
@@ -126,7 +133,17 @@ export default function Home() {
 
     return (
     <main className="flex min-h-screen items-center justify-center relative">
-        <div className="absolute bottom-0 right-0 m-4">
+      {/* <button
+        className="absolute bg-blue-500 text-white px-4 py-2 rounded-md"
+        style={{ left: "10px", zIndex: 2 }} // Ajusta el valor de 'left' según tus necesidades
+        onClick={() => {
+          setPlacerApear(!placerApear);
+        }}
+      >
+        Toggle Cursor Marker
+      </button> */}
+      
+      <div className="absolute bottom-0 right-0 m-4">
           <button className="p-2 bg-black text-white border border-white rounded-lg font-bold uppercase duration-200 hover:bg-gray-900 h-10" onClick={handleSignOut}>
               Logout
           </button>
@@ -135,7 +152,11 @@ export default function Home() {
       <MessageSection/>
       <InboxSection/>
 
-      
+      {/* <MessageSection1/>
+      <InboxSection1/> */}
+
+      {/* <ChatSection /> */}
+
       {barracs_Array.length ? 
       <TrainingMenu 
           user={user} 
