@@ -136,8 +136,8 @@ const MessageSection = () => {
     };
 
     return (
-        <div className="fixed top-0 left-1/2 transform -translate-x-1/2 mt-4 flex flex-col items-center w-full max-w-2xl z-10">
-            <button onClick={() => setShowMessages(!showMessages)} className="block w-auto p-2 bg-black text-white border border-white rounded-lg font-bold uppercase duration-200 hover:bg-gray-900 mb-4">
+        <div className="fixed top-0 right-2/5 transform translate-x-1/2 mt-4 flex flex-col items-center w-full max-w-2xl z-10">            
+            <button onClick={() => setShowMessages(!showMessages)} className="block w-auto p-2 text-center bg-black text-white border border-white rounded-lg font-bold uppercase duration-200 hover:bg-gray-900 mb-4 z-5">
                 {showMessages ? 'Close messages' : 'Open messages'}
             </button>
             {showMessages && 
