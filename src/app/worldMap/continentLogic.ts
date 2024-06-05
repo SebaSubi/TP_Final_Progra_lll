@@ -1,6 +1,5 @@
 import { useSession } from "next-auth/react";
 
-
 export async function getContinents() {
     const res = await fetch("/api/user_instance", {
         method: "GET",
@@ -43,6 +42,7 @@ export async function postUserInstance
         gold: number,
         materials: any[]
     ) {
+
     try {
         const res = await fetch("/api/user_instance", {
             method: "POST",

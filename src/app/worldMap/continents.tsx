@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { getContinents, postUserInstance } from "./continentLogic";
+import { useRouter } from 'next/navigation';
 import { useSession } from "next-auth/react";
 
 //we have to makie a function that returns the instance of the continent but inside of the contintent component
@@ -9,6 +10,8 @@ export function Africa() {
   const [fillColor, setFillColor] = useState("#50711eee");
   const continentOcupied = useRef(false);
   const { data: session } = useSession();
+  const router = useRouter();
+
 
   const fetchContinent = async () => {
     const getUsersInstances = await getContinents();
@@ -39,7 +42,7 @@ export function Africa() {
   function selectContinent() {
     fetchContinent();
     if (continentOcupied.current === false) {
-      postUserInstance(
+      const res = postUserInstance(
         (session?.user as any)?._id,
         (session?.user as any)?.fullname,
         1,
@@ -49,9 +52,11 @@ export function Africa() {
         500,
         []
       );
+      setFillColor("#F56565"); //red color
+      fetchContinent();
+      return router.push("/grid")
     }
-    setFillColor("#F56565"); //red color
-    fetchContinent();
+    
   }
 
   const handleMouseLeave = () => {
@@ -93,6 +98,8 @@ export function NorthAmerica() {
   const [fillColor, setFillColor] = useState("#50711eee");
   const continentOcupied = useRef(false);
   const { data: session } = useSession();
+  const router = useRouter();
+
 
   const fetchContinent = async () => {
     const getUsersInstances = await getContinents();
@@ -132,9 +139,10 @@ export function NorthAmerica() {
         500,
         []
       );
+      setFillColor("#F56565"); //red color
+      fetchContinent();
+      return router.push("/grid")
     }
-    setFillColor("#F56565"); //red color
-    fetchContinent();
   }
 
   const handleMouseLeave = () => {
@@ -216,6 +224,8 @@ export function Asia() {
   const [fillColor, setFillColor] = useState("#50711eee");
   const continentOcupied = useRef(false);
   const { data: session } = useSession();
+  const router = useRouter();
+
 
   const fetchContinent = async () => {
     const getUsersInstances = await getContinents();
@@ -255,9 +265,10 @@ export function Asia() {
         500,
         []
       );
+      setFillColor("#F56565"); //red color
+      fetchContinent();
+      return router.push("/grid")
     }
-    setFillColor("#F56565"); //red color
-    fetchContinent();
   }
 
   const handleMouseLeave = () => {
@@ -341,6 +352,8 @@ export function Europe() {
   const [fillColor, setFillColor] = useState("#50711eee");
   const continentOcupied = useRef(false);
   const { data: session } = useSession();
+  const router = useRouter();
+
 
   const fetchContinent = async () => {
     const getUsersInstances = await getContinents();
@@ -380,9 +393,10 @@ export function Europe() {
         500,
         []
       );
+      setFillColor("#F56565"); //red color
+      fetchContinent();
+      return router.push("/grid")
     }
-    setFillColor("#F56565"); //red color
-    fetchContinent();
   }
 
   const handleMouseLeave = () => {
@@ -457,6 +471,8 @@ export function Australia() {
   const [fillColor, setFillColor] = useState("#50711eee");
   const continentOcupied = useRef(false);
   const { data: session } = useSession();
+  const router = useRouter();
+
 
   const fetchContinent = async () => {
     const getUsersInstances = await getContinents();
@@ -496,9 +512,10 @@ export function Australia() {
         500,
         []
       );
+      setFillColor("#F56565"); //red color
+      fetchContinent();
+      return router.push("/grid")
     }
-    setFillColor("#F56565"); //red color
-    fetchContinent();
   }
 
   const handleMouseLeave = () => {
@@ -574,6 +591,8 @@ export function SouthAmerica() {
   const [fillColor, setFillColor] = useState("#50711eee");
   const continentOcupied = useRef(false);
   const { data: session } = useSession();
+  const router = useRouter();
+
 
   const fetchContinent = async () => {
     const getUsersInstances = await getContinents();
@@ -613,9 +632,10 @@ export function SouthAmerica() {
         500,
         []
       );
+      setFillColor("#F56565"); //red color
+      fetchContinent();
+      return router.push("/grid")
     }
-    setFillColor("#F56565"); //red color
-    fetchContinent();
   }
 
   const handleMouseLeave = () => {

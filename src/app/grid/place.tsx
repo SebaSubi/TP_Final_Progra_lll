@@ -130,7 +130,7 @@ function Place({
 
 {isOccupied ? (
         DefaultMap[position.row][position.column].structureType != "" ? (
-          DefaultMap[position.row][position.column].structureType ===
+          DefaultMap[position.row][position.column].structureType === 
           "water" ? (
             <Image
               className="absolute z-[9]"

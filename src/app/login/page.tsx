@@ -29,7 +29,7 @@ function LoginPage() {
       if (res?.error) return setError(res.error as string)
     
       // if (res?.ok) return router.push("/construccion_logic")
-        if (res?.ok) return router.push("/grid")
+        if (res?.ok) return router.push("/worldMap")
     }
     catch(error){
       console.log(error)
