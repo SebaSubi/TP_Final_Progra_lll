@@ -28,10 +28,25 @@ const getMessages = async () => {
     }
 }
 
+// const Notification = ({ show }: { show: boolean }) => {
+//     if (!show) return null;
+//     return (
+//         <div className="fixed top-0 right-0 m-4 p-2 bg-red-500 text-white rounded">
+//             New message!
+//         </div>
+//     );
+// };
+
 const InboxSection = () => {
     const { data: session } = useSession();
     const [messages, setMessages] = useState<Message[]>([]);
     const [showMessages, setShowMessages] = useState(false);
+    // const [hasNewMessage, setHasNewMessage] = useState(false);
+    // const [lastSeenMessageTime, setLastSeenMessageTime] = useState<Date | null>(null);
+    // const [lastSeenMessageTime, setLastSeenMessageTime] = useState<number | null>(() => {
+    //     const storedTime = localStorage.getItem('lastSeenMessageTime');
+    //     return storedTime ? Number(storedTime) : null;
+    // });
 
     useEffect(() => {
       const fetchMessages = async () => {
@@ -42,11 +57,85 @@ const InboxSection = () => {
       fetchMessages();
   }, [session]);
 
+    // useEffect(() => {
+    //     const fetchMessages = async () => {
+    //         const allMessages = await getMessages();
+    //         const userMessages = allMessages.filter((msg: Message) => msg.recipient === (session?.user as any)?.fullname);
+    //         if (Array.isArray(userMessages)) {
+    //             // Sort messages by timestamp in descending order
+    //             userMessages.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+    //             const latestMessageTime = userMessages.length > 0 ? new Date(userMessages[0].timestamp).getTime() : null;
+    //             if (lastSeenMessageTime === null || (latestMessageTime !== null && latestMessageTime > lastSeenMessageTime)) {
+    //                 setHasNewMessage(true);
+    //                 setLastSeenMessageTime(latestMessageTime);
+    //                 localStorage.setItem('lastSeenMessageTime', String(latestMessageTime));
+    //             } else {
+    //                 setHasNewMessage(false);
+    //             }
+    //             setMessages(userMessages);
+    //         } else {
+    //             console.error('getMessages did not return an array');
+    //         }
+    //     };
+
+    //     const intervalId = setInterval(fetchMessages, 5000); // Fetch messages every 5 seconds
+
+    //     return () => clearInterval(intervalId); // Clean up on unmount
+    // }, [lastSeenMessageTime, session]);
+
+    // const handleOpenInbox = () => {
+    //     setShowMessages(!showMessages);
+    //     if (hasNewMessage && messages.length > 0) {
+    //         const newLastSeenMessageTime = new Date(messages[0].timestamp).getTime();
+    //         setLastSeenMessageTime(newLastSeenMessageTime);
+    //         localStorage.setItem('lastSeenMessageTime', String(newLastSeenMessageTime));
+    //     }
+    //     setHasNewMessage(false); // Reset new message flag when inbox is opened
+    // };
+
+    // useEffect(() => {
+    //     const fetchMessages = async () => {
+    //         const allMessages = await getMessages();
+    //         const userMessages = allMessages.filter((msg: Message) => msg.recipient === (session?.user as any)?.fullname);
+    //         if (Array.isArray(userMessages)) {
+    //             // Sort messages by timestamp in descending order
+    //             userMessages.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
+    //             const latestMessageTime = userMessages.length > 0 ? new Date(userMessages[0].timestamp).getTime() : null;
+    //             if (lastSeenMessageTime === null || (latestMessageTime !== null && latestMessageTime > lastSeenMessageTime)) {
+    //                 setHasNewMessage(true);
+    //             }
+    //             setMessages(userMessages);
+    //         } else {
+    //             console.error('getMessages did not return an array');
+    //         }
+    //     };
+    
+    //     const intervalId = setInterval(fetchMessages, 5000); // Fetch messages every 5 seconds
+    
+    //     return () => clearInterval(intervalId); // Clean up on unmount
+    // }, [lastSeenMessageTime, session]);
+
     return (
         <div className="fixed top-0 right-2/5 transform -translate-x-1/2 mt-4 flex flex-col items-center w-full max-w-2xl z-10">
+            {/* <Notification show={hasNewMessage} /> */}
             <button onClick={() => setShowMessages(!showMessages)} className="p-2 bg-black text-white border border-white rounded-lg font-bold uppercase duration-200 hover:bg-gray-900 mb-4">
                 {showMessages ? 'Close inbox' : 'Open inbox'}
             </button>
+            {/* <button 
+                onClick={() => {
+                    setShowMessages(!showMessages);
+                    setHasNewMessage(false); // Reset new message flag when inbox is opened
+                }}
+                className={`p-2 text-white border border-white rounded-lg font-bold uppercase duration-200 hover:bg-gray-900 mb-4 ${hasNewMessage ? 'bg-red-500' : 'bg-black'}`}
+            >
+                {showMessages ? 'Close inbox' : 'Open inbox'}
+            </button> */}
+            {/* <button 
+                onClick={handleOpenInbox} 
+                className={`p-2 text-white border border-white rounded-lg font-bold uppercase duration-200 hover:bg-gray-900 mb-4 ${hasNewMessage ? 'bg-red-500' : 'bg-black'}`}
+            >
+                {showMessages ? 'Close inbox' : 'Open inbox'}
+            </button> */}
             {showMessages && 
                 <div className="relative w-full">
                     <img src="/cart.jpg" alt="Background" className="w-full h-auto object-cover rounded-lg" style={{ maxHeight: '600px' }} />

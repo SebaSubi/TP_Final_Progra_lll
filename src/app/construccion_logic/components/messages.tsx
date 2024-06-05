@@ -73,17 +73,8 @@ const MessageSection = () => {
     const [confirmation, setConfirmation] = useState('');
     const [showMessages, setShowMessages] = useState(false);
     const [users, setUsers] = useState<User[]>([]);
-
-    // useEffect(() => {
-    //     Notification.requestPermission().then((permission) => {
-    //         if (permission === 'granted') {
-    //             console.log('Notification permission granted.');
-    //         } else {
-    //             console.log('Unable to get permission to notify.');
-    //         }
-    //     });
-    // }, []);
-
+    const [messagesLoaded, setMessagesLoaded] = useState(false);
+    
     useEffect(() => {
         getUsers().then(data => {
           if (data.error) {
@@ -132,7 +123,7 @@ const MessageSection = () => {
         };
     
         try {
-            await sendMessage(newMessage); // Aquí es donde envías el mensaje al servidor
+            await sendMessage(newMessage); 
             setMessages(prevMessages => [...prevMessages, newMessage]);
             setMessage('');
             setConfirmation('Mensaje enviado');

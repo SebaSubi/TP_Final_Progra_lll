@@ -20,8 +20,11 @@ import Progressbar, { units } from "./components/progressbar";
 import Units from "../collectors/objects/Units";
 import { Boosts } from "../objects/boost";
 import BarracsMenu from "./components/barracsMenu";
+import ChatSection from "./components/chat";
 import MessageSection from "./components/messages";
 import InboxSection from "./components/buzon";
+import InboxSection1 from "./components/buzon";
+import MessageSection1 from "./components/messages";
 // import MailboxSection from "./components/buzon";
 // import BarracsMenu from "./components/barracsMenu";
 
@@ -129,6 +132,11 @@ export default function Home() {
 
       <MessageSection/>
       <InboxSection/>
+
+      {/* <MessageSection1/>
+      <InboxSection1/> */}
+
+      {/* <ChatSection /> */}
 
       {barracs_Array.length ? 
       <TrainingMenu 
