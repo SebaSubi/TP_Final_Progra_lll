@@ -10,6 +10,9 @@ import { useBuldingContext, BuildingContext } from "./BuildingContext";
 import MessageSection from "../construccion_logic/components/messages"
 import InboxSection from "../construccion_logic/components/buzon";
 import { signOut } from 'next-auth/react';
+import { useUserStore } from "../store/user";
+import { useBuildingsStore } from "../store/userBuildings";
+import { user } from "../construccion_logic/page";
 
 
 // export const BuildingContext = React.createContext<ContextProps | null>(null);
@@ -21,7 +24,19 @@ export default function GridPage() {
   const User = useRef(null)
   const Occupied = useRef([])
 
-  // console.log((session?.user as any)?._id)
+  // const user = useUserStore(state => state.user);
+  // const userBuildings = useBuildingsStore(state => state.userBuildings);
+  const fetchUser = useUserStore(state => state.fetchUser);
+  const fetchUserBuildings = useBuildingsStore(state => state.fetchBuildings);
+
+  useEffect(() => {
+    if ((session?.user as any)?._id) {
+      fetchUser((session?.user as any)._id);
+      fetchUserBuildings((session?.user as any)._id);
+    }
+  }, [session, fetchUser, fetchUserBuildings]);
+
+  // console.log(userBuildings) 
 
   const handleSignOut = async () => {
     await signOut({ callbackUrl: 'http://localhost:3000' });

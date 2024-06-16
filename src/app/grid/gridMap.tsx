@@ -13,7 +13,7 @@ export default function GridMap() {
   const occupied = context.Occupied
   const user = context.User
   const { data: session } = useSession();
-
+ 
   async function getOccupied() {
     const instanceData = await getUserInstanceById((session?.user as any)?._id);
     user.current = instanceData
@@ -25,9 +25,10 @@ export default function GridMap() {
   }
 
   // .map((building: any) => building.position)
-  getOccupied() 
-   
-
+  getOccupied()  
+  //zustand
+  //jotai 
+  
  
   // console.log(occupied.current)
   const places: mapPlace[][] = DefaultMap;

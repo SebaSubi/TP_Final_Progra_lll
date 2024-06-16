@@ -57,6 +57,7 @@ function Place({
       building.current = StructureType.current  
       BuildMode.current = false; 
       setIsOccupied(true);
+      setHover(false);
     }
   };  
 
@@ -67,15 +68,15 @@ function Place({
         if (position.row === buildingItem.position.x && position.column === buildingItem.position.y) {
           DefaultMap[position.row][position.column].occupied = true;
           DefaultMap[position.row][position.column].structureType = buildingItem.name;
-          console.log(buildingItem)
+          // console.log(buildingItem)
           building.current = buildingItem;
-          console.log(building.current)
+          // console.log(building.current)
         }
       });
     }
 
     alreadyOccupied();
-    console.log(building.current); // Should log the updated building if it exists
+    // console.log(building.current); // Should log the updated building if it exists
   }, [occupied, position]);
 
   // alreadyOccupied() 
@@ -88,7 +89,7 @@ function Place({
   return (
     <div className="h-full w-full flex">
       <div
-        className={`h-full w-full ${
+        className={`h-10 w-10 ${
           BuildMode.current
             ? hover
               ? isOccupied
@@ -114,10 +115,10 @@ function Place({
       </div> 
       {buildingMenu && building.current && 
       <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 flex flex-col items-center justify-center w-[330px] h-[250px] bg-[#f7cd8d] border-[3px] border-[#b7632b]">
-        {building.current.name}< br />
+        {/* {building.current.name}< br />
         Production per minute: {building.current.prod_per_hour}<br />
         Workers: {building.current.workers} <br />
-        capacity: {building.current.capacity} / {building.current.maxCapacity} 
+        capacity: {building.current.capacity} / {building.current.maxCapacity}  */}
       </div>} 
    
       {/* <Image    //this is going tio be the building i the place
