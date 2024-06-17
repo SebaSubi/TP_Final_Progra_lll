@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose"
 
-const userInstanceBuildingsSchema = new Schema(
+const userBuildingsSchema = new Schema(
   {
     userId: String,
     name: String,
@@ -12,11 +12,12 @@ const userInstanceBuildingsSchema = new Schema(
     level: Number,
     unlock_level: Number,
     maxWorkers: Number,
+    capacity: Number,
     maxCapacity: Number,
     position: {x: Number, y: Number}
   }
 );
 
-const userInstanceBuildings = mongoose.models.userInstanceBuildings || mongoose.model("userInstanceBuildings", userInstanceBuildingsSchema)
+const userBuildings = mongoose.models.userBuildings || mongoose.model("userBuildings", userBuildingsSchema)
 
-export default userInstanceBuildings
+export default userBuildings

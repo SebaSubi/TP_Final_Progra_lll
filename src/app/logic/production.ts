@@ -1,13 +1,14 @@
 import { time } from "console";
 import Collectors from "../collectors/objects/collector";
 import { cookies } from "next/headers";
+import { UserBuildings } from "../types";
 
 
-export function updateData(collector: any) {
+export function updateData(collector: UserBuildings) {
   const currentTime: Date = new Date()
   console.log("This is the current time: " + currentTime + "the collector time is: " + collector.lastCollected)
 
-  const timeDifference: number = currentTime.getMinutes() - collector.updateTime.getMinutes()
+  const timeDifference: number = currentTime.getMinutes() - collector.lastCollected.getMinutes()
   console.log("The time difference is: " + timeDifference)
   // const timeDifference = 5
   // console.log(timeDifference)

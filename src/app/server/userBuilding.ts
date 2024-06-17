@@ -44,9 +44,14 @@ export async function postUserBuildings(building: any, userId: string, lastColle
         "Content-type": "application/json",
 
       },
-      body: JSON.stringify({ ...buildingWithoutId, userId, lastCollected, position}) 
+      body: JSON.stringify({ ...buildingWithoutId, userId, lastCollected, position, capacity: 0}) 
     });
-    console.log(JSON.stringify({ ...buildingWithoutId, userId, lastCollected, position}))
+    const responseData = await res.json()
+    const createdBuilding = responseData.building
+    // console.log(createdBuilding)
+    return createdBuilding
+    
+    // console.log(JSON.stringify({ ...buildingWithoutId, userId, lastCollected, position, capacity: 0}))
   } catch (error) {
     console.log(error)
   }

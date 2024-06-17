@@ -15,12 +15,16 @@ const config: Config = {
       },
       gridTemplateColumns: {
         '48': 'repeat(48, minmax(0, 1fr))',
+        '42': 'repeat(42, minmax(0, 1fr))',
+        '27': 'repeat(27, minmax(0, 1fr))',
         '20': 'repeat(20, minmax(0, 1fr))',
       },
       gridTemplateRows: {
         '36': 'repeat(36, minmax(0, 1fr))',
         '30': 'repeat(30, minmax(0, 1fr))',
         '27': 'repeat(27, minmax(0, 1fr))',
+        '23': 'repeat(23, minmax(0, 1fr))',
+        '22': 'repeat(22, minmax(0, 1fr))',
         '20': 'repeat(20, minmax(0, 1fr))',
       },
       zIndex: {
@@ -30,8 +34,15 @@ const config: Config = {
       fontFamily: {
         'comic': ['"Comic Sans MS"', 'cursive']
       },
-
-
+      keyframes: {
+        fillBar: {
+          '0%': { width: '0%' },
+          '100%': { width: '100%' },
+        },
+      },
+      animation: {
+        fillBar: 'fillBar 5s forwards',
+      },
     },
   },
   variants: {

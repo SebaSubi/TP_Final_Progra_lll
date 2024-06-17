@@ -20,6 +20,7 @@ export interface UserBuildings {
   level: number,
   unlock_level: number,
   maxWorkers: number,
+  capacity: number,
   maxCapacity: number,
   position: {x: number, y: number}
 }

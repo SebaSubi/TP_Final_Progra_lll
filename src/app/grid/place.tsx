@@ -6,6 +6,10 @@ import Building from "./building";
 import { getUserBuildings, postUserBuildings } from "../server/userBuilding";
 import { useSession } from "next-auth/react";
 import { getUserInstanceById } from "../server/userInstance";
+import { useBuildingsStore } from "../store/userBuildings";
+import { UserBuildings } from "../types";
+import { useUserStore } from "../store/user";
+import { updateData } from "../logic/production";
 
 
 // interface BuildingType {
@@ -29,62 +33,62 @@ function Place({
   const [hover, setHover] = useState(false);
   const [buildingMenu, setBuildingMenu] = useState<boolean>(false); // State to control the building menu visibility
   // const [building, setBuilding] = useState<any>(null); // State to store the selected building data
-  const building = useRef(null);
+  const building = useRef<UserBuildings>();
+  const userBuildings = useBuildingsStore(state => state.userBuildings);
+  const user = useUserStore(state => state.user);
+  // console.log(user)
+  
+  function updateData() {
+    
 
-  // const [userBuildings, setUserBuildings] = useState<any[]>()
-  // const [currentUser, setCurrentUser] = useState<any>()
+    setBuildingMenu(!buildingMenu);
+
+  }
   const context = useBuldingContext(); //this is great, it imports states from other components
 
   const StructureType = context.StructureType;
   const BuildMode = context.placing;
-  const user = context.User
-  const occupied = context.Occupied
 
 
-  useEffect(() => { 
-    setIsOccupied(mapPlace.occupied);
-  }, [mapPlace.occupied, mapPlace.structureType, mapPlace.strutctureID]);
-
- 
-
-  const handleClick = () => {
+  const handleClick = async () => { 
     if (BuildMode.current && !isOccupied) {
-      
       DefaultMap[position.row][position.column].occupied = true;
       DefaultMap[position.row][position.column].structureType =
         StructureType.current.name;
-      postUserBuildings(StructureType.current, user.current.userId, new Date(), {x: position.row, y: position.column})
-      building.current = StructureType.current  
-      BuildMode.current = false; 
-      setIsOccupied(true);
-      setHover(false);
+  
+      try {
+        const createdBuilding = await postUserBuildings(
+          StructureType.current,
+          user.userId,
+          new Date(),
+          { x: position.row, y: position.column }
+        );
+  
+        // Update building.current with the created building
+        building.current = createdBuilding;
+  
+        BuildMode.current = false;
+        setIsOccupied(true);
+        setHover(false);
+      } catch (error) {
+        console.error("Algo paso", error);
+      }
     }
-  };  
-
+  };
+  
+ 
   useEffect(() => {
-    // This useEffect ensures `alreadyOccupied` runs after the component mounts
-    function alreadyOccupied() {
-      occupied.current.forEach((buildingItem) => {
-        if (position.row === buildingItem.position.x && position.column === buildingItem.position.y) {
-          DefaultMap[position.row][position.column].occupied = true;
-          DefaultMap[position.row][position.column].structureType = buildingItem.name;
-          // console.log(buildingItem)
-          building.current = buildingItem;
-          // console.log(building.current)
+    userBuildings.forEach((buildingItem) => {
+      if (position.row === buildingItem.position.x && position.column === buildingItem.position.y) {
+        DefaultMap[position.row][position.column].occupied = true;
+        DefaultMap[position.row][position.column].structureType = buildingItem.name;
+        building.current = buildingItem;
+        setIsOccupied(true);
         }
-      });
-    }
-
-    alreadyOccupied();
-    // console.log(building.current); // Should log the updated building if it exists
-  }, [occupied, position]);
+    });
+  }, []);
 
   // alreadyOccupied() 
-  useEffect(() => {
-    if (building.current) {
-      console.log(building.current);  // Logs the updated building after alreadyOccupied has run
-    } // Logs the updated building after alreadyOccupied has run
-  }, [building.current]);
 
   return (
     <div className="h-full w-full flex">
@@ -101,7 +105,7 @@ function Place({
         onClick={() => {
           handleClick()
           if(isOccupied) {
-            setBuildingMenu(!buildingMenu);
+            updateData()
           }
         }} 
         onMouseOver={() => {
@@ -115,58 +119,27 @@ function Place({
       </div> 
       {buildingMenu && building.current && 
       <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 flex flex-col items-center justify-center w-[330px] h-[250px] bg-[#f7cd8d] border-[3px] border-[#b7632b]">
-        {/* {building.current.name}< br />
+        {building.current.name}< br />
         Production per minute: {building.current.prod_per_hour}<br />
         Workers: {building.current.workers} <br />
-        capacity: {building.current.capacity} / {building.current.maxCapacity}  */}
+        capacity: {building.current.capacity} / {building.current.maxCapacity} 
       </div>} 
    
-      {/* <Image    //this is going tio be the building i the place
+      <Image
         className="absolute z-[9]"
-        src={isOccupied ? "/minecraftWater.png" : "/minecraft_grass_top.png"}
+        src={"/grassTop.jpg"}
         width={40}
         height={40}
         alt="minecraft_grass_top"
-      /> */}
-
-{isOccupied ? (
-        DefaultMap[position.row][position.column].structureType != "" ? (
-          DefaultMap[position.row][position.column].structureType === 
-          "water" ? (
-            <Image
-              className="absolute z-[9]"
-              src={"/minecraftWater.png"}
-              width={40}
-              height={40}
-              alt="minecraft_grass_top"
-            />
-          ) : (
-            <>
-              <Image
-                className="absolute z-[9]"
-                src={"/minecraft_grass_top.png"}
-                width={40}
-                height={40}
-                alt="minecraft_grass_top"
-              />
-              <div className="z-[9] absolute">
-                <Building
-                  buildingName={
-                    DefaultMap[position.row][position.column].structureType 
-                  }
-                />
-              </div>
-            </>
-          )
-        ) : null
-      ) : (
-        <Image
-          className="absolute z-[9]"
-          src={"/minecraft_grass_top.png"} 
-          width={40}
-          height={40}
-          alt="minecraft_grass_top"
-        />
+      />
+      {isOccupied && (
+        <div className="z-[9] absolute">
+          <Building
+            buildingName={
+              DefaultMap[position.row][position.column].structureType
+            }
+          />
+        </div>
       )}
     </div>
   );

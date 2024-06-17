@@ -13,6 +13,7 @@ import { getGeneralBuildings } from "@/app/server/userBuilding"; // Ensure this 
 import { useBuldingContext } from "../../grid/BuildingContext";
 import { getUserInstanceById } from "@/app/server/userInstance";
 import { set } from "mongoose";
+import { useUserStore } from "@/app/store/user";
 
 // The main SideBar component
 export default function SideBar({
@@ -24,13 +25,15 @@ export default function SideBar({
   const [sideBar, setSideBar] = useState<boolean>(true);// State to control the sidebar visibility
   const [buildings, setBuildings] = useState<any[]>([])   // State to store the fetched buildings data
   const [selectedBuilding, setSelectedBuilding] = useState<any>(null) // State to store the selected building data
-  const [userInstance, setUserInstance] = useState<any>(null);   // State to store the user instance data
+  // const [userInstance, setUserInstance] = useState<any>(null);   // State to store the user instance data
   const [buildingMenu, setBuildingMenu] = useState<boolean>(false); // State to control the building menu visibility
   const context = useBuldingContext(); //this is great, it imports states from other components
 
   const StructureType = context.StructureType;
   const BuildMode = context.placing;
-  const user = context.User
+  // const user = context.User
+  const user = useUserStore(state => state.user);
+
 
   // Fetch buildings data when the component mounts
   useEffect(() => {
@@ -49,20 +52,20 @@ export default function SideBar({
     fetchBuildings();
   }, []);
 
-  useEffect(() => {
-    const fetchUserInstance = async () => {
-      if(userId) {
-        // console.log(userId)
-        const instanceData = await getUserInstanceById(userId);
-        setUserInstance(instanceData);
-        user.current = instanceData
-        // console.log(user.current)
-      }
+  // useEffect(() => {
+  //   const fetchUserInstance = async () => {
+  //     if(userId) {
+  //       // console.log(userId)
+  //       const instanceData = await getUserInstanceById(userId);
+  //       setUserInstance(instanceData);
+  //       user.current = instanceData
+  //       // console.log(user.current)
+  //     }
 
-    };
+  //   };
   
-    fetchUserInstance();
-  }, [userId, user]);
+  //   fetchUserInstance();
+  // }, [userId, user]);
 
   // console.log(userInstance.level);
 
@@ -169,9 +172,9 @@ export default function SideBar({
             sideBar ? "translate-x-0" : "translate-x-full"
           }`}
         >
-          {Array.isArray(buildings) && buildings.length > 0 && userInstance ? (
+          {Array.isArray(buildings) && buildings.length > 0 && user? (
             buildings.map((building: any, index: number) => (
-              <SideBarIcon building={building} user={userInstance} key={index} />
+              <SideBarIcon building={building} user={user} key={index} />
             ))
           ) : (
             <p>No buildings available</p>
