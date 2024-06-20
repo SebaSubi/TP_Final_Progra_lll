@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { type User } from '../types';
+import { Boost, type User } from '../types';
 import { updateUserInstance } from '../server/userInstance';
 
 
@@ -7,6 +7,7 @@ interface State {
    user: User;
    fetchUser: (userId: string) => Promise<void>;
    useBoost: (boost: string) => void;
+   buyBoost: (boost: Boost) => void;
 }
 
 
@@ -43,6 +44,45 @@ export const useUserStore = create<State>((set, get) => ({
             updateUserInstance(newUser)
           }
       }
+      // console.log(user.boosts)
+      // return user.boosts;
+   },
+
+   buyBoost: (boost: Boost) => {
+      const { user } = get()
+      console.log(user)
+      const newBoostArray = structuredClone(user.boosts);
+      if(newBoostArray.length != 0) {
+      for (let i = 0; i < user.boosts.length; i++) {
+         if (user.boosts[i].name === boost.name) {
+            newBoostArray[i].quantity += 1;
+            //We add 1 to the boost quantity
+            set({ user: { ...user, boosts: newBoostArray, gold: user.gold - boost.cost}});
+            const newUser = { ...user, boosts: newBoostArray, gold: user.gold - boost.cost}
+            //gotta updtae the data base as well
+            updateUserInstance(newUser)
+          } else {
+            newBoostArray.push(boost)
+            newBoostArray[newBoostArray.length - 1].quantity = 1;
+            set({ user: { ...user, boosts: newBoostArray, gold: user.gold - boost.cost}});
+            const newUser = { ...user, boosts: newBoostArray, gold: user.gold - boost.cost}
+            //gotta updtae the data base as well
+            updateUserInstance(newUser)
+          }
+      }
+   } else { 
+      newBoostArray.push(boost)
+      newBoostArray[newBoostArray.length - 1].quantity = 1;
+      set({ user: { ...user, boosts: newBoostArray, gold: user.gold - boost.cost}});
+      const newUser = { ...user, boosts: newBoostArray, gold: user.gold - boost.cost}
+      //gotta updtae the data base as well
+      updateUserInstance(newUser)
+   }
+      // const newUser = { ...user, gold: user.gold - boost.cost}
+      // set({ user: newUser});
+      // console.log(newUser)
+      // updateUserInstance(newUser)  
+
       // console.log(user.boosts)
       // return user.boosts;
    }

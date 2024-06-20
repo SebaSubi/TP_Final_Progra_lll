@@ -53,7 +53,10 @@ export default function SideBar() {
   const StructureType = context.StructureType;
   const BuildMode = context.placing;
   const user = useUserStore(state => state.user);
+  const chargeAndAddBoost = useUserStore(state => state.buyBoost);
   const boosts = useBoostStore(state => state.boosts);
+  const setBoost = useBoostStore(state => state.setBoost);
+  const updateUserBoost = useUserStore(state => state.useBoost)
 
   // console.log(user.gold);
 
@@ -156,11 +159,28 @@ export default function SideBar() {
 
   function handleSelectedBoosts(boost: Boost) {
     const foundBoost = boosts.find((b: Boost) => b.name === boost.name);
-    // setSelectedItem(foundBoost)
     return foundBoost ? foundBoost: boost;
   }
+
+  function buyBoost(boost: Boost) {
+    // console.log();
+    if (user.gold >= boost.cost) {
+      // console.log(boost.cost)
+      chargeAndAddBoost(boost);
+      return true;
+    } else {
+      return false;
+    }
+
+  }
   
-  // console.log(selectedItem);
+  function setAndUpdateBoost(name: string) {
+    //We set the boost
+    setBoost(name);
+    //We delete the boost from the database
+    updateUserBoost(name);
+  }
+  // console.log(user);
 
   return (
     <>
@@ -194,8 +214,7 @@ export default function SideBar() {
             <div
           className="relative flex items-center justify-center pr-1 hover:brightness-75 active:transition-none active:scale-90 mt-10"
           onClick={() => {
-            StructureType.current = selectedItem;
-            BuildMode.current = true;
+            buyBoost(selectedItem)
             setBuildingMenu(false);
           }}
         >
@@ -211,8 +230,7 @@ export default function SideBar() {
         <div
         className="relative flex items-center justify-center hover:brightness-75 active:transition-none active:scale-90 mt-10"
         onClick={() => {
-          StructureType.current = selectedItem;
-          BuildMode.current = true;
+          setAndUpdateBoost(selectedItem.name);
           setBuildingMenu(false);
         }}
       >
@@ -259,7 +277,7 @@ export default function SideBar() {
           }`}
         >
           {boostSideBar && (
-            boosts.length > 0 && user ? (
+            defaultBoosts.length > 0 && user ? (
               defaultBoosts.map((boost: Boost, index: number) => (
                 // console.log(boost),
                 <SideBarBoosts boost={boost} key={index} />
