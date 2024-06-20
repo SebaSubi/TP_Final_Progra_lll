@@ -142,9 +142,9 @@ const MessageSection = () => {
             </button>
             {showMessages && 
                 <div className="relative w-full">
-                    <img src="/cart.jpg" alt="Background" className="w-full h-auto object-cover rounded-lg" style={{ maxHeight: '600px' }} />
+                    <img src="/messages1.png" alt="Background" className="w-full h-auto object-cover rounded-lg" style={{ maxHeight: '700px' }} />
                     <div className="absolute inset-0 flex flex-col items-center justify-center p-4 overflow-hidden">
-                        <div className="w-full max-w-lg bg-transparent p-4 rounded-lg shadow-md" style={{ maxHeight: '500px', overflowY: 'auto', scrollbarWidth: 'none', scrollbarColor: 'transparent transparent', }}>
+                        <div className="w-full max-w-lg bg-transparent p-4 rounded-lg" style={{ maxHeight: '500px', overflowY: 'auto', scrollbarWidth: 'none', scrollbarColor: 'transparent transparent', }}>
                             <div className="message-section" style={{ overflowY: 'auto', maxHeight: '300px', marginTop: '0.8rem', scrollbarWidth: 'none', scrollbarColor: 'transparent transparent', msOverflowStyle: 'none' }}>
                             <h2 style={{textShadow: '3px 3px 2px rgba(255, 0, 0, 0.5)'}} className="text-4xl font-bold mb-6 text-center w-full text-red-500 mr-5"> MESSAGES </h2>
                                 {messages.map((msg, index) => (

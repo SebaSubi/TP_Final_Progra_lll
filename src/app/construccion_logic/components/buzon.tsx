@@ -35,32 +35,32 @@ const InboxSection = () => {
     const [messageCount, setMessageCount] = useState(0);
     const [newMessageNotification, setNewMessageNotification] = useState(false);
 
-    // useEffect(() => {
-    //   const fetchMessages = async () => {
-    //       const allMessages = await getMessages();
-    //       const userMessages = allMessages.filter((msg: Message) => msg.recipient === (session?.user as any)?.fullname);
-    //       setMessages(userMessages);
-    //   };
-    //   fetchMessages();
-    // }, [session]);
-
     useEffect(() => {
-        const fetchMessages = async () => {
-            const newMessages = await getMessages();
-            setMessages(newMessages);
+      const fetchMessages = async () => {
+          const allMessages = await getMessages();
+          const userMessages = allMessages.filter((msg: Message) => msg.recipient === (session?.user as any)?.fullname);
+          setMessages(userMessages);
+      };
+      fetchMessages();
+    }, [session]);
+
+    // useEffect(() => {
+    //     const fetchMessages = async () => {
+    //         const newMessages = await getMessages();
+    //         setMessages(newMessages);
     
-            const oldMessageCountStr = localStorage.getItem('messageCount');
-            const oldMessageCount = oldMessageCountStr !== null ? Number(oldMessageCountStr) : 0;  
+    //         const oldMessageCountStr = localStorage.getItem('messageCount');
+    //         const oldMessageCount = oldMessageCountStr !== null ? Number(oldMessageCountStr) : 0;  
     
-            if (newMessages.length > oldMessageCount) {
-                setNewMessageNotification(true);
-            }
+    //         if (newMessages.length > oldMessageCount) {
+    //             setNewMessageNotification(true);
+    //         }
     
-            localStorage.setItem('messageCount', String(newMessages.length));
-        };
+    //         localStorage.setItem('messageCount', String(newMessages.length));
+    //     };
     
-        fetchMessages();
-    }, []);
+    //     fetchMessages();
+    // }, []);
 
     const handleOpenInbox = () => {
         setShowMessages(prevShowMessages => !prevShowMessages);
@@ -77,9 +77,10 @@ const InboxSection = () => {
             {newMessageNotification && <div>New message!</div>}
             {showMessages && 
                 <div className="relative w-full">
-                    <img src="/cart.jpg" alt="Background" className="w-full h-auto object-cover rounded-lg" style={{ maxHeight: '600px' }} />
+                    {/* <img src="/messages.png" alt="Background" className="w-full h-auto object-cover rounded-lg" style={{ height: '800px' }} /> */}
+                    <img src="/messages1.png" alt="Background" className="w-full object-cover rounded-lg" style={{ height: '750' }} />
                     <div className="absolute inset-0 flex flex-col items-center justify-center p-4 overflow-hidden">
-                        <div className="w-full max-w-lg bg-transparent p-4 rounded-lg shadow-md" style={{ maxHeight: '500px',scrollbarWidth: 'none', scrollbarColor: 'transparent transparent', overflowY: 'auto' }}>
+                        <div className="w-full max-w-lg bg-transparent p-4 rounded-lg" style={{ maxHeight: '500px',scrollbarWidth: 'none', scrollbarColor: 'transparent transparent', overflowY: 'auto' }}>
                         <h2 style={{textShadow: '3px 3px 2px rgba(255, 0, 0, 0.5)'}} className="text-4xl font-bold mb-6 text-center w-full text-red-500 mr-5"> INBOX </h2>
                             <div className="message-section" style={{ overflowY: 'auto', maxHeight: '300px', marginTop: '0.8rem', scrollbarWidth: 'none', scrollbarColor: 'transparent transparent', msOverflowStyle: 'none' }}>
                                 {messages.map((msg, index) => (

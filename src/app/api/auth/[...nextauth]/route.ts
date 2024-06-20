@@ -31,20 +31,43 @@ const handler = NextAuth({
           },
       }),
     ],
-    callbacks:{
-      jwt({account, token, user, profile, session}){
-        if(user) token.user = user;
+    callbacks: {
+      async jwt({ token, user }) {
+        if (user) token.user = user;
         return token;
       },
-      session({session, token}) {
+      async session({ session, token }) {
         session.user = token.user as any;
-        console.log(session, token)
         return session;
+      },
+      async redirect({ url, baseUrl }) {
+        // If the URL is an internal URL, redirect to it
+        if (url.startsWith(baseUrl)) {
+          return url;
+        } else if (url.startsWith('/')) {
+          // If the URL is a relative path, resolve it against the base URL
+          return new URL(url, baseUrl).toString();
+        }
+        return baseUrl;
       },
     },
     pages: {
       signIn: "/login",
-    }
+    },
+    // callbacks:{
+    //   jwt({account, token, user, profile, session}){
+    //     if(user) token.user = user;
+    //     return token;
+    //   },
+    //   session({session, token}) {
+    //     session.user = token.user as any;
+    //     console.log(session, token)
+    //     return session;
+    //   },
+    // },
+    // pages: {
+    //   signIn: "/login",
+    // }
 });
 
 
