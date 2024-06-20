@@ -46,17 +46,45 @@ export default function GridPage() {
       value={{ StructureType, placing, User, Occupied }}
     >
       <SideBar userId={(session?.user as any)?._id} />
-      <div className="flex flex-row items-center justify-center overflow-hidden">
-        {/* <div className="flex flex-col justify-center gap-2">
+
+      {/* <Image src={"/background_easter_egg.jpg"} alt="que miras bobo" fill /> */}
+
+      <MessageSection />
+
+      <InboxSection />
+
+      <div className="flex items-center justify-center">
+        <TransformWrapper
+          maxScale={3}
+          // @ts-ignore
+          defaultScale={1}
+          disablePadding={true}
+          minScale={1}
+          centerOnInit={true}
+          doubleClick={{ disabled: true }}
+          alignmentAnimation={{ disabled: true }}
+          panning={{ velocityDisabled: true }}
+        >
+          <div className="absolute bottom-0 right-0 m-4 z-50">
+            <button
+              className="p-2 bg-black text-white border border-white rounded-lg font-bold uppercase duration-200 hover:bg-gray-900 h-10"
+              onClick={handleSignOut}
+            >
+              Logout
+            </button>
+          </div>
+          <TransformComponent>
+            <GridMap />
+          </TransformComponent>
+        </TransformWrapper>
+      </div>
+      <div className="fixed overflow-hidden z-[11] top-0 left-3/4 pt-2">
+        <div className="flex flex-col justify-center gap-2">
           <button
             className="bg-blue-500 h-8 w-32"
             onClick={() => {
-              if (StructureType.current === "water") {
-                placing.current = !placing.current;
-              } else {
-                StructureType.current = "water";
-              }
-              console.log(StructureType.current);
+              StructureType.current = "water";
+              placing.current = !placing.current;
             }}
           >
             place water
@@ -64,47 +92,12 @@ export default function GridPage() {
           <button
             className="bg-amber-400 h-8 w-32"
             onClick={() => {
-              if (StructureType.current === "LumberCamp") {
-                placing.current = !placing.current;
-              } else {
-                StructureType.current = "LumberCamp";
-              }
-              console.log(placing.current);
+              StructureType.current = "";
+              placing.current = !placing.current;
             }}
           >
-            place structure
+            place grass
           </button>
-        </div> */}
-        {/* <Image src={"/background_easter_egg.jpg"} alt="que miras bobo" fill /> */}
-
-        <MessageSection />
-
-        <InboxSection />
-
-        <div className="flex items-center justify-center">
-          <TransformWrapper
-            maxScale={3}
-            // @ts-ignore
-            defaultScale={1}
-            disablePadding={true}
-            minScale={1}
-            centerOnInit={true}
-            doubleClick={{ disabled: true }}
-            alignmentAnimation={{ disabled: true }}
-            panning={{ velocityDisabled: true }}
-          >
-            <div className="absolute bottom-0 right-0 m-4 z-50">
-              <button
-                className="p-2 bg-black text-white border border-white rounded-lg font-bold uppercase duration-200 hover:bg-gray-900 h-10"
-                onClick={handleSignOut}
-              >
-                Logout
-              </button>
-            </div>
-            <TransformComponent>
-              <GridMap />
-            </TransformComponent>
-          </TransformWrapper>
         </div>
       </div>
     </BuildingContext.Provider>

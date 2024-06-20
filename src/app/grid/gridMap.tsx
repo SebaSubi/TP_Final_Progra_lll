@@ -25,7 +25,7 @@ export default function GridMap() {
   }
 
   // .map((building: any) => building.position)
-  getOccupied();
+  // getOccupied();
   //zustand
   //jotai
 
@@ -53,6 +53,22 @@ export default function GridMap() {
   //   }))
   // );
   // console.log(JSON.stringify(modifiedDefaultMap));
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.altKey) {
+        // console.log("Alt key was pressed");
+        console.log(JSON.stringify(DefaultMap));
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    // Cleanup on unmount
+    // return () => {
+    //   window.removeEventListener("keydown", handleKeyDown);
+    // };
+  }, []);
 
   return (
     <div className="flex justify-center items-center min-w-[1920px] h-screen">

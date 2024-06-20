@@ -49,20 +49,26 @@ function Place({
   }, [mapPlace.occupied, mapPlace.structureType, mapPlace.strutctureID]);
 
   const handleClick = () => {
-    if (BuildMode.current && !isOccupied) {
-      DefaultMap[position.row][position.column].occupied = true;
-      DefaultMap[position.row][position.column].structureType =
-        StructureType.current.name;
-      postUserBuildings(
-        StructureType.current,
-        user.current.userId,
-        new Date(),
-        { x: position.row, y: position.column }
-      );
-      building.current = StructureType.current;
-      BuildMode.current = false;
-      setIsOccupied(true);
-      setHover(false);
+    if (BuildMode.current) {
+      if (StructureType.current === "") {
+        DefaultMap[position.row][position.column].occupied = false;
+        DefaultMap[position.row][position.column].structureType = "";
+        building.current = null;
+        setIsOccupied(false);
+      } else {
+        DefaultMap[position.row][position.column].occupied = true;
+        DefaultMap[position.row][position.column].structureType = "water"; //cambie esto
+        building.current = "water";
+        setIsOccupied(true);
+      }
+      // postUserBuildings(
+      //   StructureType.current,
+      //   user.current.userId,
+      //   new Date(),
+      //   { x: position.row, y: position.column }
+      // );
+      // BuildMode.current = false;
+      // setHover(false);
     }
   };
 
@@ -109,9 +115,9 @@ function Place({
         } flex items-center justify-center select-none z-10`}
         onClick={() => {
           handleClick();
-          if (isOccupied) {
-            setBuildingMenu(!buildingMenu);
-          }
+          // if (isOccupied) {
+          //   setBuildingMenu(!buildingMenu);
+          // }
         }}
         onMouseOver={() => {
           BuildMode.current ? setHover(true) : null;
