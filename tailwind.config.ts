@@ -9,10 +9,6 @@ const config: Config = {
   theme: {
     extend: {
       keyframes: {
-        shrinkToCircle: {
-          '0%': { width: '100%', height: '100%', borderRadius: '0', top: '0', left: '0' },
-          '100%': { width: '50px', height: '50px', borderRadius: '50%', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' },
-        },
         shrinkAndMove: {
           '0%': { opacity: '0', transform: 'scale(3)', top: '20%' },
           '10%': { opacity: '1', transform: 'scale(3)', top: '20%' },
@@ -24,7 +20,6 @@ const config: Config = {
         },
       },
       animation: {
-        shrinkToCircle: 'shrinkToCircle 3s forwards',
         shrinkAndMove: 'shrinkAndMove 3.5s ease-in-out',
         disappear: 'disappear 1s ease-in',
       },

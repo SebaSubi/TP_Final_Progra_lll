@@ -24,7 +24,7 @@ function LoginPage() {
         redirect: false,
       });
 
-      console.log("Response:", res);
+      // console.log("Response:", res);
 
       if (res?.error) {
         return setError(res.error as string);

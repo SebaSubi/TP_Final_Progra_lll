@@ -21,7 +21,6 @@ export default function WorldMap() {
     return new Promise((resolve) => setTimeout(resolve, ms));
   }
   async function transition() {
-    console.log("transition");
     setAnimate(true);
     await sleep(1000);
     setWaveFlag(false);
