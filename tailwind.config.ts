@@ -13,9 +13,20 @@ const config: Config = {
           '0%': { width: '100%', height: '100%', borderRadius: '0', top: '0', left: '0' },
           '100%': { width: '50px', height: '50px', borderRadius: '50%', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' },
         },
+        shrinkAndMove: {
+          '0%': { opacity: '0', transform: 'scale(3)', top: '20%' },
+          '10%': { opacity: '1', transform: 'scale(3)', top: '20%' },
+          '100%': { opacity: '1', transform: 'scale(1)', top: '0%' },
+        },
+        disappear: {
+          '0%': { opacity: '1' },
+          '100%': { opacity: '0' },
+        },
       },
       animation: {
         shrinkToCircle: 'shrinkToCircle 3s forwards',
+        shrinkAndMove: 'shrinkAndMove 3.5s ease-in-out',
+        disappear: 'disappear 1s ease-in',
       },
       backgroundImage: {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
@@ -37,7 +48,7 @@ const config: Config = {
         '100': '100',
       },
       fontFamily: {
-        'comic': ['"Comic Sans MS"', 'cursive']
+        'comic': ['"Comic Sans MS"', 'cursive'],
       },
 
 
