@@ -23,7 +23,7 @@ export default function WorldMap() {
   async function transition() {
     console.log("transition");
     setAnimate(true);
-    await sleep(900);
+    await sleep(1000);
     setWaveFlag(false);
   }
 
