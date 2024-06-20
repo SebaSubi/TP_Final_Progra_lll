@@ -2,7 +2,7 @@ import Image from 'next/image';
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
 export default function LoadingScreen(
-  { setLoading }: {setLoading: Dispatch<SetStateAction<boolean>>;}
+  { setLoading }: {setLoading: Dispatch<SetStateAction<boolean>> }
 ) {
   const [finish, setFinish] = useState(true);
 

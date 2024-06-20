@@ -42,3 +42,13 @@ export async function GET(request?: NextRequest) {
   return NextResponse.json({ instance });
 }
 
+export async function PUT(request: NextRequest) {
+  const id = request.nextUrl.searchParams.get("userId")
+  const { name, level, boosts, units, gold, materials } = await request.json();
+  await connect();
+  const newUser = await UserInstances.findOneAndUpdate({ userId: id }, { name, level, boosts, units, gold, materials }, { new: true }); 
+  //The new: true option is used to return the modified document rather than the original.
+  return NextResponse.json({ message: "User updated", newUser }, { status: 200 })
+} 
+
+

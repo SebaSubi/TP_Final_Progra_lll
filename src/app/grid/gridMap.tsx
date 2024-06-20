@@ -11,21 +11,21 @@ export default function GridMap() {
   //   //logic for the creation of the grid map
   const context = useBuldingContext();
   const occupied = context.Occupied;
-  const user = context.User;
+  // const user = context.User;
   const { data: session } = useSession();
 
-  async function getOccupied() {
-    const instanceData = await getUserInstanceById((session?.user as any)?._id);
-    user.current = instanceData;
-    // console.log(user.current.userId)
-    if (user.current && user.current.userId) {
-      const userBuildingsData = await getUserBuildings(user.current.userId);
-      occupied.current = userBuildingsData;
-    }
-  }
+  // async function getOccupied() {
+  //   const instanceData = await getUserInstanceById((session?.user as any)?._id);
+  //   user.current = instanceData;
+  //   // console.log(user.current.userId)
+  //   if (user.current && user.current.userId) {
+  //     const userBuildingsData = await getUserBuildings(user.current.userId);
+  //     occupied.current = userBuildingsData;
+  //   }
+  // }
 
   // .map((building: any) => building.position)
-  getOccupied();
+  // getOccupied();
   //zustand 
   //jotai
 

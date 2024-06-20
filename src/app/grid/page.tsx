@@ -15,6 +15,8 @@ import { useBuildingsStore } from "../store/userBuildings";
 import { user } from "../construccion_logic/page";
 import LoadingScreen from "./components/loadingScreen";
 import { UserBuildings } from "../types";
+import { useBoostStore } from "../store/boosts";
+import BoostMenu from "./components/boostMenu";
 
 
 // export const BuildingContext = React.createContext<ContextProps | null>(null);
@@ -24,12 +26,14 @@ export default function GridPage() {
   const { data: session } = useSession();
   const placing = useRef(false);
   const StructureType = useRef(null);
-  const User = useRef(null)
+  // const User = useRef(null)
   const Occupied = useRef([])
   const [loading, setLoading] = useState(true)
 
   const fetchUser = useUserStore(state => state.fetchUser);
   const fetchUserBuildings = useBuildingsStore(state => state.fetchBuildings);
+  const fetchBoost = useBoostStore(state => state.fetchBoosts);
+
 
   
   const userBuildings = useBuildingsStore(state => state.userBuildings);
@@ -38,6 +42,7 @@ export default function GridPage() {
     if ((session?.user as any)?._id) {
       fetchUser((session?.user as any)._id);
       fetchUserBuildings((session?.user as any)._id);
+      fetchBoost((session?.user as any)._id);
     }
   }, [session, fetchUser, fetchUserBuildings]);
 
@@ -50,9 +55,10 @@ export default function GridPage() {
     <>      
       {loading ? <LoadingScreen setLoading={setLoading}/> : 
       <BuildingContext.Provider
-      value={{ StructureType, placing, User, Occupied }}
+      value={{ StructureType, placing, Occupied }}
     >
-      <SideBar userId={(session?.user as any)?._id} />
+      {/* <BoostMenu /> */}
+      <SideBar />
       <div className="flex flex-row items-center justify-center overflow-hidden">
         {/* <div className="flex flex-col justify-center gap-2">
           <button
