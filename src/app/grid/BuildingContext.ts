@@ -3,7 +3,7 @@ import { createContext, useContext } from "react";
 interface BuildingContextType {
     StructureType: any;
     placing: React.MutableRefObject<boolean>;
-    User: any,
+    // User: any,
     Occupied: React.MutableRefObject<any[]>
 }
 

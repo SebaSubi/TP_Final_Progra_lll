@@ -18,8 +18,13 @@ const config: Config = {
           '0%': { opacity: '1' },
           '100%': { opacity: '0' },
         },
+        fillBar: {
+          '0%': { width: '0%' },
+          '100%': { width: '100%' },
+        },
       },
       animation: {
+        fillBar: 'fillBar 5s forwards',
         shrinkAndMove: 'shrinkAndMove 3.5s ease-in-out',
         disappear: 'disappear 1s ease-in',
       },
@@ -30,6 +35,8 @@ const config: Config = {
       gridTemplateColumns: {
         '48': 'repeat(48, minmax(0, 1fr))',
         '42': 'repeat(42, minmax(0, 1fr))',
+        '27': 'repeat(27, minmax(0, 1fr))',
+        '20': 'repeat(20, minmax(0, 1fr))',
       },
       gridTemplateRows: {
         '36': 'repeat(36, minmax(0, 1fr))',
@@ -37,16 +44,15 @@ const config: Config = {
         '27': 'repeat(27, minmax(0, 1fr))',
         '23': 'repeat(23, minmax(0, 1fr))',
         '22': 'repeat(22, minmax(0, 1fr))',
+        '20': 'repeat(20, minmax(0, 1fr))',
       },
       zIndex: {
         '50': '50',
         '100': '100',
       },
       fontFamily: {
-        'comic': ['"Comic Sans MS"', 'cursive'],
+        'comic': ['"Comic Sans MS"', 'cursive']
       },
-
-
     },
   },
   variants: {

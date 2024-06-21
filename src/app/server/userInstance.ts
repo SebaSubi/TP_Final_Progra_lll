@@ -1,4 +1,5 @@
 import Router from "next/router";
+import { User } from "../types";
 
 export const getAllUserInstances = async() => {
   try {
@@ -59,3 +60,20 @@ export async function postUserInstance
     console.log(error)
   }
 } //Search up musica de la maquina increible
+
+export async function updateUserInstance(user: any) {
+  const { _id, userId, country, __v, ...newUserData } = user
+  try {
+    const res = await fetch(`/api/user_instance?userId=${user.userId}`, {
+      method: "PUT",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify(newUserData)
+    });
+    const data = await res.json()
+    return data
+  } catch (error) {
+    console.log(error)
+  }
+}

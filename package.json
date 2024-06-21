@@ -12,6 +12,7 @@
     "@lottiefiles/react-lottie-player": "^3.5.4",
     "axios": "^1.6.8",
     "bcryptjs": "^2.4.3",
+    "dayjs": "^1.11.11",
     "express": "^4.19.2",
     "http": "^0.0.1-security",
     "jsonwebtoken": "^9.0.2",

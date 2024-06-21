@@ -1,74 +1,79 @@
-"use client";
-
 import Image from "next/image";
-import {
-  Dispatch,
-  SetStateAction,
-  useContext,
-  useEffect,
-  useState,
-} from "react";
-import { User } from "@/app/objects/user";
-import { getGeneralBuildings } from "@/app/server/userBuilding"; // Ensure this import is correct
+import { useEffect, useState } from "react";
+import { getGeneralBuildings } from "@/app/server/userBuilding";
 import { useBuldingContext } from "../../grid/BuildingContext";
-import { getUserInstanceById } from "@/app/server/userInstance";
-import { set } from "mongoose";
+import { useUserStore } from "@/app/store/user";
+import { useBoostStore } from "@/app/store/boosts";
+import { Boost } from "@/app/types";
 
-// The main SideBar component
-export default function SideBar({
-  userId,
-}: {
-  userId: string;
-}) {
-  
-  const [sideBar, setSideBar] = useState<boolean>(true);// State to control the sidebar visibility
-  const [buildings, setBuildings] = useState<any[]>([])   // State to store the fetched buildings data
-  const [selectedBuilding, setSelectedBuilding] = useState<any>(null) // State to store the selected building data
-  const [userInstance, setUserInstance] = useState<any>(null);   // State to store the user instance data
-  const [buildingMenu, setBuildingMenu] = useState<boolean>(false); // State to control the building menu visibility
-  const context = useBuldingContext(); //this is great, it imports states from other components
+const defaultBoosts: Boost[] = [
+  {
+    id: 1,
+    name: "Mate",
+    type: "mate",
+    img: "/Mate.png",
+    quantity: 0,
+    boost: 1.5,
+    cost: 500,
+  },
+  {
+    id: 2,
+    name: "Facturas",
+    type: "facturas",
+    img: "/Facturas.png",
+    quantity: 0,
+    boost: 1.2,
+    cost: 350,
+  },
+  {
+    id: 3,
+    name: "P11",
+    type: "p11",
+    img: "/p11.png",
+    quantity: 0,
+    boost: 3.0,
+    cost: 3000,
+  },
+];
+
+function isBoost(boost: Boost): boolean {
+  return defaultBoosts.some(
+    defaultBoost => defaultBoost.name === boost.name 
+  );
+}
+
+export default function SideBar() {
+  const [buildingSideBar, setBuildingSideBar] = useState<boolean>(false);
+  const [boostSideBar, setBoostSideBar] = useState<boolean>(false);
+  const [buildings, setBuildings] = useState<any[]>([]);
+  const [selectedItem, setSelectedItem] = useState<any>(null);
+  const [buildingMenu, setBuildingMenu] = useState<boolean>(false);
+  const context = useBuldingContext();
 
   const StructureType = context.StructureType;
   const BuildMode = context.placing;
-  const user = context.User
+  const user = useUserStore(state => state.user);
+  const chargeAndAddBoost = useUserStore(state => state.buyBoost);
+  const boosts = useBoostStore(state => state.boosts);
+  const setBoost = useBoostStore(state => state.setBoost);
+  const updateUserBoost = useUserStore(state => state.useBoost)
 
-  // Fetch buildings data when the component mounts
+  // console.log(user.gold);
+
   useEffect(() => {
     const fetchBuildings = async () => {
       const buildingsData = await getGeneralBuildings();
       if (Array.isArray(buildingsData)) {
         setBuildings(buildingsData);
       } else {
-        console.error(
-          "Failed to fetch buildings data, received:",
-          buildingsData
-        );
+        console.error("Failed to fetch buildings data, received:", buildingsData);
       }
     };
 
     fetchBuildings();
   }, []);
 
-  useEffect(() => {
-    const fetchUserInstance = async () => {
-      if(userId) {
-        // console.log(userId)
-        const instanceData = await getUserInstanceById(userId);
-        setUserInstance(instanceData);
-        user.current = instanceData
-        // console.log(user.current)
-      }
-
-    };
-  
-    fetchUserInstance();
-  }, [userId, user]);
-
-  // console.log(userInstance.level);
-
-
-  // Component to render each building icon in the sidebar
-  const SideBarIcon = ({
+  const SideBarBuildings = ({
     building,
     user,
   }: {
@@ -76,13 +81,12 @@ export default function SideBar({
     user: any;
   }) => {
     if (user?.level >= building.unlock_level) {
-      // Render the building icon if the user's level is sufficient
       return (
         <div
           className="sidebar-icon group"
           onClick={() => {
             setBuildingMenu(!buildingMenu);
-            setSelectedBuilding(building)
+            setSelectedItem(building);
           }}
         >
           <Image
@@ -104,7 +108,6 @@ export default function SideBar({
         </div>
       );
     } else {
-      // Render a message if the user's level is insufficient
       return (
         <div className="min-lev-req group">
           <i className="opacity-20">
@@ -125,33 +128,97 @@ export default function SideBar({
     }
   };
 
-  // Render the sidebar with building icons
+  const SideBarBoosts = ({
+    boost,
+  }: {
+    boost: Boost;
+  }) => {
+    return (
+      <div
+        className="sidebar-icon group"
+        onClick={() => {
+          setBuildingMenu(!buildingMenu);
+          setSelectedItem(handleSelectedBoosts(boost));
+        }}
+      >
+        <Image
+          key={boost.name}
+          src={boost.img}
+          width={60}
+          height={70}
+          alt={boost.name}
+        />
+        <span className="sidebar-name group-hover:scale-100">
+          {boost.name}
+          <br />
+          Cost: {boost.cost}
+        </span>
+      </div>
+    );
+  };
+
+  function handleSelectedBoosts(boost: Boost) {
+    const foundBoost = boosts.find((b: Boost) => b.name === boost.name);
+    return foundBoost ? foundBoost: boost;
+  }
+
+  function buyBoost(boost: Boost) {
+    // console.log();
+    if (user.gold >= boost.cost) {
+      // console.log(boost.cost)
+      chargeAndAddBoost(boost);
+      return true;
+    } else {
+      return false;
+    }
+
+  }
+  
+  function setAndUpdateBoost(name: string) {
+    //We set the boost
+    setBoost(name);
+    //We delete the boost from the database
+    updateUserBoost(name);
+  }
+  // console.log(user);
+
   return (
     <>
-      {buildingMenu ? 
-      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 flex flex-col items-center justify-center w-[330px] h-[250px] bg-[#f7cd8d] border-[3px] border-[#b7632b]">
-        <div className=" flex flex-row items-center justify-center ">
-          <Image
-            key={selectedBuilding.name}
-            src={selectedBuilding.img}
-            width={120}
-            height={130}
-            alt={selectedBuilding.name}
-          />
-          <div className="ml-4 flex flex-col">
-            <h2 className=" text-[#6a1e07] font-comic mt1">{selectedBuilding.name}</h2>
-            <h2 className=" text-[#6a1e07] font-comic mt1">Production: {selectedBuilding.prod_per_hour}</h2>
-            <h2 className=" text-[#6a1e07] font-comic mt1">Cost: {selectedBuilding.cost}</h2>
+      {buildingMenu && selectedItem && (
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 flex flex-col items-center justify-center w-[330px] h-[250px] bg-[#f7cd8d] border-[3px] border-[#b7632b]">
+          <div className="flex flex-row items-center justify-center">
+            <Image
+              key={selectedItem.name}
+              src={selectedItem.img}
+              width={120}
+              height={130}
+              alt={selectedItem.name}
+            />
+            <div className="ml-4 flex flex-col">
+              <h2 className="text-[#6a1e07] font-comic mt1">{selectedItem.name}</h2>
+              <h2 className="text-[#6a1e07] font-comic mt1">
+              {isBoost(selectedItem) ? 
+                `Quantity: ${selectedItem.quantity}` 
+               : selectedItem.prod_per_hour ? `Production: ${selectedItem.prod_per_hour}` : ''}
+              </h2>
+              <h2 className="text-[#6a1e07] font-comic mt1">Cost: {selectedItem.cost}</h2>
+              <h2 className="text-[#6a1e07] font-comic mt1">
+              {isBoost(selectedItem) ? 
+                `boost: ${selectedItem.boost}` 
+               : selectedItem.prod_per_hour ? `Production: ${selectedItem.prod_per_hour}` : ''}
+              </h2>
+            </div>
           </div>
-        </div>
-        <div className="relative flex items-center justify-center hover:brightness-75 active:transition-none active:scale-90 mt-10" 
+          {isBoost(selectedItem) ? 
+          <div className="flex flex-row">
+            <div
+          className="relative flex items-center justify-center pr-1 hover:brightness-75 active:transition-none active:scale-90 mt-10"
           onClick={() => {
-            StructureType.current = selectedBuilding;
-            BuildMode.current = true
-            setBuildingMenu(false)
+            buyBoost(selectedItem)
+            setBuildingMenu(false);
           }}
         >
-          <p className="absolute inset-0 flex items-center justify-center text-[#6a1e07] font-comic">Build</p>
+          <p className="absolute inset-0 flex items-center justify-center text-[#6a1e07] font-comic">Buy</p>
           <Image
             src="/BuildButton.png"
             width={80}
@@ -160,28 +227,88 @@ export default function SideBar({
             className="hover:brightness-75"
           />
         </div>
+        <div
+        className="relative flex items-center justify-center hover:brightness-75 active:transition-none active:scale-90 mt-10"
+        onClick={() => {
+          setAndUpdateBoost(selectedItem.name);
+          setBuildingMenu(false);
+        }}
+      >
+        <p className="absolute inset-0 flex items-center justify-center text-[#6a1e07] font-comic">
+          {selectedItem.quantity > 0 ? "Use" : "--"}
+          </p>
+        <Image
+          src="/BuildButton.png"
+          width={80}
+          height={80}
+          alt="buildingButton"
+          className="hover:brightness-75"
+        />
       </div>
-     : null}
+          </div>
+        
+          :
+          <div
+            className="relative flex items-center justify-center hover:brightness-75 active:transition-none active:scale-90 mt-10"
+            onClick={() => {
+              StructureType.current = selectedItem;
+              BuildMode.current = true;
+              setBuildingMenu(false);
+            }}
+          >
+            <p className="absolute inset-0 flex items-center justify-center text-[#6a1e07] font-comic">Build</p>
+            <Image
+              src="/BuildButton.png"
+              width={80}
+              height={80}
+              alt="buildingButton"
+              className="hover:brightness-75"
+            />
+          </div>
+          }
+          
+        </div>
+      )}
       
-      <main className="relative z-50">
+      <main className="relative z-20">
         <div
           className={`fixed top-0 left-[-100px] h-screen w-[100px] m-0 flex flex-col bg-[#f7cd8d] border-[3px] border-[#b7632b] shadow-md transition-all duration-300 ${
-            sideBar ? "translate-x-0" : "translate-x-full"
+            buildingSideBar || boostSideBar ? "translate-x-full" :  "translate-x-0"
           }`}
         >
-          {Array.isArray(buildings) && buildings.length > 0 && userInstance ? (
-            buildings.map((building: any, index: number) => (
-              <SideBarIcon building={building} user={userInstance} key={index} />
-            ))
-          ) : (
-            <p>No buildings available</p>
+          {boostSideBar && (
+            defaultBoosts.length > 0 && user ? (
+              defaultBoosts.map((boost: Boost, index: number) => (
+                // console.log(boost),
+                <SideBarBoosts boost={boost} key={index} />
+              ))
+            ) : (
+              <p>No boosts available</p>
+            )
+          )}
+
+          {buildingSideBar && (
+            buildings.length > 0 && user ? (
+              buildings.map((building: any, index: number) => (
+                <SideBarBuildings building={building} user={user} key={index} />
+              ))
+            ) : (
+              <p>No buildings available</p>
+            )
           )}
         </div>
         <div
           className={`fixed top-0 left-1 transition-all duration-300 transform ${
-            sideBar ? "translate-x-0" : "translate-x-[100px]"
+            buildingSideBar || boostSideBar ? "translate-x-[100px]" :  "translate-x-0"
           } active:transition-none active:scale-90`}
-          onClick={() => setSideBar(!sideBar)}
+          onClick={() => {
+            if (boostSideBar) {
+              setBoostSideBar(false);
+              setBuildingSideBar(true);
+            } else {
+              setBuildingSideBar(!buildingSideBar);
+            }
+          }}
         >
           <Image
             src="/SidebarMenuIcon.png"
@@ -191,20 +318,28 @@ export default function SideBar({
             className="hover:brightness-75"
           />
         </div>
+        <div
+          className={`fixed top-8 left-1 transition-all duration-300 transform ${
+            buildingSideBar || boostSideBar ? "translate-x-[100px]" :  "translate-x-0"
+          } active:transition-none active:scale-90`}
+          onClick={() => {
+            if (buildingSideBar) { 
+              setBuildingSideBar(false);
+              setBoostSideBar(true);
+            } else {
+              setBoostSideBar(!boostSideBar);
+            }
+          }}
+        >
+          <Image
+            src="/BoostMenuIcon.png"
+            width={30}
+            height={30}
+            alt="BoostMenuIcon"
+            className="hover:brightness-75"
+          />
+        </div>
       </main>
     </>
   );
-}
-
-{
-  /* <button
-          className={`fixed top-0 left-[5px] transition-all duration-300 ${
-            sideBar ? "translate-x-0" : "translate-x-[100px]"
-          }`}
-          onClick={() => {
-            setSideBar(!sideBar);
-          }}
-        >
-          Side Bar
-        </button> */
 }
