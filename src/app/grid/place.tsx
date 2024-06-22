@@ -182,11 +182,7 @@ function Place({
       />
       {isOccupied && (
         <div className="z-[9] absolute">
-          <Building
-            buildingName={
-              DefaultMap[position.row][position.column].structureType
-            }
-          />
+          <Building buildingName={mapPlace.structureType} />
         </div>
       )}
     </div>
