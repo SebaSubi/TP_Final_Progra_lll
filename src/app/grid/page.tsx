@@ -18,6 +18,7 @@ import { UserBuildings } from "../types";
 import { useBoostStore } from "../store/boosts";
 import BoostMenu from "./components/boostMenu";
 import { getUserInstanceById } from "../server/userInstance";
+import { setMap } from "../worldMap/continents";
 
 // export const BuildingContext = React.createContext<ContextProps | null>(null);
 
@@ -49,12 +50,8 @@ export default function GridPage() {
   };
 
   console.log(user);
-  async function getUserInstance(userId: string) {
-    const instance = await getUserInstanceById(userId);
-    console.log(instance);
-  }
   if (user) {
-    getUserInstance(user.userId);
+    setMap(user.country);
   }
 
   return (

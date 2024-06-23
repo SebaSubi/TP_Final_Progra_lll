@@ -12,25 +12,6 @@ export async function getContinents() {
     return data.instance;
 }
 
-// export async function getContinent(name: string) {
-//     const res = await fetch("/api/user_instance");
-//     const data = await res.json();
-//     // return data.instance;
-// }
-
-// export async function createContinent(continentName: string) {
-//     const { data: session } = useSession();
-
-//     const res = await fetch("/api/counter", {
-//         method: "POST",
-//         headers: {
-//             "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify({(session?.user as any)?._id, (session?.user as any)?.fullname, 1, continentName, null, null, 500, null}),
-//     });
-//     return res.json();
-// }
-
 export async function postUserInstance
     (
         userId: string,
@@ -38,7 +19,7 @@ export async function postUserInstance
         level: number,
         country: string,
         boosts: any[],
-        units: any[],
+        units: number,
         gold: number,
         materials: any[]
     ) {
