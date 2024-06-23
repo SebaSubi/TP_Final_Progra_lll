@@ -6,6 +6,7 @@ import { text } from 'stream/consumers';
 
 
 interface Message {
+    id: string;
     text: string;
     author: string;
     attachments: string[];
@@ -16,9 +17,11 @@ interface Message {
 }
 
 
-const sendMessage = async (message: { text: string; author: string; timestamp: string; }) => {
+const sendMessage = async (message: { id: string, text: string; author: string; readed: boolean, timestamp: string; }) => {
     console.log(message);
-    const response = await fetch('/api/messages', {
+    console.log(message.id);
+    console.log(message.readed);
+    const response = await fetch('/api/messages1', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -35,7 +38,7 @@ const sendMessage = async (message: { text: string; author: string; timestamp: s
 
 const getMessages = async () => {
     try {
-        const response = await fetch('/api/messages');
+        const response = await fetch('/api/messages1');
 
         if(!response.ok) {
             throw new Error('Error fetching messages');
@@ -115,6 +118,7 @@ const MessageSection = () => {
         }
     
         const newMessage = {
+            id: String(Math.random()),
             text: message,
             author: (session?.user as any)?.fullname || 'Anonymous', 
             attachments: [],

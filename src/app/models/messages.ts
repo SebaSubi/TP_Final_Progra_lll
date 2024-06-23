@@ -1,6 +1,7 @@
 import mongoose, { Schema } from 'mongoose';
 
 const messageSchema = new Schema({
+    id: String, //para identificar el mensaje
     text: String, //para el contenido del mensaje
     author: String, //para saber quien envia el mensaje
     // userId: {type: Schema.Types.ObjectId, ref: 'User'}, //para saber quien envia el mensaje

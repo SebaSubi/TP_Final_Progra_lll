@@ -32,17 +32,17 @@ export async function POST(request: NextRequest) {
     }
 }
 
-// export async function GET() {
-//     await connect();
-//     const messages = await Messages.find();
-//     return NextResponse.json(messages);
-// }
-
 export async function GET() {
     await connect();
-    const messages = await Messages.find({ readed: false });
+    const messages = await Messages.find();
     return NextResponse.json(messages);
 }
+
+// export async function GET() {
+//     await connect();
+//     const messages = await Messages.find({ readed: false });
+//     return NextResponse.json(messages);
+// }
 
 
 export async function DELETE(request: NextRequest) {

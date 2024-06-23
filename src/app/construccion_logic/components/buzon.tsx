@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 
-
 interface Message {
+    _id: string;
     text: string;
     author: string;
     sentAt: string;
+    readed: boolean;
     attachments: string[];
     recipient: string;
     timestamp: string;
@@ -15,16 +16,37 @@ const getMessages = async () => {
     try {
         const response = await fetch('/api/messages');
 
-        if(!response.ok) {
+        if (!response.ok) {
             throw new Error('Error fetching messages');
         }
-            
+
         const data = await response.json();
-        console.log(data); 
         return data;
     } catch (error) {
         console.error(error);
-        return { error: 'Error fetching messages' }; 
+        return { error: 'Error fetching messages' };
+    }
+}
+
+const updateMessageReadedStatus = async (id: string) => {
+    try {
+        const response = await fetch('/api/messages', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ id, readed: true })
+        });
+
+        if (!response.ok) {
+            throw new Error('Error updating message');
+        }
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error(error);
+        return { error: 'Error updating message' };
     }
 }
 
@@ -32,40 +54,28 @@ const InboxSection = () => {
     const { data: session } = useSession();
     const [messages, setMessages] = useState<Message[]>([]);
     const [showMessages, setShowMessages] = useState(false);
-    const [messageCount, setMessageCount] = useState(0);
     const [newMessageNotification, setNewMessageNotification] = useState(false);
 
     useEffect(() => {
-      const fetchMessages = async () => {
-          const allMessages = await getMessages();
-          const userMessages = allMessages.filter((msg: Message) => msg.recipient === (session?.user as any)?.fullname);
-          setMessages(userMessages);
-      };
-      fetchMessages();
+        const fetchMessages = async () => {
+            const allMessages = await getMessages();
+            const userMessages = allMessages.filter((msg: Message) => msg.recipient === (session?.user as any)?.fullname);
+            setMessages(userMessages);
+
+            if (userMessages.length > 0) {
+                setNewMessageNotification(true);
+            }
+        };
+        fetchMessages();
     }, [session]);
 
-    // useEffect(() => {
-    //     const fetchMessages = async () => {
-    //         const newMessages = await getMessages();
-    //         setMessages(newMessages);
-    
-    //         const oldMessageCountStr = localStorage.getItem('messageCount');
-    //         const oldMessageCount = oldMessageCountStr !== null ? Number(oldMessageCountStr) : 0;  
-    
-    //         if (newMessages.length > oldMessageCount) {
-    //             setNewMessageNotification(true);
-    //         }
-    
-    //         localStorage.setItem('messageCount', String(newMessages.length));
-    //     };
-    
-    //     fetchMessages();
-    // }, []);
-
-    const handleOpenInbox = () => {
+    const handleOpenInbox = async () => {
         setShowMessages(prevShowMessages => !prevShowMessages);
         if (newMessageNotification) {
+            const unreadMessages = messages.filter(msg => !msg.readed);
+            await Promise.all(unreadMessages.map(msg => updateMessageReadedStatus(msg._id)));
             setNewMessageNotification(false);
+            setMessages(messages.map(msg => ({ ...msg, readed: true })));
         }
     };
 
@@ -75,13 +85,12 @@ const InboxSection = () => {
                 {showMessages ? 'Close inbox' : 'Open inbox'}
             </button>
             {newMessageNotification && <div>New message!</div>}
-            {showMessages && 
+            {showMessages &&
                 <div className="relative w-full">
-                    {/* <img src="/messages.png" alt="Background" className="w-full h-auto object-cover rounded-lg" style={{ height: '800px' }} /> */}
-                    <img src="/messages1.png" alt="Background" className="w-full object-cover rounded-lg" style={{ height: '750' }} />
+                    <img src="/messages1.png" alt="Background" className="w-full object-cover rounded-lg" style={{ height: '700' }} />
                     <div className="absolute inset-0 flex flex-col items-center justify-center p-4 overflow-hidden">
-                        <div className="w-full max-w-lg bg-transparent p-4 rounded-lg" style={{ maxHeight: '500px',scrollbarWidth: 'none', scrollbarColor: 'transparent transparent', overflowY: 'auto' }}>
-                        <h2 style={{textShadow: '3px 3px 2px rgba(255, 0, 0, 0.5)'}} className="text-4xl font-comic mt1 font-bold mb-6 text-center w-full text-[#b7632b] mr-5"> INBOX </h2>
+                        <div className="w-full max-w-lg bg-transparent p-4 rounded-lg" style={{ maxHeight: '500px', scrollbarWidth: 'none', scrollbarColor: 'transparent transparent', overflowY: 'auto' }}>
+                            <h2 style={{ textShadow: '3px 3px 2px rgba(255, 0, 0, 0.5)' }} className="text-4xl font-comic mt1 font-bold mb-6 text-center w-full text-[#b7632b] mr-5"> INBOX </h2>
                             <div className="message-section" style={{ overflowY: 'auto', maxHeight: '300px', marginTop: '0.8rem', scrollbarWidth: 'none', scrollbarColor: 'transparent transparent', msOverflowStyle: 'none' }}>
                                 {messages.map((msg, index) => (
                                     <div className="font-comic mt1" key={index} style={{ border: '1px solid black', padding: '5px', margin: '5px', borderRadius: '5px' }}>
@@ -93,7 +102,6 @@ const InboxSection = () => {
                                     </div>
                                 ))}
                             </div>
-                         
                         </div>
                     </div>
                 </div>
