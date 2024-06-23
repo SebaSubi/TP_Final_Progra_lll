@@ -6,11 +6,11 @@ import User from '@/app/models/user';
 
 export async function POST(request: NextRequest) {
     try {
-        const { text, author, sentAt, timestamp, recipient, readed } =  await request.json();
+        const { text, author, sentAt, timestamp, recipient, readed } = await request.json();
 
         // Validación básica de los datos de entrada
         if (!text || !author || !sentAt || !timestamp || !recipient) {
-            return NextResponse.json({ message: 'Missing required fields' }, {status: 400});
+            return NextResponse.json({ message: 'Missing required fields' }, { status: 400 });
         }
 
         await connect();
@@ -20,15 +20,15 @@ export async function POST(request: NextRequest) {
 
         // Si el destinatario no existe, devolver un error
         if (!recipientUser) {
-            return NextResponse.json({ message: 'Recipient does not exist' }, {status: 400});
+            return NextResponse.json({ message: 'Recipient does not exist' }, { status: 400 });
         }
 
         const newMessage = await Messages.create({ text, author, sentAt, timestamp, recipient, readed });
 
-        return NextResponse.json({ message: 'Message created' }, {status: 201})
+        return NextResponse.json({ message: 'Message created' }, { status: 201 })
     } catch (error) {
         console.error('Error creating message:', error);
-        return NextResponse.json({ message: 'Error creating message' }, {status: 500});
+        return NextResponse.json({ message: 'Error creating message' }, { status: 500 });
     }
 }
 
@@ -49,7 +49,7 @@ export async function DELETE(request: NextRequest) {
     const id = request.nextUrl.searchParams.get("id");
     await connect();
     await Messages.findByIdAndDelete(id);
-    return NextResponse.json({ message: 'Message deleted' }, {status: 200});
+    return NextResponse.json({ message: 'Message deleted' }, { status: 200 });
 }
 
 export async function PUT(request: NextRequest) {
