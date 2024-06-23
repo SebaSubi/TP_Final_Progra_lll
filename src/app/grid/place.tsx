@@ -56,6 +56,7 @@ function Place({
     const newData = updateData(userBuilding, boost);
     updateBuilding(newData, false);
     setBuildingMenu(!buildingMenu);
+    // fetchBuilding(userBuilding._id);
   }
 
   function handleCollected() {
@@ -81,7 +82,7 @@ function Place({
       userBuilding.cost = userBuilding.cost * 2;
       userBuilding.maxCapacity = userBuilding.maxCapacity * 2;
       userBuilding.maxWorkers = userBuilding.maxWorkers * 2;
-      updateAllMaterials(user.materials[0].quantity - userBuilding.cost / 2, user.materials[1].quantity - userBuilding.cost * 0.75, user.gold - userBuilding.cost * 2);
+      // updateAllMaterials(user.materials[0].quantity - userBuilding.cost / 2, user.materials[1].quantity - userBuilding.cost * 0.75, user.gold - userBuilding.cost * 2);
       upgradeBuildingZ(userBuilding);
       setBuildingMenu(!buildingMenu);
       setUpgradeScreen(!upgradeScreen);

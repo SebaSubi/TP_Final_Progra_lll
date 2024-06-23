@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { use, useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
+import { all } from 'axios';
+import { useUserStore } from '@/app/store/user';
 
 
 interface Message {
@@ -24,7 +26,7 @@ const getMessages = async () => {
         return data;
     } catch (error) {
         console.error(error);
-        return { error: 'Error fetching messages' }; 
+        return { error: 'Error fetching messages' };  
     }
 }
 
@@ -34,15 +36,25 @@ const InboxSection = () => {
     const [showMessages, setShowMessages] = useState(false);
     const [messageCount, setMessageCount] = useState(0);
     const [newMessageNotification, setNewMessageNotification] = useState(false);
+    const updateMaterials = useUserStore(state => state.updateMaterials);
 
     useEffect(() => {
       const fetchMessages = async () => {
           const allMessages = await getMessages();
           const userMessages = allMessages.filter((msg: Message) => msg.recipient === (session?.user as any)?.fullname);
           setMessages(userMessages);
+            console.log(allMessages)
+            console.log(allMessages[allMessages.length - 1].attachments[0], allMessages[allMessages.length - 1].attachments[1])
+
+            if(allMessages[allMessages.length - 1].attachments.length > 0) { 
+                console.log(Number(allMessages[allMessages.length - 1].attachments[1]))
+                updateMaterials(allMessages[allMessages.length - 1].attachments[0], Number(allMessages[allMessages.length - 1].attachments[1]));
+            }
+
       };
       fetchMessages();
     }, [session]);
+
 
     // useEffect(() => {
     //     const fetchMessages = async () => {
@@ -86,7 +98,7 @@ const InboxSection = () => {
                                 {messages.map((msg, index) => (
                                     <div className="font-comic mt1" key={index} style={{ border: '1px solid black', padding: '5px', margin: '5px', borderRadius: '5px' }}>
                                         <p style={{ fontSize: '17px', fontWeight: 'bold', color: 'black', textDecoration: 'underline', textUnderlineOffset: '0.15em' }}>
-                                            From: "{msg.author === msg.recipient ? 'You' : msg.author}"
+                                            From: {msg.author === msg.recipient ? 'You' : msg.author}
                                         </p>
                                         <p style={{ fontSize: '18px', fontWeight: 'bold', color: 'black' }}>{msg.text}</p>
                                         <p style={{ fontSize: '12px', color: 'black' }}>{new Date(msg.sentAt).toLocaleString()}</p>

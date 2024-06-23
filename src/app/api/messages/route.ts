@@ -6,7 +6,7 @@ import User from '@/app/models/user';
 
 export async function POST(request: NextRequest) {
     try {
-        const { text, author, sentAt, timestamp, recipient } =  await request.json();
+        const { text, author, sentAt, timestamp, recipient, attachments } =  await request.json();
 
         await connect();
 
@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
             return NextResponse.json({ message: 'Recipient does not exist' }, {status: 400});
         }
 
-        const newMessage = await Messages.create({ text, author, sentAt, timestamp, recipient });
+        const newMessage = await Messages.create({ text, author, sentAt, timestamp, recipient, attachments });
 
         return NextResponse.json({ message: 'Message created' }, {status: 201})
     } catch (error) {

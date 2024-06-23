@@ -57,6 +57,8 @@ export default function SideBar() {
   const boosts = useBoostStore(state => state.boosts);
   const setBoost = useBoostStore(state => state.setBoost);
   const updateUserBoost = useUserStore(state => state.useBoost)
+  const fetchBoosts = useBoostStore(state => state.fetchBoosts);
+  const fetchUser = useUserStore(state => state.fetchUser);
 
   // console.log(user.gold);
   // user.materials.map((material: any) => {
@@ -170,6 +172,7 @@ export default function SideBar() {
     if (user.gold >= boost.cost) {
       // console.log(boost.cost)
       chargeAndAddBoost(boost);
+      // fetchBoosts(user.userId);
       return true;
     } else {
       return false;
@@ -184,7 +187,8 @@ export default function SideBar() {
     updateUserBoost(name);
   }
   // console.log(user);
-
+  
+  // fetchUser(user.userId);
   return (
     <>
       {buildingMenu && selectedItem && (
@@ -217,7 +221,8 @@ export default function SideBar() {
             <div
           className="relative flex items-center justify-center pr-1 hover:brightness-75 active:transition-none active:scale-90 mt-10"
           onClick={() => {
-            buyBoost(selectedItem)
+            buyBoost(selectedItem) 
+            
             setBuildingMenu(false);
           }}
         >

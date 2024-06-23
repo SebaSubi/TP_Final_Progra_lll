@@ -6,7 +6,7 @@ const messageSchema = new Schema({
     // userId: {type: Schema.Types.ObjectId, ref: 'User'}, //para saber quien envia el mensaje
     recipient: String, //para saber a quien va dirigido el mensaje
     sentAt: String, //para saber cuando se envio el mensaje
-    attachments: [String], //para los recursos que se pueden enviar
+    attachments: [String], //para los recursos que se pueden enviar //para los recursos que se pueden enviar
     replies: [{ //para poder responder a un mensaje
         author: String,
         text: String,
