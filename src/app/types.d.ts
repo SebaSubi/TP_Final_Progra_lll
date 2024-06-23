@@ -6,7 +6,7 @@ export interface User {
   level: number,
   country: string,
   boosts: any[],
-  units: any[],
+  units: number,
   gold: number,
   materials: any[],
 }
@@ -25,7 +25,7 @@ export interface UserBuildings {
   maxWorkers: number,
   capacity: number,
   maxCapacity: number,
-  position: {x: number, y: number}
+  position: { x: number, y: number }
 }
 
 export interface Boost {
