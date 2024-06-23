@@ -89,11 +89,11 @@ function Place({
       userBuilding.cost = userBuilding.cost * 2;
       userBuilding.maxCapacity = userBuilding.maxCapacity * 2;
       userBuilding.maxWorkers = userBuilding.maxWorkers * 2;
-      updateAllMaterials(
-        user.materials[0].quantity - userBuilding.cost / 2,
-        user.materials[1].quantity - userBuilding.cost * 0.75,
-        user.gold - userBuilding.cost * 2
-      );
+      // updateAllMaterials(
+      //   user.materials[0].quantity - userBuilding.cost / 2,
+      //   user.materials[1].quantity - userBuilding.cost * 0.75,
+      //   user.gold - userBuilding.cost * 2
+      // );
       upgradeBuildingZ(userBuilding);
       setBuildingMenu(!buildingMenu);
       setUpgradeScreen(!upgradeScreen);
@@ -110,6 +110,7 @@ function Place({
       // DefaultMap[position.row][position.column].occupied = true;
       // DefaultMap[position.row][position.column].structureType =
       //   StructureType.current.name;
+      
       changeMap(
         {
           occupied: true,
@@ -131,6 +132,17 @@ function Place({
 
         // Update building.current with the created building
         building.current = createdBuilding;
+      console.log(building.current)
+      fetchUser(user.userId);
+      
+      if (user.gold >= building.current!.cost) {
+        setBuildingMenu(false);
+        updateUserInstance({
+          ...user,
+          gold: user.gold - building.current!.cost,
+        });
+        fetchUser(user.userId);
+      }
 
         BuildMode.current = false;
         setIsOccupied(true);
