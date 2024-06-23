@@ -1,5 +1,5 @@
 import { connect } from '@/app/libs/mongodb'
-import userInstanceBuildings from '@/app/models/userInstanceBuildings';
+import userBuildings from '@/app/models/userBuildings';
 import { NextRequest, NextResponse } from 'next/server'
 
 interface Params {
@@ -18,11 +18,12 @@ export async function POST(request: NextRequest) {
     level,
     unlock_level, // changed from unlockLevel
     maxWorkers,
+    capacity,
     maxCapacity,
     position
   } = await request.json()
   await connect();
-  await userInstanceBuildings.create({
+  const building = await userBuildings.create({
     userId,
     name,
     cost,
@@ -33,15 +34,16 @@ export async function POST(request: NextRequest) {
     level,
     unlock_level, // changed from unlockLevel
     maxWorkers,
+    capacity,
     maxCapacity,
     position
   });
-  return NextResponse.json({message: "Building Instance created"}, { status: 201 })
+  return NextResponse.json({message: "Building Instance created", building}, { status: 201 })
 }
 
 export async function GET(request: NextRequest) {
   const id = request.nextUrl.searchParams.get("userId")
   await connect();
-  const buildings = await userInstanceBuildings.find({ userId: id  });
+  const buildings = await userBuildings.find({ userId: id  });
   return NextResponse.json({buildings})
 }

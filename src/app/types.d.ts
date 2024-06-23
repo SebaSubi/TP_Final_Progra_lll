@@ -20,6 +20,18 @@ export interface UserBuildings {
   level: number,
   unlock_level: number,
   maxWorkers: number,
+  capacity: number,
   maxCapacity: number,
   position: {x: number, y: number}
 }
+
+export interface Boost {
+  id: number,
+  name: string,
+  type: string
+  img: string,
+  cost: number,
+  boost: number,
+  quantity: number
+}
+

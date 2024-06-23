@@ -1,26 +1,33 @@
 import { time } from "console";
 import Collectors from "../collectors/objects/collector";
 import { cookies } from "next/headers";
+import { UserBuildings } from "../types";
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+import timezone from 'dayjs/plugin/timezone';
 
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
-export function updateData(collector: any) {
+export function updateData(collector: UserBuildings) {
+  
   const currentTime: Date = new Date()
   console.log("This is the current time: " + currentTime + "the collector time is: " + collector.lastCollected)
 
-  const timeDifference: number = currentTime.getMinutes() - collector.updateTime.getMinutes()
-  console.log("The time difference is: " + timeDifference)
+  // const timeDifference: number = currentTime.getMinutes() - collector.lastCollected.getMinutes()
+  // console.log("The time difference is: " + timeDifference)
   // const timeDifference = 5
   // console.log(timeDifference)
   // return timeDifference
 
   let productionPerHour: number = collector.workers * collector.level * 10;
-  if(collector.boost) {
+  if(collector) {
     productionPerHour *= 1.3
   }
 
   
   if(productionPerHour * timeDifference >= collector.maxCapacity) {
-    collector.updateTime = currentTime
+    // collector.updateTime = currentTime
     collector.capacity = collector.maxCapacity
     return collector
   } else {

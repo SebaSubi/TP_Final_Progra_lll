@@ -15,7 +15,7 @@ export const useBuildingsStore = create<State>((set, get) => ({
    fetchBuildings: async (userId: string) => {
      const response = await fetch(`/api/userBuildings?userId=${userId}`);
      const data = await response.json();
-    //  console.log(data.buildings)
+     console.log(data.buildings)
      set({ userBuildings: data.buildings });
     //  console.log("fetched user worked");
    },

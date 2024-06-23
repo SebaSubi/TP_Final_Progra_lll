@@ -1,9 +1,20 @@
 "use client";
 
+import {
+  DefaultMap,
+  Africa_Map,
+  Asia_Map,
+  Australia_Map,
+  Europe_Map,
+  North_America_Map,
+  South_America_Map,
+} from "../grid/mapData";
 import React, { useState, useEffect, useRef } from "react";
 import { getContinents, postUserInstance } from "./continentLogic";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+
+export var currentMap = DefaultMap;
 
 //we have to makie a function that returns the instance of the continent but inside of the contintent component
 export function Africa() {
@@ -11,7 +22,6 @@ export function Africa() {
   const continentOcupied = useRef(false);
   const { data: session } = useSession();
   const router = useRouter();
-
 
   const fetchContinent = async () => {
     const getUsersInstances = await getContinents();
@@ -42,21 +52,23 @@ export function Africa() {
   function selectContinent() {
     fetchContinent();
     if (continentOcupied.current === false) {
-      const res = postUserInstance(
-        (session?.user as any)?._id,
-        (session?.user as any)?.fullname,
-        1,
-        "Africa",
-        [],
-        [],
-        500,
-        []
-      );
-      setFillColor("#F56565"); //red color
+      try {
+        const res = postUserInstance(
+          (session?.user as any)?._id,
+          (session?.user as any)?.fullname,
+          1,
+          "Africa",
+          [],
+          [],
+          500,
+          []
+        );
+        setFillColor("#F56565"); //red color
+        currentMap = Africa_Map;
+        return router.push("/grid");
+      } catch (error) {}
       fetchContinent();
-      return router.push("/grid")
     }
-    
   }
 
   const handleMouseLeave = () => {
@@ -100,7 +112,6 @@ export function NorthAmerica() {
   const { data: session } = useSession();
   const router = useRouter();
 
-
   const fetchContinent = async () => {
     const getUsersInstances = await getContinents();
     if (getUsersInstances) {
@@ -129,19 +140,23 @@ export function NorthAmerica() {
   function selectContinent() {
     fetchContinent();
     if (continentOcupied.current === false) {
-      postUserInstance(
-        (session?.user as any)?._id,
-        (session?.user as any)?.fullname,
-        1,
-        "North_America",
-        [],
-        [],
-        500,
-        []
-      );
-      setFillColor("#F56565"); //red color
-      fetchContinent();
-      return router.push("/grid")
+      try {
+        postUserInstance(
+          (session?.user as any)?._id,
+          (session?.user as any)?.fullname,
+          1,
+          "North_America",
+          [],
+          [],
+          500,
+          []
+        );
+        setFillColor("#F56565"); //red color
+        currentMap = North_America_Map;
+        return router.push("/grid");
+      } catch (error) {
+        fetchContinent();
+      }
     }
   }
 
@@ -226,7 +241,6 @@ export function Asia() {
   const { data: session } = useSession();
   const router = useRouter();
 
-
   const fetchContinent = async () => {
     const getUsersInstances = await getContinents();
     if (getUsersInstances) {
@@ -255,19 +269,23 @@ export function Asia() {
   function selectContinent() {
     fetchContinent();
     if (continentOcupied.current === false) {
-      postUserInstance(
-        (session?.user as any)?._id,
-        (session?.user as any)?.fullname,
-        1,
-        "Asia",
-        [],
-        [],
-        500,
-        []
-      );
-      setFillColor("#F56565"); //red color
-      fetchContinent();
-      return router.push("/grid")
+      try {
+        postUserInstance(
+          (session?.user as any)?._id,
+          (session?.user as any)?.fullname,
+          1,
+          "Asia",
+          [],
+          [],
+          500,
+          []
+        );
+        setFillColor("#F56565"); //red color
+        currentMap = Asia_Map;
+        return router.push("/grid");
+      } catch (error) {
+        fetchContinent();
+      }
     }
   }
 
@@ -354,7 +372,6 @@ export function Europe() {
   const { data: session } = useSession();
   const router = useRouter();
 
-
   const fetchContinent = async () => {
     const getUsersInstances = await getContinents();
     if (getUsersInstances) {
@@ -383,19 +400,23 @@ export function Europe() {
   function selectContinent() {
     fetchContinent();
     if (continentOcupied.current === false) {
-      postUserInstance(
-        (session?.user as any)?._id,
-        (session?.user as any)?.fullname,
-        1,
-        "Europe",
-        [],
-        [],
-        500,
-        []
-      );
-      setFillColor("#F56565"); //red color
-      fetchContinent();
-      return router.push("/grid")
+      try {
+        postUserInstance(
+          (session?.user as any)?._id,
+          (session?.user as any)?.fullname,
+          1,
+          "Europe",
+          [],
+          [],
+          500,
+          []
+        );
+        setFillColor("#F56565"); //red color
+        currentMap = Europe_Map;
+        return router.push("/grid");
+      } catch (error) {
+        fetchContinent();
+      }
     }
   }
 
@@ -473,7 +494,6 @@ export function Australia() {
   const { data: session } = useSession();
   const router = useRouter();
 
-
   const fetchContinent = async () => {
     const getUsersInstances = await getContinents();
     if (getUsersInstances) {
@@ -502,19 +522,23 @@ export function Australia() {
   function selectContinent() {
     fetchContinent();
     if (continentOcupied.current === false) {
-      postUserInstance(
-        (session?.user as any)?._id,
-        (session?.user as any)?.fullname,
-        1,
-        "Australia",
-        [],
-        [],
-        500,
-        []
-      );
-      setFillColor("#F56565"); //red color
-      fetchContinent();
-      return router.push("/grid")
+      try {
+        postUserInstance(
+          (session?.user as any)?._id,
+          (session?.user as any)?.fullname,
+          1,
+          "Australia",
+          [],
+          [],
+          500,
+          []
+        );
+        setFillColor("#F56565"); //red color
+        currentMap = Australia_Map;
+        return router.push("/grid");
+      } catch (error) {
+        fetchContinent();
+      }
     }
   }
 
@@ -593,7 +617,6 @@ export function SouthAmerica() {
   const { data: session } = useSession();
   const router = useRouter();
 
-
   const fetchContinent = async () => {
     const getUsersInstances = await getContinents();
     if (getUsersInstances) {
@@ -622,19 +645,23 @@ export function SouthAmerica() {
   function selectContinent() {
     fetchContinent();
     if (continentOcupied.current === false) {
-      postUserInstance(
-        (session?.user as any)?._id,
-        (session?.user as any)?.fullname,
-        1,
-        "South_America",
-        [],
-        [],
-        500,
-        []
-      );
-      setFillColor("#F56565"); //red color
-      fetchContinent();
-      return router.push("/grid")
+      try {
+        postUserInstance(
+          (session?.user as any)?._id,
+          (session?.user as any)?.fullname,
+          1,
+          "South_America",
+          [],
+          [],
+          500,
+          []
+        );
+        setFillColor("#F56565"); //red color
+        return router.push("/grid");
+        currentMap = South_America_Map;
+      } catch (error) {
+        fetchContinent();
+      }
     }
   }
 
