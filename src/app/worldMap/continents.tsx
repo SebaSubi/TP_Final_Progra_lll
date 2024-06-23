@@ -38,6 +38,10 @@ function getMap(): mapPlace[][] {
 export function changeMap(place: mapPlace, row: number, column: number) {
   getMap()[row][column] = { ...place, text: currentMap[row][column].text };
 }
+export function setMap(nameMap: string) {
+  mapName = nameMap;
+  currentMap = getMap();
+}
 
 //we have to makie a function that returns the instance of the continent but inside of the contintent component
 export function Africa() {
