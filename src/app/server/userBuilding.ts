@@ -2,10 +2,10 @@ import { Dayjs } from "dayjs";
 import Router from "next/router";
 import { UserBuildings } from "../types";
 
-export const getGeneralBuildings = async() => {
+export const getGeneralBuildings = async () => {
   try {
-    const res = await fetch('http://localhost:3000/api/buildings', { cache: 'no-store' }) //Fetches the information, and sets the cache to no-store*
-    if(!res.ok) {
+    const res = await fetch('/api/buildings', { cache: 'no-store' }) //Fetches the information, and sets the cache to no-store*
+    if (!res.ok) {
       throw new Error("failed to fetch data")
     } //We check if the response is ok\
     // console.log(res)
@@ -19,13 +19,13 @@ export const getGeneralBuildings = async() => {
 export async function getUserBuildings(userId: string) {
   // console.log(userId)
   try {
-    const res = await fetch(`http://localhost:3000/api/userBuildings?userId=${userId}`, 
-      { 
+    const res = await fetch(`/api/userBuildings?userId=${userId}`,
+      {
         cache: 'no-store',
         method: 'GET'
       }
-  ) //Fetches the information, and sets the cache to no-store*
-    if(!res.ok) {
+    ) //Fetches the information, and sets the cache to no-store*
+    if (!res.ok) {
       throw new Error("failed to fetch data")
     } //We check if the response is ok
     const data = await res.json()
@@ -40,19 +40,19 @@ export async function postUserBuildings(building: any, userId: string, lastColle
   // const router = useRouter();
   const { _id, ...buildingWithoutId } = building;
   try {
-    const res = await fetch("http://localhost:3000/api/userBuildings", {
+    const res = await fetch("/api/userBuildings", {
       method: "POST",
       headers: {
         "Content-type": "application/json",
 
       },
-      body: JSON.stringify({ ...buildingWithoutId, userId, lastCollected, position, capacity: 0}) 
+      body: JSON.stringify({ ...buildingWithoutId, userId, lastCollected, position, capacity: 0 })
     });
     const responseData = await res.json()
     const createdBuilding = responseData.building
     // console.log(createdBuilding)
     return createdBuilding
-    
+
     // console.log(JSON.stringify({ ...buildingWithoutId, userId, lastCollected, position, capacity: 0}))
   } catch (error) {
     console.log(error)
@@ -61,7 +61,7 @@ export async function postUserBuildings(building: any, userId: string, lastColle
 
 export async function updateBuilding(building: any) {
   // const { _id, userId, country, __v, ...newUserData } = user
-  const { _id, userId, __v, position,  ...newBuildingData } = building
+  const { _id, userId, __v, position, ...newBuildingData } = building
   console.log(JSON.stringify(newBuildingData))
   console.log(building._id)
 

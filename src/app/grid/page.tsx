@@ -46,7 +46,7 @@ export default function GridPage() {
   }, [session, fetchUser, fetchUserBuildings]);
 
   const handleSignOut = async () => {
-    await signOut({ callbackUrl: "http://localhost:3000" });
+    await signOut({ callbackUrl: "/" });
   };
 
   console.log(user);

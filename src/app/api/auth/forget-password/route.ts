@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
       expiresIn: 86400,
     });
 
-    const forgetUrl = `http://localhost:3000/change-password?token=${token}`;
+    const forgetUrl = `/change-password?token=${token}`;
 
     // @ts-ignore
     await resend.emails.send({
@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
     );
   } catch (error) {
     return NextResponse.json(
-      { message:"error" },
+      { message: "error" },
       { status: 500 }
     );
   }
