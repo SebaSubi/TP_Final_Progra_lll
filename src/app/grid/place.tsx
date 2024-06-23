@@ -191,6 +191,8 @@ function Place({
       </div>
       {buildingMenu && building.current && (
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 flex flex-col items-center justify-center w-[330px] h-[250px] bg-[#f7cd8d] border-[3px] border-[#b7632b]">
+          <p className="absolute top-[-14px] right-0 text-[#6a1e07] font-comic mt-1 text-xl" onClick={() => {setBuildingMenu(false)}}>×</p>
+
           <div className="flex flex-row items-center justify-center">
             <img
               key={building.current.name}
@@ -267,7 +269,8 @@ function Place({
       )}
 
       {upgradeScreen && (
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 flex flex-col items-center justify-center w-[330px] h-[250px] bg-[#f7cd8d] border-[3px] border-[#b7632b]">
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 flex flex-col items-center justify-center w-[330px] h-[350px] bg-[#f7cd8d] border-[3px] border-[#b7632b]">
+          <p className="absolute top-[-14px] right-0 text-[#6a1e07] font-comic mt-1 text-xl" onClick={() => {setUpgradeScreen(false)}}>×</p>
           <div className="flex flex-row items-center justify-center">
             <Image
               key={building.current!.name}
