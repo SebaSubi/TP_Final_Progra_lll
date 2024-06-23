@@ -50,13 +50,13 @@ export default function SideBar() {
 
   const StructureType = context.StructureType;
   const BuildMode = context.placing;
-  const user = useUserStore(state => state.user);
-  const chargeAndAddBoost = useUserStore(state => state.buyBoost);
-  const boosts = useBoostStore(state => state.boosts);
-  const setBoost = useBoostStore(state => state.setBoost);
-  const updateUserBoost = useUserStore(state => state.useBoost)
-  const fetchBoosts = useBoostStore(state => state.fetchBoosts);
-  const fetchUser = useUserStore(state => state.fetchUser);
+  const user = useUserStore((state) => state.user);
+  const chargeAndAddBoost = useUserStore((state) => state.buyBoost);
+  const boosts = useBoostStore((state) => state.boosts);
+  const setBoost = useBoostStore((state) => state.setBoost);
+  const updateUserBoost = useUserStore((state) => state.useBoost);
+  const fetchBoosts = useBoostStore((state) => state.fetchBoosts);
+  const fetchUser = useUserStore((state) => state.fetchUser);
 
   // console.log(user.gold);
   // user.materials.map((material: any) => {
@@ -183,7 +183,7 @@ export default function SideBar() {
     updateUserBoost(name);
   }
   // console.log(user);
-  
+
   // fetchUser(user.userId);
   return (
     <>
@@ -228,65 +228,67 @@ export default function SideBar() {
               </h2>
             </div>
           </div>
-          {isBoost(selectedItem) ? 
-          <div className="flex flex-row">
+          {isBoost(selectedItem) ? (
+            <div className="flex flex-row">
+              <div
+                className="relative flex items-center justify-center pr-1 hover:brightness-75 active:transition-none active:scale-90 mt-10"
+                onClick={() => {
+                  buyBoost(selectedItem);
+
+                  setBuildingMenu(false);
+                }}
+              >
+                <p className="absolute inset-0 flex items-center justify-center text-[#6a1e07] font-comic">
+                  Buy
+                </p>
+                <Image
+                  src="/BuildButton.png"
+                  width={80}
+                  height={80}
+                  alt="buildingButton"
+                  className="hover:brightness-75"
+                />
+              </div>
+              <div
+                className="relative flex items-center justify-center hover:brightness-75 active:transition-none active:scale-90 mt-10"
+                onClick={() => {
+                  setAndUpdateBoost(selectedItem.name);
+                  setBuildingMenu(false);
+                }}
+              >
+                <p className="absolute inset-0 flex items-center justify-center text-[#6a1e07] font-comic">
+                  {selectedItem.quantity > 0 ? "Use" : "--"}
+                </p>
+                <Image
+                  src="/BuildButton.png"
+                  width={80}
+                  height={80}
+                  alt="buildingButton"
+                  className="hover:brightness-75"
+                />
+              </div>
+            </div>
+          ) : (
             <div
-          className="relative flex items-center justify-center pr-1 hover:brightness-75 active:transition-none active:scale-90 mt-10"
-          onClick={() => {
-            buyBoost(selectedItem) 
-            
-            setBuildingMenu(false);
-          }}
-        >
-          <p className="absolute inset-0 flex items-center justify-center text-[#6a1e07] font-comic">Buy</p>
-          <Image
-            src="/BuildButton.png"
-            width={80}
-            height={80}
-            alt="buildingButton"
-            className="hover:brightness-75"
-          />
-        </div>
-        <div
-        className="relative flex items-center justify-center hover:brightness-75 active:transition-none active:scale-90 mt-10"
-        onClick={() => {
-          setAndUpdateBoost(selectedItem.name);
-          setBuildingMenu(false);
-        }}
-      >
-        <p className="absolute inset-0 flex items-center justify-center text-[#6a1e07] font-comic">
-          {selectedItem.quantity > 0 ? "Use" : "--"}
-          </p>
-        <Image
-          src="/BuildButton.png"
-          width={80}
-          height={80}
-          alt="buildingButton"
-          className="hover:brightness-75"
-        />
-      </div>
-          </div>
-        
-          :
-          <div
-            className="relative flex items-center justify-center hover:brightness-75 active:transition-none active:scale-90 mt-10"
-            onClick={() => {
-              StructureType.current = selectedItem;
-              BuildMode.current = true;
-              setBuildingMenu(false);
-            }}
-          >
-            <p className="absolute inset-0 flex items-center justify-center text-[#6a1e07] font-comic">Build</p>
-            <Image
-              src="/BuildButton.png"
-              width={80}
-              height={80}
-              alt="buildingButton"
-              className="hover:brightness-75"
-            />
-          </div>
-          }
-          
+              className="relative flex items-center justify-center hover:brightness-75 active:transition-none active:scale-90 mt-10"
+              onClick={() => {
+                StructureType.current = selectedItem;
+                BuildMode.current = true;
+                setBuildingMenu(false);
+              }}
+            >
+              <p className="absolute inset-0 flex items-center justify-center text-[#6a1e07] font-comic">
+                Build
+              </p>
+              <Image
+                src="/BuildButton.png"
+                width={80}
+                height={80}
+                alt="buildingButton"
+                className="hover:brightness-75"
+              />
+            </div>
+          )}
         </div>
       )}
 
@@ -333,7 +335,7 @@ export default function SideBar() {
           }}
         >
           <Image
-            src="/SidebarMenuIcon.png"
+            src="/SideBarMenuIcon.png"
             width={30}
             height={30}
             alt="SidebarMenuIcon"

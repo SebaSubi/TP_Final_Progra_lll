@@ -42,7 +42,7 @@ const PlayerGold = () => {
       </div>
       <div className="relative flex items-center group">
         <img
-          src="/P11.png"
+          src="/p11.png"
           alt="Stone"
           className="w-12 h-12 object-cover rounded-lg"
         />
