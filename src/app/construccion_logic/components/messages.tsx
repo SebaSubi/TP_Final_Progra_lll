@@ -137,7 +137,7 @@ const MessageSection = () => {
 
     return (
         <div className="fixed top-0 right-2/5 transform translate-x-1/2 mt-4 flex flex-col items-center w-full max-w-2xl z-10">            
-            <button onClick={() => setShowMessages(!showMessages)} className="block w-auto p-2 text-center bg-black text-white border border-white rounded-lg font-bold uppercase duration-200 hover:bg-gray-900 mb-4 z-5">
+            <button onClick={() => setShowMessages(!showMessages)} className="block w-auto p-2 text-center bg-[#f7cd8d] font-comic mt1 text-[#b7632b] border-[3px] border-[#b7632b] rounded-lg font-bold uppercase duration-200 mb-4 z-5">
                 {showMessages ? 'Close messages' : 'Open messages'}
             </button>
             {showMessages && 
@@ -146,9 +146,9 @@ const MessageSection = () => {
                     <div className="absolute inset-0 flex flex-col items-center justify-center p-4 overflow-hidden">
                         <div className="w-full max-w-lg bg-transparent p-4 rounded-lg" style={{ maxHeight: '500px', overflowY: 'auto', scrollbarWidth: 'none', scrollbarColor: 'transparent transparent', }}>
                             <div className="message-section" style={{ overflowY: 'auto', maxHeight: '300px', marginTop: '0.8rem', scrollbarWidth: 'none', scrollbarColor: 'transparent transparent', msOverflowStyle: 'none' }}>
-                            <h2 style={{textShadow: '3px 3px 2px rgba(255, 0, 0, 0.5)'}} className="text-4xl font-bold mb-6 text-center w-full text-red-500 mr-5"> MESSAGES </h2>
+                            <h2 style={{textShadow: '3px 3px 2px rgba(255, 0, 0, 0.5)'}} className="text-4xl font-comic mt1 font-bold mb-6 text-center w-full text-red-500 mr-5"> MESSAGES </h2>
                                 {messages.map((msg, index) => (
-                                    <div key={index} style={{ border: '1px solid black', padding: '5px', margin: '5px', borderRadius: '5px' }}>
+                                    <div className="font-comic mt1" key={index} style={{ border: '1px solid black', padding: '5px', margin: '5px', borderRadius: '5px' }}>
                                         <p style={{ fontSize: '17px', fontWeight: 'bold', color: 'black', textDecoration: 'underline', textUnderlineOffset: '0.15em' }}>To: "{msg.recipient}"</p>
                                         <p style={{ fontSize: '20px', fontWeight: 'bold', color: 'black' }}>{msg.text}</p>
                                         <p style={{ fontSize: '13px', color: 'black' }}>Sent at: {new Date(msg.sentAt).toLocaleString()}</p>
@@ -160,7 +160,7 @@ const MessageSection = () => {
                                 value={message} 
                                 onChange={(e) => setMessage(e.target.value)} 
                                 placeholder="Write your msg here..."
-                                className="text-black p-2 w-full border border-black rounded-lg font-bold mt-2"
+                                className="text-black font-comic mt1 p-2 w-full border border-black rounded-lg font-bold mt-2"
                                 style={{ backgroundColor: 'rgba(200, 200, 200, 0.6)', color: 'black'}}
                             />
                             {/* <input 
@@ -171,22 +171,22 @@ const MessageSection = () => {
                                 className="text-black p-2 mb-4 w-full border border-black rounded-lg font-bold"
                                 style={{ backgroundColor: 'rgba(200, 200, 200, 0.6)', color: 'black'}}
                             /> */}
-                            <h2 className="text-black font-bold ml-2 mt-1 mb-1">From: "{(session?.user as any)?.fullname.toUpperCase()}", To:</h2>                            
+                            <h2 className="text-black font-comic mt1 font-bold ml-2 mt-1 mb-1">From: "{(session?.user as any)?.fullname.toUpperCase()}", To:</h2>                            
                             <select 
                                 value={recipient} 
                                 onChange={(e) => setRecipient(e.target.value)} 
-                                className="text-black p-2 w-full border border-black rounded-lg font-bold"
+                                className="text-black font-comic mt1 p-2 w-full border border-black rounded-lg font-bold"
                                 style={{ backgroundColor: 'rgba(200, 200, 200, 0.6)', color: 'black'}}
                             >
-                                <option value="">Select a user...</option>
+                                <option className="font-comic mt1" value="">Select a user...</option>
                                 {users.map(user => (
-                                    <option key={user.id} value={user.fullname}>
+                                    <option className="font-comic mt1" key={user.id} value={user.fullname}>
                                         {user.fullname === (session?.user as any)?.fullname.toUpperCase() ? 'You' : user.fullname}
                                     </option>
                                 ))}
                             </select>
-                            <button onClick={handleSendMessage} className="w-full p-1 text-black border border-black rounded-lg font-bold uppercase mt-2 hover:bg-lightgray">Enviar</button>
-                            {confirmation && <p style={{ color: 'black', textAlign: 'center', fontWeight: 'bold' }}>{confirmation}</p>}
+                            <button onClick={handleSendMessage} className="w-full p-1 text-black font-comic mt1 border border-black rounded-lg font-bold uppercase mt-2 hover:bg-lightgray">SEND</button>
+                            {confirmation && <p className="font-comic mt1" style={{ color: 'black', textAlign: 'center', fontWeight: 'bold' }}>{confirmation}</p>}
                         </div>
                     </div>
                 </div>

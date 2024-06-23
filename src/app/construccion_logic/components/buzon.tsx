@@ -71,7 +71,7 @@ const InboxSection = () => {
 
     return (
         <div className="fixed top-0 right-2/5 transform -translate-x-1/2 mt-4 flex flex-col items-center w-full max-w-2xl z-10">
-            <button onClick={handleOpenInbox} className="p-2 bg-black text-white border border-white rounded-lg font-bold uppercase duration-200 hover:bg-gray-900 mb-2">
+            <button onClick={handleOpenInbox} className="p-2 font-comic mt1 bg-[#f7cd8d] text-[#b7632b] border-[3px] border-[#b7632b] rounded-lg font-bold uppercase duration-200 mb-2">
                 {showMessages ? 'Close inbox' : 'Open inbox'}
             </button>
             {newMessageNotification && <div>New message!</div>}
@@ -81,10 +81,10 @@ const InboxSection = () => {
                     <img src="/messages1.png" alt="Background" className="w-full object-cover rounded-lg" style={{ height: '750' }} />
                     <div className="absolute inset-0 flex flex-col items-center justify-center p-4 overflow-hidden">
                         <div className="w-full max-w-lg bg-transparent p-4 rounded-lg" style={{ maxHeight: '500px',scrollbarWidth: 'none', scrollbarColor: 'transparent transparent', overflowY: 'auto' }}>
-                        <h2 style={{textShadow: '3px 3px 2px rgba(255, 0, 0, 0.5)'}} className="text-4xl font-bold mb-6 text-center w-full text-red-500 mr-5"> INBOX </h2>
+                        <h2 style={{textShadow: '3px 3px 2px rgba(255, 0, 0, 0.5)'}} className="text-4xl font-comic mt1 font-bold mb-6 text-center w-full text-red-500 mr-5"> INBOX </h2>
                             <div className="message-section" style={{ overflowY: 'auto', maxHeight: '300px', marginTop: '0.8rem', scrollbarWidth: 'none', scrollbarColor: 'transparent transparent', msOverflowStyle: 'none' }}>
                                 {messages.map((msg, index) => (
-                                    <div key={index} style={{ border: '1px solid black', padding: '5px', margin: '5px', borderRadius: '5px' }}>
+                                    <div className="font-comic mt1" key={index} style={{ border: '1px solid black', padding: '5px', margin: '5px', borderRadius: '5px' }}>
                                         <p style={{ fontSize: '17px', fontWeight: 'bold', color: 'black', textDecoration: 'underline', textUnderlineOffset: '0.15em' }}>
                                             From: "{msg.author === msg.recipient ? 'You' : msg.author}"
                                         </p>

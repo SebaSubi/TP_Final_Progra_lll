@@ -17,6 +17,7 @@ import LoadingScreen from "./components/loadingScreen";
 import { UserBuildings } from "../types";
 import { useBoostStore } from "../store/boosts";
 import BoostMenu from "./components/boostMenu";
+import PlayerGold from "./components/materials";
 
 // export const BuildingContext = React.createContext<ContextProps | null>(null);
 
@@ -89,6 +90,8 @@ export default function GridPage() {
 
             <InboxSection />
 
+            <PlayerGold />
+
             <div className="flex items-center justify-center">
               <TransformWrapper
                 maxScale={3}
@@ -103,7 +106,7 @@ export default function GridPage() {
               >
                 <div className="absolute bottom-0 right-0 m-4 z-50">
                   <button
-                    className="p-2 bg-black text-white border border-white rounded-lg font-bold uppercase duration-200 hover:bg-gray-900 h-10"
+                    className="block w-auto p-2 text-center bg-[#f7cd8d] font-comic mt1 text-[#b7632b] border-[3px] border-[#b7632b] rounded-lg font-bold uppercase duration-200 z-5"
                     onClick={handleSignOut}
                   >
                     Logout
