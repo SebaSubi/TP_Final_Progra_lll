@@ -37,9 +37,7 @@ const defaultBoosts: Boost[] = [
 ];
 
 function isBoost(boost: Boost): boolean {
-  return defaultBoosts.some(
-    defaultBoost => defaultBoost.name === boost.name 
-  );
+  return defaultBoosts.some((defaultBoost) => defaultBoost.name === boost.name);
 }
 
 export default function SideBar() {
@@ -71,7 +69,10 @@ export default function SideBar() {
       if (Array.isArray(buildingsData)) {
         setBuildings(buildingsData);
       } else {
-        console.error("Failed to fetch buildings data, received:", buildingsData);
+        console.error(
+          "Failed to fetch buildings data, received:",
+          buildingsData
+        );
       }
     };
 
@@ -133,11 +134,7 @@ export default function SideBar() {
     }
   };
 
-  const SideBarBoosts = ({
-    boost,
-  }: {
-    boost: Boost;
-  }) => {
+  const SideBarBoosts = ({ boost }: { boost: Boost }) => {
     return (
       <div
         className="sidebar-icon group"
@@ -164,7 +161,7 @@ export default function SideBar() {
 
   function handleSelectedBoosts(boost: Boost) {
     const foundBoost = boosts.find((b: Boost) => b.name === boost.name);
-    return foundBoost ? foundBoost: boost;
+    return foundBoost ? foundBoost : boost;
   }
 
   function buyBoost(boost: Boost) {
@@ -177,9 +174,8 @@ export default function SideBar() {
     } else {
       return false;
     }
-
   }
-  
+
   function setAndUpdateBoost(name: string) {
     //We set the boost
     setBoost(name);
@@ -193,6 +189,14 @@ export default function SideBar() {
     <>
       {buildingMenu && selectedItem && (
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 flex flex-col items-center justify-center w-[330px] h-[250px] bg-[#f7cd8d] border-[3px] border-[#b7632b]">
+          <p
+            className="absolute top-[-14px] right-0 text-[#6a1e07] font-comic mt-1 text-xl"
+            onClick={() => {
+              setBuildingMenu(false);
+            }}
+          >
+            x
+          </p>
           <div className="flex flex-row items-center justify-center">
             <Image
               key={selectedItem.name}
@@ -202,17 +206,25 @@ export default function SideBar() {
               alt={selectedItem.name}
             />
             <div className="ml-4 flex flex-col">
-              <h2 className="text-[#6a1e07] font-comic mt1">{selectedItem.name}</h2>
               <h2 className="text-[#6a1e07] font-comic mt1">
-              {isBoost(selectedItem) ? 
-                `Quantity: ${selectedItem.quantity}` 
-               : selectedItem.prod_per_hour ? `Production: ${selectedItem.prod_per_hour}` : ''}
+                {selectedItem.name}
               </h2>
-              <h2 className="text-[#6a1e07] font-comic mt1">Cost: {selectedItem.cost}</h2>
               <h2 className="text-[#6a1e07] font-comic mt1">
-              {isBoost(selectedItem) ? 
-                `boost: ${selectedItem.boost}` 
-               : selectedItem.prod_per_hour ? `Production: ${selectedItem.prod_per_hour}` : ''}
+                {isBoost(selectedItem)
+                  ? `Quantity: ${selectedItem.quantity}`
+                  : selectedItem.prod_per_hour
+                  ? `Production: ${selectedItem.prod_per_hour}`
+                  : ""}
+              </h2>
+              <h2 className="text-[#6a1e07] font-comic mt1">
+                Cost: {selectedItem.cost}
+              </h2>
+              <h2 className="text-[#6a1e07] font-comic mt1">
+                {isBoost(selectedItem)
+                  ? `boost: ${selectedItem.boost}`
+                  : selectedItem.prod_per_hour
+                  ? `Production: ${selectedItem.prod_per_hour}`
+                  : ""}
               </h2>
             </div>
           </div>
@@ -277,37 +289,39 @@ export default function SideBar() {
           
         </div>
       )}
-      
+
       <main className="relative z-20">
         <div
           className={`fixed top-0 left-[-100px] h-screen w-[100px] m-0 flex flex-col bg-[#f7cd8d] border-[3px] border-[#b7632b] shadow-md transition-all duration-300 ${
-            buildingSideBar || boostSideBar ? "translate-x-full" :  "translate-x-0"
+            buildingSideBar || boostSideBar
+              ? "translate-x-full"
+              : "translate-x-0"
           }`}
         >
-          {boostSideBar && (
-            defaultBoosts.length > 0 && user ? (
+          {boostSideBar &&
+            (defaultBoosts.length > 0 && user ? (
               defaultBoosts.map((boost: Boost, index: number) => (
                 // console.log(boost),
                 <SideBarBoosts boost={boost} key={index} />
               ))
             ) : (
               <p>No boosts available</p>
-            )
-          )}
+            ))}
 
-          {buildingSideBar && (
-            buildings.length > 0 && user ? (
+          {buildingSideBar &&
+            (buildings.length > 0 && user ? (
               buildings.map((building: any, index: number) => (
                 <SideBarBuildings building={building} user={user} key={index} />
               ))
             ) : (
               <p>No buildings available</p>
-            )
-          )}
+            ))}
         </div>
         <div
           className={`fixed top-0 left-1 transition-all duration-300 transform ${
-            buildingSideBar || boostSideBar ? "translate-x-[100px]" :  "translate-x-0"
+            buildingSideBar || boostSideBar
+              ? "translate-x-[100px]"
+              : "translate-x-0"
           } active:transition-none active:scale-90`}
           onClick={() => {
             if (boostSideBar) {
@@ -328,10 +342,12 @@ export default function SideBar() {
         </div>
         <div
           className={`fixed top-8 left-1 transition-all duration-300 transform ${
-            buildingSideBar || boostSideBar ? "translate-x-[100px]" :  "translate-x-0"
+            buildingSideBar || boostSideBar
+              ? "translate-x-[100px]"
+              : "translate-x-0"
           } active:transition-none active:scale-90`}
           onClick={() => {
-            if (buildingSideBar) { 
+            if (buildingSideBar) {
               setBuildingSideBar(false);
               setBoostSideBar(true);
             } else {

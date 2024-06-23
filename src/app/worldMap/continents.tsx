@@ -90,7 +90,10 @@ export function Africa() {
           [],
           1,
           500,
-          []
+          [
+            { id: 0, name: "Lumber", img: "/Wood.png", quantity: 110 },
+            { id: 1, name: "Stone", img: "/Stone.png", quantity: 120 },
+          ]
         );
         setFillColor("#F56565"); //red color
         currentMap = Africa_Map;
@@ -181,7 +184,10 @@ export function NorthAmerica() {
           [],
           1,
           500,
-          []
+          [
+            { id: 0, name: "Lumber", img: "/Wood.png", quantity: 110 },
+            { id: 1, name: "Stone", img: "/Stone.png", quantity: 120 },
+          ]
         );
         setFillColor("#F56565"); //red color
         currentMap = North_America_Map;
@@ -313,7 +319,10 @@ export function Asia() {
           [],
           1,
           500,
-          []
+          [
+            { id: 0, name: "Lumber", img: "/Wood.png", quantity: 110 },
+            { id: 1, name: "Stone", img: "/Stone.png", quantity: 120 },
+          ]
         );
         setFillColor("#F56565"); //red color
         currentMap = Asia_Map;
@@ -447,7 +456,10 @@ export function Europe() {
           [],
           1,
           500,
-          []
+          [
+            { id: 0, name: "Lumber", img: "/Wood.png", quantity: 110 },
+            { id: 1, name: "Stone", img: "/Stone.png", quantity: 120 },
+          ]
         );
         setFillColor("#F56565"); //red color
         currentMap = Europe_Map;
@@ -572,7 +584,10 @@ export function Australia() {
           [],
           1,
           500,
-          []
+          [
+            { id: 0, name: "Lumber", img: "/Wood.png", quantity: 110 },
+            { id: 1, name: "Stone", img: "/Stone.png", quantity: 120 },
+          ]
         );
         setFillColor("#F56565"); //red color
         currentMap = Australia_Map;
@@ -698,7 +713,10 @@ export function SouthAmerica() {
           [],
           1,
           500,
-          []
+          [
+            { id: 0, name: "Lumber", img: "/Wood.png", quantity: 110 },
+            { id: 1, name: "Stone", img: "/Stone.png", quantity: 120 },
+          ]
         );
         setFillColor("#F56565"); //red color
         currentMap = South_America_Map;
