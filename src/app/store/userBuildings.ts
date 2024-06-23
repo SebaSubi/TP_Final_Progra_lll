@@ -2,11 +2,10 @@ import { create } from 'zustand';
 import { type UserBuildings } from '../types';
 import { updateBuilding } from '../server/userBuilding';
 import { updateData } from '../logic/production';
-import { user } from '../construccion_logic/page';
 import { use } from 'react';
 
 
-interface State { 
+interface State {
    userBuildings: UserBuildings[];
    userBuilding: UserBuildings;
    fetchBuildings: (userId: string) => Promise<void>;
@@ -33,15 +32,15 @@ export const useBuildingsStore = create<State>((set, get) => ({
       maxWorkers: 0,
       capacity: 0,
       maxCapacity: 0,
-      position: {x: 0, y: 0}
+      position: { x: 0, y: 0 }
    },
- 
+
    fetchBuildings: async (userId: string) => {
-     const response = await fetch(`/api/userBuildings?userId=${userId}`);
-     const data = await response.json();
-   //   console.log(data.buildings)
-     set({ userBuildings: data.buildings });
-    //  console.log("fetched user worked");
+      const response = await fetch(`/api/userBuildings?userId=${userId}`);
+      const data = await response.json();
+      //   console.log(data.buildings)
+      set({ userBuildings: data.buildings });
+      //  console.log("fetched user worked");
    },
 
    fetchBuilding: async (buildingId: string) => {
@@ -55,7 +54,7 @@ export const useBuildingsStore = create<State>((set, get) => ({
       const { userBuilding } = get();
       // console.log(userBuilding);
       userBuilding.capacity = newCapacity;
-      if(resetTime) {
+      if (resetTime) {
          userBuilding.lastCollected = new Date();
       }
       // userBuilding.lastCollected = new Date();
@@ -69,4 +68,4 @@ export const useBuildingsStore = create<State>((set, get) => ({
       set({ userBuilding: building });
    }
 
- }));
+}));

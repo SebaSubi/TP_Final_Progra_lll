@@ -12,7 +12,6 @@ import InboxSection from "../construccion_logic/components/buzon";
 import { signOut } from "next-auth/react";
 import { useUserStore } from "../store/user";
 import { useBuildingsStore } from "../store/userBuildings";
-import { user } from "../construccion_logic/page";
 import LoadingScreen from "./components/loadingScreen";
 import { UserBuildings } from "../types";
 import { useBoostStore } from "../store/boosts";
