@@ -26,17 +26,25 @@ function Building({ buildingName }: { buildingName: string }) {
         setBuildingImg("/Barracs.png");
         break;
       case "Stone Mine":
-        setBuildingImg("/StoneMine.png"); 
+        setBuildingImg("/StoneMine.png");
         break;
     }
   }, [buildingName]);
 
   return (
-    <>
-      {buildingImg && (
-        <Image src={buildingImg} alt="building image" height={40} width={40} />
-      )}
-    </>
+    <div className="flex items-center justify-center min-h-10 min-w-10">
+      {buildingImg &&
+        (buildingImg === "/LumberCamp.png" ? (
+          <img
+            src={buildingImg}
+            alt="building image"
+            height={40}
+            width={37.5}
+          />
+        ) : (
+          <img src={buildingImg} alt="building image" height={40} width={40} />
+        ))}
+    </div>
   );
 }
 
