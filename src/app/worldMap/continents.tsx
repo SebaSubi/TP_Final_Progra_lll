@@ -88,7 +88,7 @@ export function Africa() {
           1,
           "Africa",
           [],
-          [],
+          1,
           500,
           []
         );
@@ -179,7 +179,7 @@ export function NorthAmerica() {
           1,
           "North_America",
           [],
-          [],
+          1,
           500,
           []
         );
@@ -311,7 +311,7 @@ export function Asia() {
           1,
           "Asia",
           [],
-          [],
+          1,
           500,
           []
         );
@@ -445,7 +445,7 @@ export function Europe() {
           1,
           "Europe",
           [],
-          [],
+          1,
           500,
           []
         );
@@ -570,7 +570,7 @@ export function Australia() {
           1,
           "Australia",
           [],
-          [],
+          1,
           500,
           []
         );
@@ -696,7 +696,7 @@ export function SouthAmerica() {
           1,
           "South_America",
           [],
-          [],
+          1,
           500,
           []
         );

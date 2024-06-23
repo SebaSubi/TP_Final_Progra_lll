@@ -37,7 +37,7 @@ function Place({
   const [upgradeScreen, setUpgradeScreen] = useState<boolean>(false); // State to control the upgrade screen visibility
   // const [building, setBuilding] = useState<any>(null); // State to store the selected building data
   const building = useRef<UserBuildings>();
-  const userBuilding = useBuildingsStore(state => state.userBuilding);
+  const userBuilding = useBuildingsStore((state) => state.userBuilding);
   const userBuildings = useBuildingsStore((state) => state.userBuildings);
   const user = useUserStore((state) => state.user);
   const updateMaterials = useUserStore(state => state.updateMaterials);
@@ -58,14 +58,13 @@ function Place({
     setBuildingMenu(!buildingMenu);
   }
 
-  function handleCollected() { 
+  function handleCollected() {
     // console.log(userBuilding)
-    const materialName = userBuilding.name.split(' ');
+    const materialName = userBuilding.name.split(" ");
     // console.log(materialName[0])
     updateMaterials(materialName[0], userBuilding.capacity);
     // updateMaterials();
-    updateBuilding(0, true)
-
+    updateBuilding(0, true);
   }
 
   function upgradeBuilding() {
@@ -156,8 +155,6 @@ function Place({
     });
   }, []);
 
-  
-
   // alreadyOccupied()
 
   return (
@@ -174,7 +171,11 @@ function Place({
         } flex items-center justify-center select-none z-10`}
         onClick={() => {
           handleClick();
-          if (isOccupied) {
+          if (
+            isOccupied &&
+            !BuildMode.current &&
+            currentMap[position.row][position.column].structureType !== "water"
+          ) {
             fetchBuilding(building.current!._id);
             updateBuildingData();
             // console.log("Building clicked", building.current);
@@ -191,7 +192,7 @@ function Place({
       {buildingMenu && building.current && (
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 flex flex-col items-center justify-center w-[330px] h-[250px] bg-[#f7cd8d] border-[3px] border-[#b7632b]">
           <div className="flex flex-row items-center justify-center">
-            <Image
+            <img
               key={building.current.name}
               src={building.current.img}
               width={120}
