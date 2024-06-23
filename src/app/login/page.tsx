@@ -4,14 +4,46 @@ import axios, { AxiosError } from "axios";
 import { FormEvent, useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { getUserInstanceById } from "../server/userInstance";
+import { useEffect } from "react";
+import { useUserStore } from "../store/user";
+import { Session } from "inspector";
+import { setMap } from "../worldMap/continents";
 
 function LoginPage() {
   const [error, setError] = useState<string | undefined>();
   const router = useRouter();
+  const { data: session } = useSession();
+  const user = useUserStore((state) => state.user);
+  const fetchUser = useUserStore((state) => state.fetchUser);
+
+  useEffect(() => {
+    if ((session?.user as any)?._id) {
+      fetchUser((session?.user as any)._id);
+      console.log(user);
+      console.log(session);
+      const redirect = async () => {
+        const instance = await getUserInstanceById((session?.user as any)?._id);
+        console.log(instance);
+        if (instance) {
+          setMap(instance.country);
+          router.replace("/grid");
+        } else {
+          return router.replace("/worldMap");
+        }
+      };
+      redirect();
+    }
+  }, [session, fetchUser]);
 
   const handleForgetPasswordClick = () => {
     router.push("/forget-password");
   };
+
+  function sleep(ms: number) {
+    return new Promise((resolve) => setTimeout(resolve, ms));
+  }
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -31,7 +63,17 @@ function LoginPage() {
       }
 
       if (res?.ok) {
-        return router.replace("/worldMap");
+        // console.log(res);
+        // sleep(3000);
+        // const instance = await getUserInstanceById((session?.user as any)?._id);
+        // console.log(instance);
+        // console.log(session);
+        // if (instance.country != "") {
+        //   setMap(user.country);
+        //   router.replace("/grid");
+        // } else {
+        //   return router.replace("/worldMap");
+        // }
       }
     } catch (error) {
       console.log("Catch Error:", error);
