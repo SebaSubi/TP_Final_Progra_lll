@@ -9,6 +9,7 @@ interface State {
    useBoost: (boost: string) => void;
    buyBoost: (boost: Boost) => void;
    updateMaterials: (material: string, quantity: number) => void;
+   updateAllMaterials: (lumber: number, stone: number, gold: number) => void;
 }
 
 
@@ -116,6 +117,11 @@ export const useUserStore = create<State>((set, get) => ({
       // console.log(user.boosts)
       // return user.boosts;
    },
+
+   updateAllMaterials: (lumber: number, stone: number, gold: number) => {
+      const { user } = get()
+
+   }
 
 
 

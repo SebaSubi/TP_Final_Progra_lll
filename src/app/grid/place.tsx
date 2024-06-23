@@ -21,14 +21,8 @@ import { useUserStore } from "../store/user";
 import { updateData } from "../logic/production";
 import dayjs from "dayjs";
 import { useBoostStore } from "../store/boosts";
+import { set } from "mongoose";
 
-// interface BuildingType {
-//   name: string;
-//   prod_per_hour: number;
-//   workers: number;
-//   capacity: number;
-//   maxCapacity: number;
-// }
 
 function Place({
   mapPlace,
@@ -50,6 +44,8 @@ function Place({
   const boost = useBoostStore(state => state.boost);
   const fetchBuilding = useBuildingsStore(state => state.fetchBuilding);
   const updateBuilding = useBuildingsStore(state => state.updateProduction);
+  const upgradeBuildingZ = useBuildingsStore(state => state.upgradeBuilding);
+  const updateAllMaterials = useUserStore(state => state.updateAllMaterials);
 
   // console.log(user.materials.lumber)
 
@@ -70,6 +66,27 @@ function Place({
     // updateMaterials();
     updateBuilding(0, true)
 
+  }
+
+  function upgradeBuilding() {
+    if (user.materials[0].quantity < userBuilding.cost / 2 || user.materials[1].quantity < userBuilding.cost * 0.75 || user.gold < userBuilding.cost * 2) {
+      console.log("Not enough resources to upgrade building");
+      return;
+    } else {
+      const Img = userBuilding.img.split('.');
+      const newImg = `${Img[0]}${userBuilding.level + 1}.png`;
+      console.log(newImg)
+      userBuilding.img = newImg;
+      userBuilding.level = userBuilding.level + 1;
+      userBuilding.prod_per_hour = userBuilding.prod_per_hour + 1;
+      userBuilding.cost = userBuilding.cost * 2;
+      userBuilding.maxCapacity = userBuilding.maxCapacity * 2;
+      userBuilding.maxWorkers = userBuilding.maxWorkers * 2;
+      updateAllMaterials(user.materials[0].quantity - userBuilding.cost / 2, user.materials[1].quantity - userBuilding.cost * 0.75, user.gold - userBuilding.cost * 2);
+      upgradeBuildingZ(userBuilding);
+      setBuildingMenu(!buildingMenu);
+      setUpgradeScreen(!upgradeScreen);
+    }
   }
 
 
@@ -209,6 +226,7 @@ function Place({
                 // StructureType.current = selectedItem;
                 // BuildMode.current = true;
                 // setBuildingMenu(false);
+                setUpgradeScreen(true);
                 console.log("Upgrade building");
               }}
             >
@@ -229,7 +247,7 @@ function Place({
                 handleCollected();
                 setBuildingMenu(false);
 
-                console.log("collected");
+                // console.log("collected");
               }}
             >
               <p className="absolute inset-0 flex items-center justify-center text-[#6a1e07] font-comic">
@@ -247,6 +265,57 @@ function Place({
         </div>
       )}
 
+      {upgradeScreen && (
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 flex flex-col items-center justify-center w-[330px] h-[250px] bg-[#f7cd8d] border-[3px] border-[#b7632b]">
+          <div className="flex flex-row items-center justify-center">
+            <Image
+              key={building.current!.name}
+              src={building.current!.img}
+              width={120}
+              height={130}
+              alt={building.current!.name}
+            />
+            <div className="ml-4 flex flex-col">
+              <h2 className="text-[#6a1e07] font-comic mt-1">
+                {userBuilding.name}
+              </h2>
+              <h2 className="text-[#6a1e07] font-comic mt-1">
+                Level: {userBuilding.level + 1}
+              </h2>
+              <h2 className="text-[#6a1e07] font-comic mt-1">
+                Production Per Minute: {userBuilding.prod_per_hour + 0.5}
+              </h2>
+              <h1 className="text-[#6a1e07] font-comic mt-1">
+                Cost: 
+              </h1>
+              <h2 className="text-[#6a1e07] font-comic mt-1">
+                Wood: {userBuilding.cost / 2} <br />
+                Stone: {userBuilding.cost * 0.75} <br />
+                Gold: {userBuilding.cost * 2} <br />
+              </h2>
+              
+            </div>
+          </div>
+          <div className="flex flex-row">
+            <div
+              className="relative flex items-center pr-2 justify-center hover:brightness-75 active:transition-none active:scale-90 mt-10"
+              onClick={() => {
+                upgradeBuilding()
+              }}
+            >
+              <p className="absolute inset-0 flex items-center justify-center text-[#6a1e07] font-comic">
+                Upgrade
+              </p>
+              <Image
+                src="/BuildButton.png"
+                width={120}
+                height={130}
+                alt="Upgrade button"
+              />
+            </div>
+          </div>
+        </div>
+      )}
       <Image
         className="absolute z-[9]"
         src={"/grassTop.jpg"}

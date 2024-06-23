@@ -12,6 +12,7 @@ interface State {
    fetchBuildings: (userId: string) => Promise<void>;
    updateProduction: (newCapacity: number, resetTime: boolean) => Promise<void>;
    fetchBuilding: (buildingId: string) => Promise<void>;
+   upgradeBuilding: (building: UserBuildings) => Promise<void>;
 }
 
 
@@ -61,5 +62,11 @@ export const useBuildingsStore = create<State>((set, get) => ({
       // console.log(userBuilding)
       updateBuilding(userBuilding);
       // const response = updateBuilding(building)
+   },
+
+   upgradeBuilding: async (building: UserBuildings) => {
+      updateBuilding(building)
+      set({ userBuilding: building });
    }
+
  }));
