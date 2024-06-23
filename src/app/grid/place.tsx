@@ -25,6 +25,8 @@ import { updateData } from "../logic/production";
 import dayjs from "dayjs";
 import { useBoostStore } from "../store/boosts";
 import { set } from "mongoose";
+import { updateBuilding as BuildingUpdate } from "../server/userBuilding";
+import build from "next/dist/build";
 
 function Place({
   mapPlace,
@@ -110,7 +112,7 @@ function Place({
       // DefaultMap[position.row][position.column].occupied = true;
       // DefaultMap[position.row][position.column].structureType =
       //   StructureType.current.name;
-      
+
       changeMap(
         {
           occupied: true,
@@ -132,17 +134,17 @@ function Place({
 
         // Update building.current with the created building
         building.current = createdBuilding;
-      console.log(building.current)
-      fetchUser(user.userId);
-      
-      if (user.gold >= building.current!.cost) {
-        setBuildingMenu(false);
-        updateUserInstance({
-          ...user,
-          gold: user.gold - building.current!.cost,
-        });
+        console.log(building.current);
         fetchUser(user.userId);
-      }
+
+        if (user.gold >= building.current!.cost) {
+          setBuildingMenu(false);
+          updateUserInstance({
+            ...user,
+            gold: user.gold - building.current!.cost,
+          });
+          fetchUser(user.userId);
+        }
 
         BuildMode.current = false;
         setIsOccupied(true);
@@ -257,7 +259,12 @@ function Place({
                 <h2 className="text-[#6a1e07] font-comic mt1">
                   Worker cost: 200
                 </h2>
-              ) : null}
+              ) : (
+                <h2 className="text-[#6a1e07] font-comic mt1">
+                  Workerers Asigned: {userBuilding.workers}/
+                  {userBuilding.maxWorkers}
+                </h2>
+              )}
             </div>
           </div>
           <div className="flex flex-row">
@@ -301,29 +308,8 @@ function Place({
                   // console.log("collected");
                 }}
               >
-                <p className="absolute inset-0 flex items-center justify-center text-c text-[#6a1e07] font-comic">
+                <p className="absolute inset-0 flex items-center justify-center text-c text-[#6a1e07] font-comic text-xs">
                   Hire Worker
-                </p>
-                <Image
-                  src="/BuildButton.png"
-                  width={120}
-                  height={80}
-                  alt="buildingButton"
-                  className="hover:brightness-75"
-                />
-              </div>
-            ) : (
-              <div
-                className="relative flex items-center justify-center hover:brightness-75 active:transition-none active:scale-90 mt-10"
-                onClick={() => {
-                  handleCollected();
-                  setBuildingMenu(false);
-                  fetchUser(user.userId);
-                  // console.log("collected");
-                }}
-              >
-                <p className="absolute inset-0 flex items-center justify-center text-[#6a1e07] font-comic">
-                  Collect
                 </p>
                 <Image
                   src="/BuildButton.png"
@@ -333,6 +319,64 @@ function Place({
                   className="hover:brightness-75"
                 />
               </div>
+            ) : (
+              <>
+                <div
+                  className="relative flex items-center justify-center hover:brightness-75 active:transition-none active:scale-90 mt-10"
+                  onClick={() => {
+                    handleCollected();
+                    setBuildingMenu(false);
+                    fetchUser(user.userId);
+                    // console.log("collected");
+                  }}
+                >
+                  <p className="absolute inset-0 flex items-center justify-center text-[#6a1e07] font-comic">
+                    Collect
+                  </p>
+                  <Image
+                    src="/BuildButton.png"
+                    width={80}
+                    height={80}
+                    alt="buildingButton"
+                    className="hover:brightness-75"
+                  />
+                </div>
+                <div
+                  className="relative flex items-center justify-center hover:brightness-75 active:transition-none active:scale-90 mt-10 ml-2"
+                  onClick={() => {
+                    updateUserInstance({
+                      ...user,
+                      units: user.units - 1,
+                    });
+                    fetchUser(user.userId);
+                    if (
+                      building.current!.maxWorkers > building.current!.workers
+                    ) {
+                      setBuildingMenu(false);
+                      fetchUser(user.userId);
+                      BuildingUpdate({
+                        ...building.current,
+                        workers: building.current!.workers + 1,
+                      });
+                      console.log(building.current!.workers);
+                      fetchBuilding(building.current!._id);
+                      // updateBuildingData();
+                      // console.log("collected");
+                    }
+                  }}
+                >
+                  <p className="absolute inset-0 flex items-center justify-center text-[#6a1e07] font-comic text-xs">
+                    Asign Worker
+                  </p>
+                  <Image
+                    src="/BuildButton.png"
+                    width={80}
+                    height={80}
+                    alt="buildingButton"
+                    className="hover:brightness-75"
+                  />
+                </div>
+              </>
             )}
           </div>
         </div>
@@ -340,7 +384,14 @@ function Place({
 
       {upgradeScreen && (
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 flex flex-col items-center justify-center w-[330px] h-[350px] bg-[#f7cd8d] border-[3px] border-[#b7632b]">
-          <p className="absolute top-[-14px] right-0 text-[#6a1e07] font-comic mt-1 text-xl" onClick={() => {setUpgradeScreen(false)}}>×</p>
+          <p
+            className="absolute top-[-14px] right-0 text-[#6a1e07] font-comic mt-1 text-xl"
+            onClick={() => {
+              setUpgradeScreen(false);
+            }}
+          >
+            ×
+          </p>
           <div className="flex flex-row items-center justify-center">
             <Image
               key={building.current!.name}
