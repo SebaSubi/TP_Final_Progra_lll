@@ -31,7 +31,7 @@ function LoginPage() {
       }
 
       if (res?.ok) {
-        return router.replace("/grid");
+        return router.replace("/worldMap");
       }
     } catch (error) {
       console.log("Catch Error:", error);

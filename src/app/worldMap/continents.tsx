@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  mapPlace,
   DefaultMap,
   Africa_Map,
   Asia_Map,
@@ -15,6 +16,28 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 
 export var currentMap = DefaultMap;
+export var mapName = "";
+function getMap(): mapPlace[][] {
+  switch (mapName) {
+    case "Africa":
+      return Africa_Map;
+    case "Asia":
+      return Asia_Map;
+    case "Australia":
+      return Australia_Map;
+    case "Europe":
+      return Europe_Map;
+    case "North_America":
+      return North_America_Map;
+    case "South_America":
+      return South_America_Map;
+    default:
+      return DefaultMap;
+  }
+}
+export function changeMap(place: mapPlace, row: number, column: number) {
+  getMap()[row][column] = { ...place, text: currentMap[row][column].text };
+}
 
 //we have to makie a function that returns the instance of the continent but inside of the contintent component
 export function Africa() {
@@ -32,6 +55,8 @@ export function Africa() {
       );
       if (continentInstance) {
         continentOcupied.current = true;
+      } else {
+        continentOcupied.current = false;
       }
     }
   };
@@ -65,6 +90,7 @@ export function Africa() {
         );
         setFillColor("#F56565"); //red color
         currentMap = Africa_Map;
+        mapName = "Africa";
         return router.push("/grid");
       } catch (error) {}
       fetchContinent();
@@ -120,6 +146,8 @@ export function NorthAmerica() {
       );
       if (continentInstance) {
         continentOcupied.current = true;
+      } else {
+        continentOcupied.current = false;
       }
     }
   };
@@ -153,6 +181,7 @@ export function NorthAmerica() {
         );
         setFillColor("#F56565"); //red color
         currentMap = North_America_Map;
+        mapName = "North_America";
         return router.push("/grid");
       } catch (error) {
         fetchContinent();
@@ -249,6 +278,8 @@ export function Asia() {
       );
       if (continentInstance) {
         continentOcupied.current = true;
+      } else {
+        continentOcupied.current = false;
       }
     }
   };
@@ -282,6 +313,7 @@ export function Asia() {
         );
         setFillColor("#F56565"); //red color
         currentMap = Asia_Map;
+        mapName = "Asia";
         return router.push("/grid");
       } catch (error) {
         fetchContinent();
@@ -380,6 +412,8 @@ export function Europe() {
       );
       if (continentInstance) {
         continentOcupied.current = true;
+      } else {
+        continentOcupied.current = false;
       }
     }
   };
@@ -413,6 +447,7 @@ export function Europe() {
         );
         setFillColor("#F56565"); //red color
         currentMap = Europe_Map;
+        mapName = "Europe";
         return router.push("/grid");
       } catch (error) {
         fetchContinent();
@@ -502,6 +537,8 @@ export function Australia() {
       );
       if (continentInstance) {
         continentOcupied.current = true;
+      } else {
+        continentOcupied.current = false;
       }
     }
   };
@@ -535,6 +572,7 @@ export function Australia() {
         );
         setFillColor("#F56565"); //red color
         currentMap = Australia_Map;
+        mapName = "Australia";
         return router.push("/grid");
       } catch (error) {
         fetchContinent();
@@ -625,6 +663,8 @@ export function SouthAmerica() {
       );
       if (continentInstance) {
         continentOcupied.current = true;
+      } else {
+        continentOcupied.current = false;
       }
     }
   };
@@ -657,8 +697,9 @@ export function SouthAmerica() {
           []
         );
         setFillColor("#F56565"); //red color
-        return router.push("/grid");
         currentMap = South_America_Map;
+        mapName = "South_America";
+        return router.push("/grid");
       } catch (error) {
         fetchContinent();
       }
