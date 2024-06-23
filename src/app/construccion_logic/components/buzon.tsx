@@ -61,7 +61,7 @@ const InboxSection = () => {
     
         fetchMessages();
     }, []);
-
+        
     const handleOpenInbox = () => {
         setShowMessages(prevShowMessages => !prevShowMessages);
         if (newMessageNotification) {

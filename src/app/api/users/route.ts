@@ -2,8 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { connect } from "@/app/libs/mongodb";
 import { messages } from "@/utils/messages";
 import User from "@/app/models/user";
-
 //Obtenemos los usuarios
+
+
+
 export async function GET(request: NextRequest) {
   try {
     await connect();

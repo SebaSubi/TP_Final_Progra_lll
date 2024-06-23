@@ -17,6 +17,8 @@ import { useBuildingsStore } from "../store/userBuildings";
 import { UserBuildings } from "../types";
 import { useUserStore } from "../store/user";
 import { updateData } from "../logic/production";
+import { User } from "next-auth";
+//const [materials, setMaterials] = useState([]);
 
 // interface BuildingType {
 //   name: string;
@@ -25,6 +27,7 @@ import { updateData } from "../logic/production";
 //   capacity: number;
 //   maxCapacity: number;
 // }
+
 
 function Place({
   mapPlace,
@@ -39,15 +42,34 @@ function Place({
   // const [building, setBuilding] = useState<any>(null); // State to store the selected building data
   const building = useRef<UserBuildings>();
   const userBuildings = useBuildingsStore((state) => state.userBuildings);
+  //const User = useRef<User>();
+
+  //const userInfo = useRef((User) => User.materials);
   const user = useUserStore((state) => state.user);
-  // console.log(user)
+
+  //const userInfo = useUserStore((user) => user.materials);
+
+  console.log(user);
+
+  
+/*
+  async function fetchUserInstance(userId: string) {  
+      const userInstance = await getUserInstanceById(userId);
+      setMaterials(userInstance.materials);
+      console.log("Materials:", userInstance.materials);
+   
+  }
+  */
+
+
+
 
   function updateBuildingData() {
     updateData(building.current!);
     setBuildingMenu(!buildingMenu);
   }
   const context = useBuldingContext(); //this is great, it imports states from other components
-
+    
   const StructureType = context.StructureType;
   const BuildMode = context.placing;
 

@@ -4,6 +4,7 @@ import { updateUserInstance } from '../server/userInstance';
 
 
 interface State {
+   sendMaterials(recipientId: any, materialIndex: any): unknown;
    user: User;
    fetchUser: (userId: string) => Promise<void>;
    useBoost: (boost: string) => void;
@@ -85,5 +86,61 @@ export const useUserStore = create<State>((set, get) => ({
 
       // console.log(user.boosts)
       // return user.boosts;
-   }
- }));
+   },
+
+   
+   
+   sendMaterials: (recipientId: string, materialId: string) => {
+      const { user } = get();
+  
+      // Find the index of the material in user's materials array
+      const materialIndex = user.materials.findIndex(material => material.id === materialId);
+      
+      if (materialIndex !== -1) {
+          // Material exists, update quantity
+          const updatedUser = {
+              ...user,
+              materials: user.materials.map((material, index) => {
+                  if (index === materialIndex) {
+                      return {
+                          ...material,
+                          quantity: material.quantity - 1 
+                      };
+                  }
+                  return material;
+              })
+          };
+          
+          // Update Zustand store
+          set({ user: updatedUser });
+  
+          // Update instances in the database
+          updateUserInstance(updatedUser);
+      } else {
+          // Material does not exist, add it with initial quantity
+          const newMaterial = {
+              id: materialId,
+              name: "Lumber", // Default name for illustration
+              img: "/Wood.png", // Default image URL for illustration
+              quantity: 1 // Initial quantity
+          };
+  
+          const updatedUser = {
+              ...user,
+              materials: [...user.materials, newMaterial]
+          };
+  
+          // Update Zustand store
+          set({ user: updatedUser });
+  
+          // Update instances in the database
+          updateUserInstance(updatedUser);
+      }
+  },
+  
+  
+  
+}));
+
+   
+

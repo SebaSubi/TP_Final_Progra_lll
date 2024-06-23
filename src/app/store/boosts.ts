@@ -28,7 +28,7 @@ export const useBoostStore = create<State>((set, get) => ({
      const data = await response.json();
      set({ boosts: data.instance.boosts });
    },
-
+      
    setBoost: (name: string) => {
      const boosts = get().boosts;
      for (let i = 0; i < boosts.length; i++) {
