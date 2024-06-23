@@ -21,11 +21,11 @@ function LoginPage() {
   useEffect(() => {
     if ((session?.user as any)?._id) {
       fetchUser((session?.user as any)._id);
-      console.log(user);
-      console.log(session);
+      // console.log(user);
+      // console.log(session);
       const redirect = async () => {
         const instance = await getUserInstanceById((session?.user as any)?._id);
-        console.log(instance);
+        // console.log(instance);
         if (instance) {
           setMap(instance.country);
           router.replace("/grid");
