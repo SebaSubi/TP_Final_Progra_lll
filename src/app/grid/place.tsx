@@ -5,6 +5,7 @@ import {
   MutableRefObject,
   useContext,
   useRef,
+  use,
 } from "react";
 import Image from "next/image";
 import { mapPlace, DefaultMap } from "./mapData";
@@ -17,6 +18,8 @@ import { useBuildingsStore } from "../store/userBuildings";
 import { UserBuildings } from "../types";
 import { useUserStore } from "../store/user";
 import { updateData } from "../logic/production";
+import dayjs from "dayjs";
+import { useBoostStore } from "../store/boosts";
 
 // interface BuildingType {
 //   name: string;
@@ -36,16 +39,39 @@ function Place({
   const [isOccupied, setIsOccupied] = useState(mapPlace.occupied);
   const [hover, setHover] = useState(false);
   const [buildingMenu, setBuildingMenu] = useState<boolean>(false); // State to control the building menu visibility
+  const [upgradeScreen, setUpgradeScreen] = useState<boolean>(false); // State to control the upgrade screen visibility
   // const [building, setBuilding] = useState<any>(null); // State to store the selected building data
   const building = useRef<UserBuildings>();
+  const userBuilding = useBuildingsStore(state => state.userBuilding);
   const userBuildings = useBuildingsStore((state) => state.userBuildings);
   const user = useUserStore((state) => state.user);
-  // console.log(user)
+  const updateMaterials = useUserStore(state => state.updateMaterials);
+  const boost = useBoostStore(state => state.boost);
+  const fetchBuilding = useBuildingsStore(state => state.fetchBuilding);
+  const updateBuilding = useBuildingsStore(state => state.updateProduction);
+
+  // console.log(user.materials.lumber)
 
   function updateBuildingData() {
-    updateData(building.current!);
+    // console.log(building.current!._id)
+    // fetchBuilding(building.current!._id); Remeber you commented this line
+    // console.log(userBuilding);
+    const newData = updateData(userBuilding, boost);
+    updateBuilding(newData, false);
     setBuildingMenu(!buildingMenu);
   }
+
+  function handleCollected() { 
+    // console.log(userBuilding)
+    const materialName = userBuilding.name.split(' ');
+    // console.log(materialName[0])
+    updateMaterials(materialName[0], userBuilding.capacity);
+    // updateMaterials();
+    updateBuilding(0, true)
+
+  }
+
+
   const context = useBuldingContext(); //this is great, it imports states from other components
 
   const StructureType = context.StructureType;
@@ -58,10 +84,11 @@ function Place({
         StructureType.current.name;
 
       try {
+        const currentDay = dayjs();
         const createdBuilding = await postUserBuildings(
           StructureType.current,
           user.userId,
-          new Date(),
+          currentDay.toDate(),
           { x: position.row, y: position.column }
         );
 
@@ -92,6 +119,8 @@ function Place({
     });
   }, []);
 
+  
+
   // alreadyOccupied()
 
   return (
@@ -109,7 +138,9 @@ function Place({
         onClick={() => {
           handleClick();
           if (isOccupied) {
+            fetchBuilding(building.current!._id);
             updateBuildingData();
+            // console.log("Building clicked", building.current);
           }
         }}
         onMouseOver={() => {
@@ -132,43 +163,66 @@ function Place({
             />
             <div className="ml-4 flex flex-col">
               <h2 className="text-[#6a1e07] font-comic mt1">
-                {building.current.name}
+                {userBuilding.name}
               </h2>
               <h2 className="text-[#6a1e07] font-comic mt1">
-                Level: {building.current.level}
+                Level: {userBuilding.level}
               </h2>
               <h2 className="text-[#6a1e07] font-comic mt1">
-                {building.current.prod_per_hour
-                  ? `Production: ${building.current.prod_per_hour}ph`
+                {userBuilding.prod_per_hour
+                  ? `Production: ${userBuilding.prod_per_hour}ph`
                   : null}{" "}
                 {/*//We should check here if it is a barrac or a building   */}
               </h2>
               <h2 className="text-[#6a1e07] font-comic mt1">
-                {building.current.capacity} / {building.current.maxCapacity}
+                {userBuilding.capacity} / {userBuilding.maxCapacity}
               </h2>
               <h2 className="text-[#6a1e07] font-comic mt1">
-                Upgrade cost: {building.current.cost * 2}
+                Upgrade cost: {userBuilding.cost * 2}
               </h2>
             </div>
           </div>
-          <div
-            className="relative flex items-center justify-center hover:brightness-75 active:transition-none active:scale-90 mt-10"
-            onClick={() => {
-              // StructureType.current = selectedItem;
-              // BuildMode.current = true;
-              // setBuildingMenu(false);
-            }}
-          >
-            <p className="absolute inset-0 flex items-center justify-center text-[#6a1e07] font-comic">
-              Upgrade
-            </p>
-            <Image
-              src="/BuildButton.png"
-              width={80}
-              height={80}
-              alt="buildingButton"
-              className="hover:brightness-75"
-            />
+          <div className="flex flex-row">
+            <div
+              className="relative flex items-center pr-2 justify-center hover:brightness-75 active:transition-none active:scale-90 mt-10"
+              onClick={() => {
+                // StructureType.current = selectedItem;
+                // BuildMode.current = true;
+                // setBuildingMenu(false);
+                console.log("Upgrade building");
+              }}
+            >
+              <p className="absolute inset-0 flex items-center justify-center text-[#6a1e07] font-comic">
+                Upgrade
+              </p>
+              <Image
+                src="/BuildButton.png"
+                width={80}
+                height={80}
+                alt="buildingButton"
+                className="hover:brightness-75"
+              />
+            </div>
+            <div
+              className="relative flex items-center justify-center hover:brightness-75 active:transition-none active:scale-90 mt-10"
+              onClick={() => {
+                handleCollected();
+                setBuildingMenu(false);
+
+                console.log("collected");
+              }}
+            >
+              <p className="absolute inset-0 flex items-center justify-center text-[#6a1e07] font-comic">
+                Collect
+              </p>
+              <Image
+                src="/BuildButton.png"
+                width={80}
+                height={80}
+                alt="buildingButton"
+                className="hover:brightness-75"
+              />
+            </div>
           </div>
         </div>
       )}

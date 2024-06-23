@@ -5,30 +5,61 @@ import { Params } from '../../user_instance/route';
 
 
 
-export async function PUT(request: NextRequest, params: Params) {
+export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
   const { id } = params;
   const {
-    newProdPerHour: prodPerHour,
-    newLastCollected: lastCollected,
-    newWorkers: workers,
-    newLevel: level,
-    newMaxWorkers: maxWorkers,
-    newMaxCapacity: maxCapacity,
-    newPosition: position
-  } = await request.json()
+    prodPerHour,
+    lastCollected,
+    workers,
+    level,
+    maxWorkers,
+    maxCapacity,
+    position,
+    capacity
+  } = await request.json();
+
+  // console.log("Received ID:", id);
+  // console.log("Received data:", {
+  //   prodPerHour,
+  //   lastCollected,
+  //   workers,
+  //   level,
+  //   maxWorkers,
+  //   maxCapacity,
+  //   position,
+  //   capacity
+  // });
+
   await connect();
-  await userBuildings.findByIdAndUpdate(id,
-    {
-      prodPerHour,
-      lastCollected,
-      workers,
-      level,
-      maxWorkers,
-      maxCapacity,
-      position
+
+  const updateData = {
+    prod_per_hour: prodPerHour,
+    lastCollected,
+    workers,
+    level,
+    maxWorkers,
+    maxCapacity,
+    position,
+    capacity
+  };
+
+  // console.log("Update data:", updateData);
+
+  try {
+    const updatedBuilding = await userBuildings.findByIdAndUpdate(id, updateData, { new: true, runValidators: true });
+    
+    if (!updatedBuilding) {
+      // console.error("User building not found with id:", id);
+      return NextResponse.json({ message: "User building not found" }, { status: 404 });
     }
-  )
-  return NextResponse.json({message: "user building Uodated"}, {status: 200})
+
+    // console.log("Updated building:", updatedBuilding);
+
+    return NextResponse.json({ message: "User building updated", updatedBuilding }, { status: 200 });
+  } catch (error) {
+    console.error("Error updating user building:", error);
+    // return NextResponse.json({ message: "Error updating user building", error: error.message }, { status: 500 });
+  }
 }
 
 

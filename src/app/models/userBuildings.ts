@@ -1,3 +1,4 @@
+import { Dayjs } from "dayjs";
 import mongoose, { Schema } from "mongoose"
 
 const userBuildingsSchema = new Schema(

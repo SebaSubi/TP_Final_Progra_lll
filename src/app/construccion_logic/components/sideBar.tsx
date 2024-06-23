@@ -59,6 +59,9 @@ export default function SideBar() {
   const updateUserBoost = useUserStore(state => state.useBoost)
 
   // console.log(user.gold);
+  // user.materials.map((material: any) => {
+  //   console.log(material);
+  // })
 
   useEffect(() => {
     const fetchBuildings = async () => {
@@ -80,7 +83,7 @@ export default function SideBar() {
     building: any;
     user: any;
   }) => {
-    if (user?.level >= building.unlock_level) {
+    if (user.level >= building.unlock_level) {
       return (
         <div
           className="sidebar-icon group"

@@ -7,7 +7,7 @@ const UserInstanceSchema = new Schema(
         level: Number,
         country: String,
         boosts: Array,
-        units: Array,
+        units: Number,
         gold: Number,
         materials: Array,
     }

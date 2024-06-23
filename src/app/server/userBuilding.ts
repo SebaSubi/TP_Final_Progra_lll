@@ -1,4 +1,6 @@
+import { Dayjs } from "dayjs";
 import Router from "next/router";
+import { UserBuildings } from "../types";
 
 export const getGeneralBuildings = async() => {
   try {
@@ -56,3 +58,24 @@ export async function postUserBuildings(building: any, userId: string, lastColle
     console.log(error)
   }
 } //Search up musica de la maquina increible
+
+export async function updateBuilding(building: any) {
+  // const { _id, userId, country, __v, ...newUserData } = user
+  const { _id, userId, __v, position,  ...newBuildingData } = building
+  console.log(JSON.stringify(newBuildingData))
+  console.log(building._id)
+
+  try {
+    const res = await fetch(`/api/userBuildings/${building._id}`, {
+      method: "PUT",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify(newBuildingData)
+    });
+    const data = await res.json()
+    return data
+  } catch (error) {
+    console.log(error)
+  }
+}

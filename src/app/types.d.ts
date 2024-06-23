@@ -1,3 +1,5 @@
+import { Dayjs } from "dayjs"
+
 export interface User {
   userId: string,
   name: string,
@@ -10,6 +12,7 @@ export interface User {
 }
 
 export interface UserBuildings {
+  _id: string,
   userId: string,
   name: string,
   cost: number,
@@ -32,6 +35,13 @@ export interface Boost {
   img: string,
   cost: number,
   boost: number,
+  quantity: number
+}
+
+export interface Material {
+  id: number,
+  name: string,
+  img: string,
   quantity: number
 }
 

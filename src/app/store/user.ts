@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { Boost, type User } from '../types';
+import { Boost, Material, type User } from '../types';
 import { updateUserInstance } from '../server/userInstance';
 
 
@@ -8,6 +8,7 @@ interface State {
    fetchUser: (userId: string) => Promise<void>;
    useBoost: (boost: string) => void;
    buyBoost: (boost: Boost) => void;
+   updateMaterials: (material: string, quantity: number) => void;
 }
 
 
@@ -85,5 +86,37 @@ export const useUserStore = create<State>((set, get) => ({
 
       // console.log(user.boosts)
       // return user.boosts;
-   }
+   },
+
+   updateMaterials: (material: string, quantity: number) => {
+      const { user } = get()
+      // console.log(material)
+      const newMaterialArray = structuredClone(user.materials);
+      if(material === "Gold") {
+         set({ user: { ...user, gold: user.gold + quantity}});
+         const newUser = { ...user, gold: user.gold + quantity}
+         console.log(quantity)
+         //gotta update the data base as well
+         updateUserInstance(newUser)
+       }
+       else {
+         for (let i = 0; i < user.materials.length; i++) {
+            // console.log(user.materials[i].name)
+            if (user.materials[i].name === material) {
+               // console.log("we found the material")
+               newMaterialArray[i].quantity += quantity;
+               set({ user: { ...user, materials: newMaterialArray}});
+               const newUser = { ...user, materials: newMaterialArray}
+               //gotta update the data base as well
+               updateUserInstance(newUser)
+             }
+         }
+       }
+      
+      // console.log(user.boosts)
+      // return user.boosts;
+   },
+
+
+
  }));
