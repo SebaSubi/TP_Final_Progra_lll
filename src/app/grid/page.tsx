@@ -17,6 +17,7 @@ import LoadingScreen from "./components/loadingScreen";
 import { UserBuildings } from "../types";
 import { useBoostStore } from "../store/boosts";
 import BoostMenu from "./components/boostMenu";
+import { getUserInstanceById } from "../server/userInstance";
 
 // export const BuildingContext = React.createContext<ContextProps | null>(null);
 
@@ -31,6 +32,7 @@ export default function GridPage() {
   const fetchUser = useUserStore((state) => state.fetchUser);
   const fetchUserBuildings = useBuildingsStore((state) => state.fetchBuildings);
   const fetchBoost = useBoostStore((state) => state.fetchBoosts);
+  const user = useUserStore((state) => state.user);
 
   const userBuildings = useBuildingsStore((state) => state.userBuildings);
 
@@ -45,6 +47,15 @@ export default function GridPage() {
   const handleSignOut = async () => {
     await signOut({ callbackUrl: "http://localhost:3000" });
   };
+
+  console.log(user);
+  async function getUserInstance(userId: string) {
+    const instance = await getUserInstanceById(userId);
+    console.log(instance);
+  }
+  if (user) {
+    getUserInstance(user.userId);
+  }
 
   return (
     <>
