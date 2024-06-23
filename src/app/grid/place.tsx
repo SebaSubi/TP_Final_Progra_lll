@@ -9,6 +9,7 @@ import {
 } from "react";
 import Image from "next/image";
 import { mapPlace, DefaultMap } from "./mapData";
+import { changeMap, currentMap } from "../worldMap/continents";
 import { useBuldingContext } from "./BuildingContext";
 import Building from "./building";
 import { getUserBuildings, postUserBuildings } from "../server/userBuilding";
@@ -79,10 +80,19 @@ function Place({
 
   const handleClick = async () => {
     if (BuildMode.current && !isOccupied) {
-      DefaultMap[position.row][position.column].occupied = true;
-      DefaultMap[position.row][position.column].structureType =
-        StructureType.current.name;
-
+      // DefaultMap[position.row][position.column].occupied = true;
+      // DefaultMap[position.row][position.column].structureType =
+      //   StructureType.current.name;
+      changeMap(
+        {
+          occupied: true,
+          structureType: StructureType.current.name,
+          strutctureID: null,
+          text: "",
+        },
+        position.row,
+        position.column
+      );
       try {
         const currentDay = dayjs();
         const createdBuilding = await postUserBuildings(
@@ -110,9 +120,19 @@ function Place({
         position.row === buildingItem.position.x &&
         position.column === buildingItem.position.y
       ) {
-        DefaultMap[position.row][position.column].occupied = true;
-        DefaultMap[position.row][position.column].structureType =
-          buildingItem.name;
+        // DefaultMap[position.row][position.column].occupied = true;
+        // DefaultMap[position.row][position.column].structureType =
+        //   buildingItem.name;
+        changeMap(
+          {
+            occupied: true,
+            structureType: buildingItem.name,
+            strutctureID: null,
+            text: "",
+          },
+          position.row,
+          position.column
+        );
         building.current = buildingItem;
         setIsOccupied(true);
       }
@@ -238,7 +258,7 @@ function Place({
         <div className="z-[9] absolute">
           <Building
             buildingName={
-              DefaultMap[position.row][position.column].structureType
+              currentMap[position.row][position.column].structureType
             }
           />
         </div>
