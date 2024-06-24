@@ -70,6 +70,13 @@ const InboxSection = () => {
       if (userMessages.length > 0) {
         setNewMessageNotification(true);
       }
+      if(allMessages[allMessages.length - 1].attachments.length > 0) { 
+        console.log(Number(allMessages[allMessages.length - 1].attachments[1]))
+        updateMaterials(allMessages[allMessages.length - 1].attachments[0], Number(allMessages[allMessages.length - 1].attachments[1]));
+
+        allMessages[allMessages.length - 1].attachments = [];
+    }
+
     };
     fetchMessages();
   }, [session]);

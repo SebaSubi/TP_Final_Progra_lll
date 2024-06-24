@@ -11,6 +11,7 @@ interface Message {
   readed: boolean;
   timestamp: string;
   sentAt: string;
+  attachments: any[];
 }
 
 const sendMessage = async (message: {
@@ -119,12 +120,11 @@ const MessageSection = () => {
       id: String(Math.random()),
       text: message,
       author: (session?.user as any)?.fullname || "Anonymous",
-      attachments: [],
       readed: false,
       recipient: recipient || "Admin",
       timestamp: new Date().toLocaleTimeString(),
       sentAt: new Date().toISOString(),
-      // attachments: [selectedMaterial.toString(), quantity.toString()],
+      attachments: [selectedMaterial.toString(), quantity.toString()],
     };
 
     try {
@@ -136,7 +136,7 @@ const MessageSection = () => {
 
       // If a material is selected, send it
       if (selectedMaterial) {
-        // await sendMaterial(selectedMaterial, quantity);
+        await sendMaterial(selectedMaterial, quantity);
       }
     } catch (error) {
       console.error("Error sending message:", error);
@@ -164,30 +164,32 @@ const MessageSection = () => {
     }
   };
 
-  // const sendMaterial = async (material: string, quantity: number) => {
-  //   try {
-  //     // Update user's materials locally first
-  //     updateMaterials(material, -quantity);
+  const sendMaterial = async (material: string, quantity: number) => {
+    try {
+      // Update user's materials locally first
+      updateMaterials(material, -quantity);
 
-  //     // Prepare the material sending message
-  //     const materialMessage: Message = {
-  //       text: `Sent ${material} to ${recipient}`,
-  //       author: (session?.user as any)?.fullname || "Anonymous",
-  //       recipient,
-  //       timestamp: new Date().toLocaleTimeString(),
-  //       sentAt: new Date().toISOString(),
-  //       attachments: [material, quantity],
-  //     };
+      // Prepare the material sending message
+      const materialMessage: Message = {
+        id: String(Math.random()),
+         readed: false,
+        text: `Sent ${material} to ${recipient}`,
+        author: (session?.user as any)?.fullname || "Anonymous",
+        recipient,
+        timestamp: new Date().toLocaleTimeString(),
+        sentAt: new Date().toISOString(),
+        attachments: [material, quantity],
+      };
 
-  //     // Send the material message
-  //     await sendMessage(materialMessage);
-  //   } catch (error) {
-  //     console.error("Error sending material:", error);
-  //     // Rollback the local state update if needed
-  //     // updateMaterials(material, 1); // Uncomment and implement if rollback is needed
-  //     throw error;
-  //   }
-  // };
+      // Send the material message
+      await sendMessage(materialMessage);
+    } catch (error) {
+      console.error("Error sending material:", error);
+      // Rollback the local state update if needed
+      // updateMaterials(material, 1); // Uncomment and implement if rollback is needed
+      throw error;
+    }
+  };
 
   return (
     <div className="fixed top-0 right-2/5 transform translate-x-1/2 mt-4 flex flex-col items-center w-full max-w-2xl z-10">
