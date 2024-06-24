@@ -339,7 +339,7 @@ function Place({
                     });
                     fetchUser(user.userId);
                     if (
-                      building.current!.maxWorkers > building.current!.workers
+                      building.current!.maxWorkers > building.current!.workers && user.units > 0
                     ) {
                       setBuildingMenu(false);
                       fetchUser(user.userId);
