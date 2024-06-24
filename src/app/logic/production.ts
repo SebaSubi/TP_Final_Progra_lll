@@ -12,20 +12,15 @@ dayjs.extend(timezone);
 
 export function updateData(collector: UserBuildings, boost: Boost) {
   const currentTime = dayjs().tz('America/Argentina/Buenos_Aires');
-  console.log("Current time:", currentTime.format());
 
   // Convert collector.lastCollected string to a dayjs object
   const collectorTime = dayjs(collector.lastCollected).tz('America/Argentina/Buenos_Aires');
-  console.log("Collector last collected time:", collectorTime.format());
 
   // Calculate the time difference in minutes
   const differenceMinutes = currentTime.diff(collectorTime, 'minute');
-  console.log("The time difference in minutes is:", differenceMinutes);
 
   // Example of updating capacity based on boost and maxCapacity
   let capacity = collector.prod_per_hour * differenceMinutes
-
-  console.log("Current capacity:", capacity)
 
   // Assuming boost is an object with a `boost` property
   if (boost.name) {
@@ -37,18 +32,11 @@ export function updateData(collector: UserBuildings, boost: Boost) {
     capacity = collector.maxCapacity;
   }
 
-  // console.log("Updated capacity:", capacity);
   return Math.ceil(capacity);
 }
 
-  // console.log("This is the current time: " + currentTime + "the collector time is: " + collector.lastCollected)
-  // console.log("The current time is: " + realCurrentTime)
-  // console.log("The formatted time is: " + formattedTime)
-
   // const timeDifference: number = currentTime.getMinutes() - collector.lastCollected.getMinutes()
-  // console.log("The time difference is: " + timeDifference)
   // const timeDifference = 5
-  // console.log(timeDifference)
   // return timeDifference
 
   // let productionPerHour: number = collector.workers * collector.level * 10;

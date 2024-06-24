@@ -13,7 +13,6 @@ const Placer = () => {
   };
 
   const handleClick = () => {
-    console.log(cursorPosition);
     setStructures([
       ...structures,
       { x: cursorPosition.x, y: cursorPosition.y },

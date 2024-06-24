@@ -38,27 +38,22 @@ export const useBuildingsStore = create<State>((set, get) => ({
    fetchBuildings: async (userId: string) => {
       const response = await fetch(`/api/userBuildings?userId=${userId}`);
       const data = await response.json();
-      //   console.log(data.buildings)
       set({ userBuildings: data.buildings });
-      //  console.log("fetched user worked");
    },
 
    fetchBuilding: async (buildingId: string) => {
       const response = await fetch(`/api/userBuildings/${buildingId}`);
       const data = await response.json();
-      // console.log(data)
       set({ userBuilding: data.userBuilding });
    },
 
    updateProduction: async (newCapacity: number, resetTime: boolean) => {
       const { userBuilding } = get();
-      // console.log(userBuilding);
       userBuilding.capacity = newCapacity;
       if (resetTime) {
          userBuilding.lastCollected = new Date();
       }
       // userBuilding.lastCollected = new Date();
-      // console.log(userBuilding)
       updateBuilding(userBuilding);
       // const response = updateBuilding(building)
    },

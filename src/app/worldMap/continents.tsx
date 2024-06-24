@@ -52,7 +52,6 @@ export function Africa() {
 
   const fetchContinent = async () => {
     const getUsersInstances = await getContinents();
-    // console.log(getUsersInstances);
     if (getUsersInstances) {
       const continentInstance = getUsersInstances.find(
         (instance: any) => instance.country === "Africa"

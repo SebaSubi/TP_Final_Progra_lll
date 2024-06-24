@@ -11,7 +11,6 @@ export default function BoostMenu(
   const updateUserBoost = useUserStore(state => state.useBoost)
   const boosts = useBoostStore(state => state.boosts);
   // const boost = useBoostStore(state => state.boost);
-  // console.log(boost);
 
 
   function setAndUpdateBoost(name: string) {

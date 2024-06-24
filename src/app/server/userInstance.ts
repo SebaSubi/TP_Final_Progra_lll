@@ -26,7 +26,6 @@ export async function getUserInstanceById(userId: string) {
       throw new Error("failed to fetch data")
     } 
     const data = await res.json()
-    // console.log(data.instance)
     return data.instance
   } catch (error) {
     // console.log("Error loading userBuildings:", error)

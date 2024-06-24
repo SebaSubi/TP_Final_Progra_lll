@@ -13,7 +13,6 @@
 // }
 
 // const sendMessage = async (message: { text: string; author: string; timestamp: string; }) => {
-//     console.log(message);
 //     const response = await fetch('/api/messages', {
 //         method: 'POST',
 //         headers: {
@@ -38,7 +37,6 @@
 //         }
 
 //         const data = await response.json();
-//         console.log(data);
 //         return data;
 //     } catch (error) {
 //         console.error(error);

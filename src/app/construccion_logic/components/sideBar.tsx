@@ -58,9 +58,7 @@ export default function SideBar() {
   const fetchBoosts = useBoostStore((state) => state.fetchBoosts);
   const fetchUser = useUserStore((state) => state.fetchUser);
 
-  // console.log(user.gold);
   // user.materials.map((material: any) => {
-  //   console.log(material);
   // })
 
   useEffect(() => {
@@ -165,9 +163,7 @@ export default function SideBar() {
   }
 
   function buyBoost(boost: Boost) {
-    // console.log();
     if (user.gold >= boost.cost) {
-      // console.log(boost.cost)
       chargeAndAddBoost(boost);
       // fetchBoosts(user.userId);
       return true;
@@ -182,7 +178,6 @@ export default function SideBar() {
     //We delete the boost from the database
     updateUserBoost(name);
   }
-  // console.log(user);
 
   // fetchUser(user.userId);
   return (
@@ -303,7 +298,6 @@ export default function SideBar() {
           {boostSideBar &&
             (defaultBoosts.length > 0 && user ? (
               defaultBoosts.map((boost: Boost, index: number) => (
-                // console.log(boost),
                 <SideBarBoosts boost={boost} key={index} />
               ))
             ) : (

@@ -6,7 +6,6 @@ import bcrypt from "bcryptjs";
 export async function POST(request: Request){
 
   const {fullname , email, password} = await request.json()
-  console.log(fullname, email, password)
 
   //Validar que la password sea mayor a 6 caracteres
   try
@@ -30,7 +29,6 @@ export async function POST(request: Request){
     const user = new User({email, fullname, password: hashedPassword})
   
     const savedUser = await user.save();
-    console.log(savedUser);
   
     return NextResponse.json(savedUser);
 

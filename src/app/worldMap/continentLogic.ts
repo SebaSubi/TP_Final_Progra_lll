@@ -8,7 +8,6 @@ export async function getContinents() {
         },
     });
     const data = await res.json();
-    // console.log(data.instance);
     return data.instance;
 }
 

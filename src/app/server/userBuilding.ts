@@ -8,7 +8,6 @@ export const getGeneralBuildings = async () => {
     if (!res.ok) {
       throw new Error("failed to fetch data")
     } //We check if the response is ok\
-    // console.log(res)
     const data = await res.json()
     return data.buildings;
   } catch (error) {
@@ -17,7 +16,6 @@ export const getGeneralBuildings = async () => {
 }
 
 export async function getUserBuildings(userId: string) {
-  // console.log(userId)
   try {
     const res = await fetch(`/api/userBuildings?userId=${userId}`,
       {
@@ -29,7 +27,6 @@ export async function getUserBuildings(userId: string) {
       throw new Error("failed to fetch data")
     } //We check if the response is ok
     const data = await res.json()
-    // console.log(data)
     return data.buildings;
   } catch (error) {
     console.log("Error loading userBuildings:", error)
@@ -50,10 +47,8 @@ export async function postUserBuildings(building: any, userId: string, lastColle
     });
     const responseData = await res.json()
     const createdBuilding = responseData.building
-    // console.log(createdBuilding)
     return createdBuilding
 
-    // console.log(JSON.stringify({ ...buildingWithoutId, userId, lastCollected, position, capacity: 0}))
   } catch (error) {
     console.log(error)
   }
@@ -63,7 +58,6 @@ export async function updateBuilding(building: any) {
   // const { _id, userId, country, __v, ...newUserData } = user
   const { _id, userId, __v, position, ...newBuildingData } = building
   console.log(JSON.stringify(newBuildingData))
-  console.log(building._id)
 
   try {
     const res = await fetch(`/api/userBuildings/${building._id}`, {

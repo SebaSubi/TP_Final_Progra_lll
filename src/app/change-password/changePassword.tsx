@@ -18,7 +18,6 @@ export default function ChangePassword() {
   };
 
   const changePassword = async (e: FormEvent<HTMLFormElement>) => {
-    console.log("changePassword");
 
     e.preventDefault();
     startLoading();

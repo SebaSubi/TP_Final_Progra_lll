@@ -49,7 +49,6 @@ export default function GridPage() {
     await signOut({ callbackUrl: "/" });
   };
 
-  console.log(user);
   if (user) {
     setMap(user.country);
   }
@@ -72,7 +71,6 @@ export default function GridPage() {
               } else {
                 StructureType.current = "water";
               }
-              console.log(StructureType.current);
             }}
           >
             place water
@@ -85,7 +83,6 @@ export default function GridPage() {
               } else {
                 StructureType.current = "LumberCamp";
               }
-              console.log(placing.current);
             }}
           >
             place structure

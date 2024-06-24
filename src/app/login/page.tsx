@@ -21,11 +21,8 @@ function LoginPage() {
   useEffect(() => {
     if ((session?.user as any)?._id) {
       fetchUser((session?.user as any)._id);
-      // console.log(user);
-      // console.log(session);
       const redirect = async () => {
         const instance = await getUserInstanceById((session?.user as any)?._id);
-        // console.log(instance);
         if (instance) {
           setMap(instance.country);
           router.replace("/grid");
@@ -56,18 +53,14 @@ function LoginPage() {
         redirect: false,
       });
 
-      console.log('Response:', res);
 
       if (res?.error) {
         return setError(res.error as string);
       }
 
       if (res?.ok) {
-        // console.log(res);
         // sleep(3000);
         // const instance = await getUserInstanceById((session?.user as any)?._id);
-        // console.log(instance);
-        // console.log(session);
         // if (instance.country != "") {
         //   setMap(user.country);
         //   router.replace("/grid");

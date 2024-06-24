@@ -18,8 +18,6 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
     capacity
   } = await request.json();
 
-  // console.log("Received ID:", id);
-  // console.log("Received data:", {
   //   prodPerHour,
   //   lastCollected,
   //   workers,
@@ -43,8 +41,6 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
     capacity
   };
 
-  // console.log("Update data:", updateData);
-
   try {
     const updatedBuilding = await userBuildings.findByIdAndUpdate(id, updateData, { new: true, runValidators: true });
     
@@ -53,7 +49,6 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
       return NextResponse.json({ message: "User building not found" }, { status: 404 });
     }
 
-    // console.log("Updated building:", updatedBuilding);
 
     return NextResponse.json({ message: "User building updated", updatedBuilding }, { status: 200 });
   } catch (error) {

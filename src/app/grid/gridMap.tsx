@@ -15,7 +15,6 @@ export default function GridMap() {
   // async function getOccupied() {
   //   const instanceData = await getUserInstanceById((session?.user as any)?._id);
   //   user.current = instanceData;
-  //   // console.log(user.current.userId)
   //   if (user.current && user.current.userId) {
   //     const userBuildingsData = await getUserBuildings(user.current.userId);
   //     occupied.current = userBuildingsData;
@@ -27,7 +26,6 @@ export default function GridMap() {
   //zustand
   //jotai
 
-  // console.log(occupied.current)
   // const places: mapPlace[][] = DefaultMap;
 
   const places: mapPlace[][] = currentMap;

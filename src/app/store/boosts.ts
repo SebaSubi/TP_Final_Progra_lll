@@ -42,7 +42,6 @@ export const useBoostStore = create<State>((set, get) => ({
 
 //  for (let i = 0; i < data.instance.boosts.length; i++) {
 //   if (data.instance.boosts[i].name === name) {
-//    // console.log(data.instance.boosts[i]);
 //     set({ boost: data.instance.boosts[i] });
 //   }
 // }

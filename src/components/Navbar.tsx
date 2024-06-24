@@ -5,10 +5,6 @@ import { useSession } from 'next-auth/react';
 function Navbar() {
   const { data: session } = useSession();
 
-  console.log(session);
-
-  
-
   return (
     session ? null : (
       <nav className='bg-zinc-600 p-8'>

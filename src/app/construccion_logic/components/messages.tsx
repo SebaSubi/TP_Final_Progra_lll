@@ -20,9 +20,6 @@ const sendMessage = async (message: {
   readed: boolean;
   timestamp: string;
 }) => {
-  console.log(message);
-  console.log(message.id);
-  console.log(message.readed);
   const response = await fetch("/api/messages1", {
     method: "POST",
     headers: {
@@ -47,7 +44,6 @@ const getMessages = async () => {
     }
 
     const data = await response.json();
-    console.log(data);
     return data;
   } catch (error) {
     console.error(error);
@@ -132,7 +128,6 @@ const MessageSection = () => {
     };
 
     try {
-      console.log(JSON.stringify(newMessage));
       await sendMessage(newMessage);
       setMessages((prevMessages) => [...prevMessages, newMessage]);
       // setMessage('');

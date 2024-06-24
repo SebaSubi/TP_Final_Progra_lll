@@ -21,12 +21,10 @@ export default function Unit() {
     const clickToMove = () => {
       clicks += 1;
       //funcion de que cuando se haga click que se mande al creeper a algun lugar
-      console.log(poisitionToMove.current);
       if (clicks === 2) {
         window.removeEventListener("click", clickToMove);
         window.removeEventListener("mousemove", getMousePosition);
         moveCreeper(poisitionToMove.current);
-        console.log("end of the line");
         setUnitMarker(false);
       }
     };
@@ -34,7 +32,6 @@ export default function Unit() {
     const getMousePosition = (event: MouseEvent) => {
       //function that saves the cursor position
       poisitionToMove.current = { x: event.clientX, y: event.clientY };
-      // console.log(poisitionToMove.current);
     };
     window.addEventListener("mousemove", getMousePosition);
     window.addEventListener("click", clickToMove);
@@ -66,9 +63,7 @@ export default function Unit() {
         newposition.y == unitPosition.current.y
       ) {
         clearInterval(intervalId);
-        console.log("Arrived at destination");
       }
-      // console.log(unitPosition.current);
     };
     // Start moving the Creeper every second
     const intervalId = setInterval(moveStepByStep, 5);

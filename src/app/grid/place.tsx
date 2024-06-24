@@ -52,12 +52,9 @@ function Place({
   const upgradeBuildingZ = useBuildingsStore((state) => state.upgradeBuilding);
   const updateAllMaterials = useUserStore((state) => state.updateAllMaterials);
 
-  // console.log(user.materials.lumber)
 
   function updateBuildingData() {
-    // console.log(building.current!._id)
     // fetchBuilding(building.current!._id); Remeber you commented this line
-    // console.log(userBuilding);
     const newData = updateData(userBuilding, boost);
     updateBuilding(newData, false);
     setBuildingMenu(!buildingMenu);
@@ -65,9 +62,7 @@ function Place({
   }
 
   function handleCollected() {
-    // console.log(userBuilding)
     const materialName = userBuilding.name.split(" ");
-    // console.log(materialName[0])
     updateMaterials(materialName[0], userBuilding.capacity);
     // updateMaterials();
     updateBuilding(0, true);
@@ -84,7 +79,6 @@ function Place({
     } else {
       const Img = userBuilding.img.split(".");
       const newImg = `${Img[0]}${userBuilding.level + 1}.png`;
-      console.log(newImg);
       userBuilding.img = newImg;
       userBuilding.level = userBuilding.level + 1;
       userBuilding.prod_per_hour = userBuilding.prod_per_hour + 1;
@@ -134,7 +128,6 @@ function Place({
 
         // Update building.current with the created building
         building.current = createdBuilding;
-        console.log(building.current);
         fetchUser(user.userId);
 
         if (user.gold >= building.current!.cost) {
@@ -203,7 +196,6 @@ function Place({
           ) {
             fetchBuilding(building.current!._id);
             updateBuildingData();
-            // console.log("Building clicked", building.current);
           }
         }}
         onMouseOver={() => {
@@ -275,7 +267,6 @@ function Place({
                 // BuildMode.current = true;
                 // setBuildingMenu(false);
                 setUpgradeScreen(true);
-                console.log("Upgrade building");
               }}
             >
               <p className="absolute inset-0 flex items-center justify-center text-[#6a1e07] font-comic">
@@ -305,7 +296,6 @@ function Place({
                     fetchUser(user.userId);
                   }
 
-                  // console.log("collected");
                 }}
               >
                 <p className="absolute inset-0 flex items-center justify-center text-c text-[#6a1e07] font-comic text-xs">
@@ -327,7 +317,6 @@ function Place({
                     handleCollected();
                     setBuildingMenu(false);
                     fetchUser(user.userId);
-                    // console.log("collected");
                   }}
                 >
                   <p className="absolute inset-0 flex items-center justify-center text-[#6a1e07] font-comic">
@@ -358,10 +347,8 @@ function Place({
                         ...building.current,
                         workers: building.current!.workers + 1,
                       });
-                      console.log(building.current!.workers);
                       fetchBuilding(building.current!._id);
                       // updateBuildingData();
-                      // console.log("collected");
                     }
                   }}
                 >
