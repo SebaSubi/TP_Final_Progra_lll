@@ -42,6 +42,7 @@ const InboxSection1 = () => {
             setMessages(userMessages);
         };
         fetchMessages();
+        console.log("worked")
     }, [session]);
 
     const handleReply = (author: string) => {
@@ -50,7 +51,7 @@ const InboxSection1 = () => {
             query: { recipient: author },
         });
     };
-
+//Aparently you cant pass "" thru whatsapp
     return (
         <div className="fixed top-0 right-2/5 transform -translate-x-1/2 mt-4 flex flex-col items-center w-full max-w-2xl z-10">
             <button onClick={() => setShowMessages(!showMessages)} className="p-2 bg-black text-white border border-white rounded-lg font-bold uppercase duration-200 hover:bg-gray-900 mb-4">
@@ -66,7 +67,7 @@ const InboxSection1 = () => {
                                 {messages.map((msg, index) => (
                                     <div key={index} style={{ border: '1px solid black', padding: '5px', margin: '5px', borderRadius: '5px' }}>
                                         <p style={{ fontSize: '17px', fontWeight: 'bold', color: 'black', textDecoration: 'underline', textUnderlineOffset: '0.15em' }}>
-                                            From: "{msg.author === msg.recipient ? 'You' : msg.author}"
+                                            From: {msg.author === msg.recipient ? 'You' : msg.author}
                                         </p>
                                         <p style={{ fontSize: '18px', fontWeight: 'bold', color: 'black' }}>{msg.text}</p>
                                         <p style={{ fontSize: '12px', color: 'black' }}>{new Date(msg.sentAt).toLocaleString()}</p>
